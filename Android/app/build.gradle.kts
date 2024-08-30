@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.kotlin.kapt) // Kotlin Kapt for Annotation Processing
+    alias(libs.plugins.hilt) // Dagger Hilt for Dependency Injection
 }
 
 android {
@@ -33,6 +35,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    buildFeatures {
+        dataBinding = true
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -45,4 +52,43 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+
+    // Kakao SDK
+    implementation(libs.kakao.login)
+
+    // Coroutines
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
+
+    // Gson
+    implementation(libs.gson)
+
+    // Retrofit2
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.gson)
+
+    // OkHttp3
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging)
+
+    // Hilt (Dagger Hilt)
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler) // Hilt의 Annotation Processor
+
+    // Glide
+    implementation(libs.glide)
+    kapt(libs.glide.compiler) // Glide의 Annotation Processor
+
+    // Web3J
+    implementation(libs.web3j.core)
+    implementation(libs.web3j.contracts)
+    implementation(libs.bouncycastle)
+
+    // Jetpack: Activity, KTX, Lifecycle, ViewModel
+    implementation(libs.activity.ktx)
+    implementation(libs.lifecycle.viewmodel)
+    implementation(libs.lifecycle.livedata)
+    implementation(libs.lifecycle.runtime)
 }
+
