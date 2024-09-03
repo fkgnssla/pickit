@@ -1,9 +1,18 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.kapt) // Kotlin Kapt for Annotation Processing
     alias(libs.plugins.hilt) // Dagger Hilt for Dependency Injection
 }
+
+val localProperties = Properties()
+localProperties.load(FileInputStream(rootProject.file("local.properties")))
+
+val kakaoAppKey = localProperties["KAKAO_APP_KEY"] as? String
+    ?: error("KAKAO_APP_KEY not found in local.properties")
 
 android {
     namespace = "com.ssafy.pickit"
@@ -20,8 +29,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
+            manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
+        }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
+            manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -37,6 +52,7 @@ android {
     }
 
     buildFeatures {
+        buildConfig = true
         dataBinding = true
         viewBinding = true
     }
