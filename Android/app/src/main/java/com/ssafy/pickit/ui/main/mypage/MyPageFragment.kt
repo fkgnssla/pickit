@@ -28,7 +28,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             showMemberInfoDialog()
         }
 
-        // member_modify 버튼 클릭 시 수정 화면을 다이얼로그로 띄우는 리스너 설정
+        // member_modify 버튼 클릭 시 수정 화면을 다이얼로그로 띄우는 리스너 설정 
         binding.memberModify.setOnClickListener {
             showMemberModifyDialog()
         }
