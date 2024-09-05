@@ -46,11 +46,11 @@ class AuthActivity : AppCompatActivity() {
 
         viewPager.setOffscreenPageLimit(1)
 
-        // 페이지 변경 애니메이션이 자연스러워지도록 스크롤 설정 조정
+
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
-                // 필요시 페이지 전환 시 추가 로직을 여기에 작성
+
             }
         })
 
@@ -71,8 +71,7 @@ class AuthActivity : AppCompatActivity() {
 
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
+            MainActivity.start(this)
             finish()
         }
     }

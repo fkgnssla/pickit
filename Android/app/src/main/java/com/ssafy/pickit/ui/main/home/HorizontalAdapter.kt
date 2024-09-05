@@ -12,7 +12,7 @@ class HorizontalAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<HorizontalAdapter.ViewHolder>() {
 
-    // Use a mutable list to hold the items
+
     private val items = mutableListOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

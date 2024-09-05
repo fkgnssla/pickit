@@ -13,9 +13,9 @@ import com.ssafy.pickit.R
 class ServicePageAdapter(private val context: Context) : RecyclerView.Adapter<ServicePageAdapter.ViewHolder>() {
 
     private val videos = arrayOf(
-        R.raw.video1,  // res/raw/video1.mp4
-        R.raw.video2,  // res/raw/video2.mp4
-        R.raw.video3   // res/raw/video3.mp4
+        R.raw.video1,
+        R.raw.video2,
+        R.raw.video3
     )
 
     override fun getItemCount(): Int {
@@ -32,17 +32,17 @@ class ServicePageAdapter(private val context: Context) : RecyclerView.Adapter<Se
         val videoResId = videos[actualPosition]
         val videoUri = Uri.parse("android.resource://${context.packageName}/$videoResId")
 
-        // 비디오 초기화
+
         holder.videoView.setVideoURI(videoUri)
 
-        // 비디오 준비 리스너
+
         holder.videoView.setOnPreparedListener { mp ->
             mp.isLooping = true
-            // 비디오 준비가 완료된 후 시작
+
             mp.start()
         }
 
-        // 비디오 에러 리스너
+
         holder.videoView.setOnErrorListener { _, what, extra ->
             Log.e("ServicePageAdapter", "Error loading video: $videoUri, error code: $what, extra: $extra")
             true

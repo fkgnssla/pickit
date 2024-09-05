@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setFragment() {
-        // 초기 Fragment 설정
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_main, HomeFragment())
             .commit()
