@@ -33,6 +33,11 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             showMemberModifyDialog()
         }
 
+        // member_modify 버튼 클릭 시 수정 화면을 다이얼로그로 띄우는 리스너 설정
+        binding.tmpWallet.setOnClickListener {
+            showTmpWalletDialog()
+        }
+
     }
 
     private fun showMemberInfoDialog() {
@@ -44,7 +49,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         builder.setPositiveButton("확인") { dialog, _ ->
             dialog.dismiss()
         }
-
+            .setCancelable(false)
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
@@ -72,7 +77,7 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             .setNegativeButton("취소") { dialog, _ ->
                 dialog.cancel()
             }
-
+            .setCancelable(false)
         // 다이얼로그를 생성하고 표시
         val dialog = dialogBuilder.create()
         dialog.show()
@@ -86,4 +91,37 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
         println("새 비밀번호: $newPassword")
         println("비밀번호 확인: $newPasswordConfirm")
     }
+
+    private fun showTmpWalletDialog(){
+        val inflater = LayoutInflater.from(requireContext())
+        val dialogView = inflater.inflate(R.layout.wallet_agreement, null)
+
+        // AlertDialog 빌더 사용
+        val dialogBuilder = AlertDialog.Builder(requireContext())
+            .setTitle("지갑 생성 동의 내역서")
+            .setView(dialogView)
+            .setPositiveButton("저장") { dialog, _ ->
+                // 수정 내용 처리
+                val walletAgreeId = dialogView.findViewById<EditText>(R.id.walletAgreeId).text.toString()
+                val walletIdx = dialogView.findViewById<EditText>(R.id.walletIdx).text.toString()
+
+                // 여기서 입력한 내용을 처리하거나 viewModel을 통해 데이터 업데이트
+                handleWalletGenerate(walletAgreeId, walletIdx)
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.cancel()
+            }
+            .setCancelable(false)
+        // 다이얼로그를 생성하고 표시
+        val dialog = dialogBuilder.create()
+        dialog.show()
+
+    }
+
+    private fun handleWalletGenerate(walletAgreeId: String, walletIdx:String){
+        println("동의 id: $walletAgreeId")
+        println("지갑번호: $walletIdx")
+    }
 }
+
