@@ -32,7 +32,8 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	private static final String[] whitelist = {"/swagger-ui/**", "/v3/**", "/api/auth/kakao-login"};
+	private static final String[] whitelist = {"/swagger-ui/**", "/v3/**", "/api/auth/login",
+		"/api/auth/sign-up"};
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
