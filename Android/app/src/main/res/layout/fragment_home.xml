@@ -13,6 +13,7 @@
         android:id="@+id/nestedScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:fillViewport="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,17 +54,17 @@
                 android:id="@+id/tv_select_broadcast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center"
                 android:text="방송사 선택하기"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.166"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_ongoing_vote" />
 
-            <!-- RecyclerView로 변경 -->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerChannelButtons"
                 android:layout_width="0dp"

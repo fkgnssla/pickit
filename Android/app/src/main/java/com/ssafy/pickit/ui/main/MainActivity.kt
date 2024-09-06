@@ -27,6 +27,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         setFragment()
+
+    }
+
+
+
+    private fun updateTabTitle(title: String) {
+        binding.tabTitle.text = title
     }
 
     private fun setFragment() {
@@ -35,12 +42,24 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fcv_main, HomeFragment())
             .commit()
 
+        binding.bnvMain.selectedItemId = R.id.home
+        updateTabTitle("Home")
+
         binding.bnvMain.setOnItemSelectedListener {
             val transaction = supportFragmentManager.beginTransaction()
             when (it.itemId) {
-                R.id.home -> transaction.replace(R.id.fcv_main, HomeFragment())
-                R.id.vote -> transaction.replace(R.id.fcv_main, VoteFragment())
-                R.id.my_page -> transaction.replace(R.id.fcv_main, MyPageFragment())
+                R.id.home -> {
+                    transaction.replace(R.id.fcv_main, HomeFragment())
+                    updateTabTitle("Home")
+                }
+                R.id.vote -> {
+                    transaction.replace(R.id.fcv_main, VoteFragment())
+                    updateTabTitle("Vote")
+                }
+                R.id.my_page -> {
+                    transaction.replace(R.id.fcv_main, MyPageFragment())
+                    updateTabTitle("My Page")
+                }
             }
             transaction.commit()
             return@setOnItemSelectedListener true

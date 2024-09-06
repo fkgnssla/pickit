@@ -13,7 +13,7 @@ import com.ssafy.pickit.databinding.FragmentVoteBinding
 import com.ssafy.pickit.ui.main.mypage.MyPageViewModel
 
 class VoteFragment : BaseFragment<FragmentVoteBinding>(R.layout.fragment_vote) {
-    private val viewModel: MyPageViewModel by viewModels()
+    private val viewModel: VoteViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
