@@ -3,7 +3,6 @@ package com.ssafy.pickit.domain.auth.application.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,12 +12,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
 import com.ssafy.pickit.domain.auth.dto.TokenResponse;
-import com.ssafy.pickit.global.jwt.utils.JwtConstants;
-import com.ssafy.pickit.global.jwt.utils.JwtUtils;
+import com.ssafy.pickit.domain.member.application.service.MemberService;
 import com.ssafy.pickit.domain.member.domain.Member;
 import com.ssafy.pickit.domain.member.domain.Role;
-import com.ssafy.pickit.domain.member.application.service.MemberService;
+import com.ssafy.pickit.domain.wallet.application.service.WalletService;
+import com.ssafy.pickit.domain.wallet.domain.Wallet;
+import com.ssafy.pickit.global.jwt.utils.JwtConstants;
+import com.ssafy.pickit.global.jwt.utils.JwtUtils;
 
 @Service
 public class AuthService {
@@ -27,10 +29,13 @@ public class AuthService {
 
 	private final RestTemplate restTemplate;
 	private final MemberService memberService;
+	private final WalletService walletService;
 
-	public AuthService(RestTemplateBuilder restTemplateBuilder, MemberService memberService) {
+	public AuthService(RestTemplateBuilder restTemplateBuilder, MemberService memberService,
+		WalletService walletService) {
 		this.restTemplate = restTemplateBuilder.build();
 		this.memberService = memberService;
+		this.walletService = walletService;
 	}
 
 	// 메인 로그인 처리
@@ -88,10 +93,13 @@ public class AuthService {
 	}
 
 	public ResponseEntity<?> signUp(SignUpRequest signUpRequest) {
+		Wallet newWallet = walletService.create(signUpRequest.getAddress(), signUpRequest.getPrivateKey());
+
 		Member newMember = Member.builder()
 			.name(signUpRequest.getName())
 			.age(signUpRequest.getAge())
 			.gender(signUpRequest.getGender()).socialId(signUpRequest.getSocialId())
+			.wallet(newWallet)
 			.role(Role.MEMBER).build();
 
 		memberService.create(newMember);

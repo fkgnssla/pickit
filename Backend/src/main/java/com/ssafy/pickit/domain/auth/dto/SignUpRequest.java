@@ -8,4 +8,6 @@ public class SignUpRequest {
 	private int age;
 	private String gender;
 	private String socialId;
+	private String address;
+	private String privateKey;
 }
