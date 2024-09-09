@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TempVoteSessionService {
 	private final TempVoteSessionRepository voteSessionRepository;
+	private final TempVoteSessionRepository tempVoteSessionRepository;
 
 	@Transactional
 	public TempVoteSession create(TempVoteSessionRequest voteSessionRequest) {
@@ -33,6 +34,11 @@ public class TempVoteSessionService {
 		List<TempVoteSession> tempVoteSessions = voteSessionRepository.findAll();
 
 		return mapToTempVoteSessionResponse(tempVoteSessions);
+	}
+
+	public TempVoteSession findById(String id) {
+		return tempVoteSessionRepository.findById(id)
+			.orElseThrow(() -> new IllegalArgumentException("Invalid tempVoteSession id: " + id));
 	}
 
 	public boolean delete(String id) {
