@@ -45,6 +45,7 @@ public class VoteSessionService {
 	private VoteSession buildVoteSession(TempVoteSession tempVoteSession, String contractAddress,
 		List<Candidate> candidates) {
 		return VoteSession.builder()
+			.broadcastId(tempVoteSession.getBroadcastId())
 			.contractAddress(contractAddress)
 			.title(tempVoteSession.getTitle())
 			.description(tempVoteSession.getDescription())

@@ -20,6 +20,8 @@ public class VoteSession {
 	@Id
 	private String id;
 
+	private String broadcastId;
+
 	private String contractAddress;
 
 	private String title;
