@@ -5,9 +5,9 @@ module.exports = {
   networks: {
     ssafy: {
       provider: () => new HDWalletProvider(mnemonic, `https://rpc.ssafy-blockchain.com`),
-      network_id: 31221,       // 네트워크 ID
+      network_id: 31221,          // 네트워크 ID
       gas: 5500000,               // 가스 리밋
-      confirmations: 2, // 블록 확인 대기
+      confirmations: 2,           // 블록 확인 대기
       timeoutBlocks: 200,         // 타임아웃 블록 수
       skipDryRun: true            // Dry run을 건너뛸지 여부
     },
