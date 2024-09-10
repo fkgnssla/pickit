@@ -28,6 +28,8 @@ public class VoteSession {
 
 	private String description;
 
+	private String imgUrl;
+
 	private Candidate winner;
 
 	private List<Candidate> candidates;

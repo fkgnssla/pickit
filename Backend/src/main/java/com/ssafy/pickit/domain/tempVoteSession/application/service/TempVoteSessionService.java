@@ -28,7 +28,7 @@ public class TempVoteSessionService {
 	public TempVoteSession create(TempVoteSessionRequest voteSessionRequest) {
 		List<TempCandidate> candidates = mapToCandidates(voteSessionRequest);
 
-		TempVoteSession voteSession = buildVoteSession(voteSessionRequest, candidates);
+		TempVoteSession voteSession = buildVoteSession(voteSessionRequest, "https://aws.s3", candidates);
 
 		return voteSessionRepository.save(voteSession);
 	}
@@ -62,7 +62,7 @@ public class TempVoteSessionService {
 					.broadcastName(findBroadcast.getName())
 					.title(tempVoteSession.getTitle())
 					.description(tempVoteSession.getDescription())
-					.candidates(tempVoteSession.getCandidates())
+					.imgUrl(tempVoteSession.getImgUrl())
 					.startDate(tempVoteSession.getStartDate())
 					.endDate(tempVoteSession.getEndDate())
 					.build();
@@ -84,11 +84,12 @@ public class TempVoteSessionService {
 
 	// VoteSession 빌드 메서드로 분리
 	private TempVoteSession buildVoteSession(TempVoteSessionRequest voteSessionRequest,
-		List<TempCandidate> candidates) {
+		String imgUrl, List<TempCandidate> candidates) {
 		return TempVoteSession.builder()
 			.broadcastId(voteSessionRequest.getBroadcastId())
 			.title(voteSessionRequest.getTitle())
 			.description(voteSessionRequest.getDescription())
+			.imgUrl(imgUrl)
 			.candidates(candidates)
 			.startDate(voteSessionRequest.getStartDate())
 			.endDate(voteSessionRequest.getEndDate())

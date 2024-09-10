@@ -28,7 +28,7 @@ public class VoteSessionService {
 
 		return voteSessionRepository.save(voteSession);
 	}
-
+	
 	// 후보자 리스트 매핑 메서드로 분리
 	private List<Candidate> mapToCandidates(TempVoteSession tempVoteSession) {
 		return tempVoteSession.getCandidates()
@@ -49,6 +49,7 @@ public class VoteSessionService {
 			.contractAddress(contractAddress)
 			.title(tempVoteSession.getTitle())
 			.description(tempVoteSession.getDescription())
+			.imgUrl(tempVoteSession.getImgUrl())
 			.winner(null)
 			.candidates(candidates)
 			.startDate(tempVoteSession.getStartDate())

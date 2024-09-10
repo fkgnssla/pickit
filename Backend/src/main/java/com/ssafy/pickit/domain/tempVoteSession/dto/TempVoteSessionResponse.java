@@ -19,6 +19,8 @@ public class TempVoteSessionResponse {
 
 	private String description;
 
+	private String imgUrl;
+
 	private List<TempCandidate> candidates;
 
 	private LocalDateTime startDate;

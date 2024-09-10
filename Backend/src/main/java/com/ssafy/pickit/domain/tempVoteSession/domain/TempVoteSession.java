@@ -28,6 +28,8 @@ public class TempVoteSession {
 
 	private String description;
 
+	private String imgUrl;
+
 	private List<TempCandidate> candidates;
 
 	private LocalDateTime startDate;
