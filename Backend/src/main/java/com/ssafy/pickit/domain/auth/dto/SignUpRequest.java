@@ -9,5 +9,4 @@ public class SignUpRequest {
 	private String gender;
 	private String socialId;
 	private String address;
-	private String privateKey;
 }

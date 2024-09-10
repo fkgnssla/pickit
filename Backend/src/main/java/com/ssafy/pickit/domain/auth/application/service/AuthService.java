@@ -93,7 +93,7 @@ public class AuthService {
 	}
 
 	public ResponseEntity<?> signUp(SignUpRequest signUpRequest) {
-		Wallet newWallet = walletService.create(signUpRequest.getAddress(), signUpRequest.getPrivateKey());
+		Wallet newWallet = walletService.create(signUpRequest.getAddress());
 
 		Member newMember = Member.builder()
 			.name(signUpRequest.getName())

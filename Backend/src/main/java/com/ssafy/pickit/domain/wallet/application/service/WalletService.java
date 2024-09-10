@@ -12,10 +12,9 @@ import lombok.RequiredArgsConstructor;
 public class WalletService {
 	private final WalletRepository walletRepository;
 
-	public Wallet create(String address, String privateKey) {
+	public Wallet create(String address) {
 		Wallet newWallet = Wallet.builder()
-			.address(address)
-			.privateKey(privateKey).build();
+			.address(address).build();
 
 		return walletRepository.save(newWallet);
 	}

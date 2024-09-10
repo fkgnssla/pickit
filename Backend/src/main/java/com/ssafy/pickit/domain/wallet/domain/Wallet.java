@@ -20,7 +20,5 @@ public class Wallet {
 	private Long id;
 
 	private String address;
-    
-	private String privateKey;
 
 }
