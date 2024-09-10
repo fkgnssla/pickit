@@ -13,6 +13,7 @@ import com.ssafy.pickit.domain.tempVoteSession.domain.TempVoteSession;
 import com.ssafy.pickit.domain.voteSession.application.repository.VoteSessionRepository;
 import com.ssafy.pickit.domain.voteSession.domain.Candidate;
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
+import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -33,11 +34,11 @@ public class VoteSessionService {
 		return voteSessionRepository.save(voteSession);
 	}
 
-	public List<VoteSessionResponse> findAllByBroadcastIdAndOngoing(String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(String broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
 			LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
-		return mapToVoteSessionResponse(voteSessions);
+		return mapToVoteSessionListResponse(voteSessions);
 	}
 
 	// 각 VoteSession 내 candidates의 voteCnt 총합을 기준으로 정렬
@@ -47,11 +48,11 @@ public class VoteSessionService {
 			.sum();
 	}
 
-	public List<VoteSessionResponse> findAllByBroadcastIdAndEnd(String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(String broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndEnd(broadcastId,
 			LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "endDate"));
 
-		return mapToVoteSessionResponse(voteSessions);
+		return mapToVoteSessionListResponse(voteSessions);
 	}
 
 	private static List<VoteSessionResponse> mapToVoteSessionResponse(List<VoteSession> voteSessions) {
@@ -64,6 +65,19 @@ public class VoteSessionService {
 					.imgUrl(voteSession.getImgUrl())
 					.winner(voteSession.getWinner())
 					.candidates(voteSession.getCandidates())
+					.startDate(voteSession.getStartDate())
+					.endDate(voteSession.getEndDate())
+					.build();
+			}).toList();
+	}
+
+	private static List<VoteSessionListResponse> mapToVoteSessionListResponse(List<VoteSession> voteSessions) {
+		return voteSessions.stream()
+			.map(voteSession -> {
+				return VoteSessionListResponse.builder()
+					.id(voteSession.getId())
+					.title(voteSession.getTitle())
+					.imgUrl(voteSession.getImgUrl())
 					.startDate(voteSession.getStartDate())
 					.endDate(voteSession.getEndDate())
 					.build();
