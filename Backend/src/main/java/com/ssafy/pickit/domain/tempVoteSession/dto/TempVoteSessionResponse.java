@@ -13,6 +13,8 @@ import lombok.Data;
 public class TempVoteSessionResponse {
 	private String id;
 
+	private String broadcastName;
+
 	private String title;
 
 	private String description;

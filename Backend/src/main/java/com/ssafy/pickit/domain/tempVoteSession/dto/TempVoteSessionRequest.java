@@ -7,6 +7,8 @@ import lombok.Data;
 
 @Data
 public class TempVoteSessionRequest {
+	private String broadcastId;
+
 	private String title;
 
 	private String description;

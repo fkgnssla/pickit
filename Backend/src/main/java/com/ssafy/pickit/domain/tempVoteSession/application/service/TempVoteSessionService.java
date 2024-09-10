@@ -6,6 +6,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ssafy.pickit.domain.broadcast.application.service.BroadcastService;
+import com.ssafy.pickit.domain.broadcast.domain.Broadcast;
 import com.ssafy.pickit.domain.tempVoteSession.application.repository.TempVoteSessionRepository;
 import com.ssafy.pickit.domain.tempVoteSession.domain.TempCandidate;
 import com.ssafy.pickit.domain.tempVoteSession.domain.TempVoteSession;
@@ -20,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 public class TempVoteSessionService {
 	private final TempVoteSessionRepository voteSessionRepository;
 	private final TempVoteSessionRepository tempVoteSessionRepository;
+	private final BroadcastService broadcastService;
 
 	@Transactional
 	public TempVoteSession create(TempVoteSessionRequest voteSessionRequest) {
@@ -49,12 +52,14 @@ public class TempVoteSessionService {
 		return false;
 	}
 
-	private static @NotNull List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
+	private @NotNull List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
 		List<TempVoteSession> tempVoteSessions) {
 		List<TempVoteSessionResponse> tempVoteSessionResponses = tempVoteSessions.stream()
 			.map(tempVoteSession -> {
+				Broadcast findBroadcast = broadcastService.findById(tempVoteSession.getBroadcastId());
 				return TempVoteSessionResponse.builder()
 					.id(tempVoteSession.getId())
+					.broadcastName(findBroadcast.getName())
 					.title(tempVoteSession.getTitle())
 					.description(tempVoteSession.getDescription())
 					.candidates(tempVoteSession.getCandidates())
@@ -81,6 +86,7 @@ public class TempVoteSessionService {
 	private TempVoteSession buildVoteSession(TempVoteSessionRequest voteSessionRequest,
 		List<TempCandidate> candidates) {
 		return TempVoteSession.builder()
+			.broadcastId(voteSessionRequest.getBroadcastId())
 			.title(voteSessionRequest.getTitle())
 			.description(voteSessionRequest.getDescription())
 			.candidates(candidates)
