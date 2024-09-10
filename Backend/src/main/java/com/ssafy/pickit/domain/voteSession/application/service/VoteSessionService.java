@@ -1,7 +1,10 @@
 package com.ssafy.pickit.domain.voteSession.application.service;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,6 +13,7 @@ import com.ssafy.pickit.domain.tempVoteSession.domain.TempVoteSession;
 import com.ssafy.pickit.domain.voteSession.application.repository.VoteSessionRepository;
 import com.ssafy.pickit.domain.voteSession.domain.Candidate;
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
+import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +32,44 @@ public class VoteSessionService {
 
 		return voteSessionRepository.save(voteSession);
 	}
-	
+
+	public List<VoteSessionResponse> findAllByBroadcastIdAndOngoing(String broadcastId) {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
+			LocalDateTime.now());
+		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
+		return mapToVoteSessionResponse(voteSessions);
+	}
+
+	// 각 VoteSession 내 candidates의 voteCnt 총합을 기준으로 정렬
+	private long calculateTotalVoteCnt(VoteSession voteSession) {
+		return voteSession.getCandidates().stream()
+			.mapToLong(Candidate::getVoteCnt)
+			.sum();
+	}
+
+	public List<VoteSessionResponse> findAllByBroadcastIdAndEnd(String broadcastId) {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndEnd(broadcastId,
+			LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "endDate"));
+
+		return mapToVoteSessionResponse(voteSessions);
+	}
+
+	private static List<VoteSessionResponse> mapToVoteSessionResponse(List<VoteSession> voteSessions) {
+		return voteSessions.stream()
+			.map(voteSession -> {
+				return VoteSessionResponse.builder()
+					.id(voteSession.getId())
+					.title(voteSession.getTitle())
+					.description(voteSession.getDescription())
+					.imgUrl(voteSession.getImgUrl())
+					.winner(voteSession.getWinner())
+					.candidates(voteSession.getCandidates())
+					.startDate(voteSession.getStartDate())
+					.endDate(voteSession.getEndDate())
+					.build();
+			}).toList();
+	}
+
 	// 후보자 리스트 매핑 메서드로 분리
 	private List<Candidate> mapToCandidates(TempVoteSession tempVoteSession) {
 		return tempVoteSession.getCandidates()
