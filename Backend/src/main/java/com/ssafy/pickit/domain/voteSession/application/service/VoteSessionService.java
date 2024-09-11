@@ -34,6 +34,18 @@ public class VoteSessionService {
 		return voteSessionRepository.save(voteSession);
 	}
 
+	public List<VoteSessionListResponse> findAllByOngoing() {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
+		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
+		return mapToVoteSessionListResponse(voteSessions);
+	}
+
+	public List<VoteSessionListResponse> findAllByEnd() {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByEnd(LocalDateTime.now(),
+			Sort.by(Sort.Direction.DESC, "endDate"));
+		return mapToVoteSessionListResponse(voteSessions);
+	}
+
 	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(String broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
 			LocalDateTime.now());
