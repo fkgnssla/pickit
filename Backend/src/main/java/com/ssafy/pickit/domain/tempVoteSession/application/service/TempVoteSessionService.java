@@ -62,6 +62,7 @@ public class TempVoteSessionService {
 					.broadcastName(findBroadcast.getName())
 					.title(tempVoteSession.getTitle())
 					.description(tempVoteSession.getDescription())
+					.candidates(tempVoteSession.getCandidates())
 					.imgUrl(tempVoteSession.getImgUrl())
 					.startDate(tempVoteSession.getStartDate())
 					.endDate(tempVoteSession.getEndDate())

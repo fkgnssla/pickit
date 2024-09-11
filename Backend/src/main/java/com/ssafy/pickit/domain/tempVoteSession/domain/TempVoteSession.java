@@ -22,8 +22,6 @@ public class TempVoteSession {
 
 	private String broadcastId;
 
-	private String contractAddress;
-
 	private String title;
 
 	private String description;
