@@ -3,6 +3,7 @@ package com.ssafy.pickit.domain.voteSession.application.service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -24,14 +25,24 @@ import lombok.RequiredArgsConstructor;
 public class VoteSessionService {
 	private final VoteSessionRepository voteSessionRepository;
 	private final TempVoteSessionService tempVoteSessionService;
+	private final VoteSessionDeployService voteSessionDeployService;
 
 	@Transactional
-	public VoteSession create(String id, String contractAddress) {
+	public void create(String id) {
 		TempVoteSession tempVoteSession = tempVoteSessionService.findById(id);
-		VoteSession voteSession = buildVoteSession(tempVoteSession, contractAddress, mapToCandidates(tempVoteSession));
-		tempVoteSessionService.delete(id);
+		CompletableFuture<String> completableFuture = voteSessionDeployService.deploy(tempVoteSession.getCandidates());
 
-		return voteSessionRepository.save(voteSession);
+		completableFuture.thenApply(contractAddress -> {
+			if (contractAddress != null) {
+				VoteSession voteSession = buildVoteSession(tempVoteSession, contractAddress,
+					mapToCandidates(tempVoteSession));
+				tempVoteSessionService.delete(id);
+
+				return voteSessionRepository.save(voteSession);
+			} else {
+				throw new RuntimeException("VoteSession deploy failed.");
+			}
+		});
 	}
 
 	public List<VoteSessionListResponse> findAllByOngoing() {

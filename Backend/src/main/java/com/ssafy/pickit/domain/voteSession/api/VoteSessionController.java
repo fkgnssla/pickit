@@ -21,8 +21,8 @@ public class VoteSessionController {
 
 	@PostMapping
 	public ResponseEntity<?> create(@RequestBody VoteSessionRequest voteSessionRequest) {
-		return ResponseEntity.ok(
-			voteSessionService.create(voteSessionRequest.getId(), voteSessionRequest.getContractAddress()));
+		voteSessionService.create(voteSessionRequest.getId());
+		return ResponseEntity.noContent().build();
 	}
 
 	// 진행중인 투표 리스트 조회
