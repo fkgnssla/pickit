@@ -26,6 +26,7 @@ public class VoteSessionService {
 	private final VoteSessionRepository voteSessionRepository;
 	private final TempVoteSessionService tempVoteSessionService;
 	private final VoteSessionDeployService voteSessionDeployService;
+	private final CollectionService collectionService;
 
 	@Transactional
 	public void create(String id) {
@@ -38,7 +39,9 @@ public class VoteSessionService {
 					mapToCandidates(tempVoteSession));
 				tempVoteSessionService.delete(id);
 
-				return voteSessionRepository.save(voteSession);
+				VoteSession newVoteSession = voteSessionRepository.save(voteSession);
+				collectionService.createCollection(newVoteSession.getId());
+				return null;
 			} else {
 				throw new RuntimeException("VoteSession deploy failed.");
 			}
