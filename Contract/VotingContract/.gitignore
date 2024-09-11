@@ -20,3 +20,7 @@ Thumbs.db
 
 # Ignore any temporary files
 *.tmp
+
+*.out
+
+__pycache__/
