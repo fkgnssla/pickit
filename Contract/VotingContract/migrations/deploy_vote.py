@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import subprocess
 import shlex
 import uvicorn
+import re
 import os
 
 app = FastAPI()
@@ -10,17 +11,30 @@ app = FastAPI()
 class DeployRequest(BaseModel):
     candidate_names: list[str]
 
-@app.post("/deployVotingContract", status_code=status.HTTP_200_OK)
+@app.get("/test")
+def test():
+    return status.HTTP_200_OK
+
+@app.post("/contract/vote-deploy", status_code=status.HTTP_200_OK)
 async def deploy_voting_contract(request: DeployRequest):
+    print(request)
     try:
         candidate_names = ",".join(request.candidate_names)
 
         current_dir = os.path.dirname(os.path.abspath(__file__))
         deploy_script_path = os.path.join(current_dir, "deploy_vote.sh")
 
+        print(deploy_script_path)
+
         command = f"sh {shlex.quote(deploy_script_path)} {shlex.quote(candidate_names)}"
 
-        result = subprocess.run(shlex.split(command), capture_output=True, text=True)
+        try:
+            result = subprocess.run(shlex.split(command), capture_output=True, text=True, timeout=50)
+        except subprocess.TimeoutExpired:
+            raise HTTPException(
+                status_code=status.HTTP_408_REQUEST_TIMEOUT,
+                detail="시간 초과"
+            )
 
         if result.returncode != 0:
             raise HTTPException(
