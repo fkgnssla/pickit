@@ -1,5 +1,8 @@
 package com.ssafy.pickit.data.di
 
+import com.ssafy.pickit.data.datasource.local.keystore.KeyStoreManager
+import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManager
+import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManagerImpl
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSourceImpl
 import com.ssafy.pickit.data.datasource.local.preference.SharedPreference
@@ -14,12 +17,14 @@ import javax.inject.Singleton
 class LocalDataSourceModule {
     @Provides
     @Singleton
-    fun providesLocalPreferences(): LocalPreferenceDataSource =
-        LocalPreferenceDataSourceImpl(SharedPreference)
+    fun providesLocalPreferences(preference: SharedPreference): LocalPreferenceDataSource =
+        LocalPreferenceDataSourceImpl(preference)
 
     @Provides
     @Singleton
-    fun provideKeyStoreHelper(@ApplicationContext context: Context): KeyStoreHelper {
-        return KeyStoreHelper(context)
+    fun provideLocalKeyStoreHelper(
+        keyStoreManager: KeyStoreManager
+    ): LocalKeyStoreManager {
+        return LocalKeyStoreManagerImpl(keyStoreManager)
     }
 }

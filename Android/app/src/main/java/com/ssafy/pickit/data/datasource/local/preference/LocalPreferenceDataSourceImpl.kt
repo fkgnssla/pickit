@@ -5,14 +5,32 @@ import javax.inject.Inject
 class LocalPreferenceDataSourceImpl @Inject constructor(
     private val localPreference: SharedPreference
 ) : LocalPreferenceDataSource {
-    override fun getAccessToken(): String? =
-        SharedPreference.getValue(ACCESS_TOKEN)?.takeIf { it.isNotEmpty() }
 
     override fun setAccessToken(accessToken: String) {
-        SharedPreference.setValue(ACCESS_TOKEN, accessToken)
+        localPreference.setValue(ACCESS_TOKEN, accessToken)
     }
+
+    override fun setPrivateKey(privateKey: String) {
+        localPreference.setValue(PRIVATE_KEY, privateKey)
+    }
+
+    override fun setWalletAddress(walletAddress: String) {
+        localPreference.setValue(WALLET_ADDRESS, walletAddress)
+    }
+
+    override fun getAccessToken(): String? =
+        localPreference.getValue(ACCESS_TOKEN)?.takeIf { it.isNotEmpty() }
+
+    override fun getPrivateKey(): String? =
+        localPreference.getValue(PRIVATE_KEY)?.takeIf { it.isNotEmpty() }
+
+    override fun getWalletAddress(): String? =
+        localPreference.getValue(WALLET_ADDRESS)?.takeIf { it.isNotEmpty() }
+
 
     companion object {
         const val ACCESS_TOKEN = "ACCESS_TOKEN"
+        const val PRIVATE_KEY = "PRIVATE_KEY"
+        const val WALLET_ADDRESS = "WALLET_ADDRESS"
     }
 }

@@ -1,6 +1,9 @@
 package com.ssafy.pickit.data.datasource.local.keystore
 
-class LocalKeyStoreManagerImpl(private val keyStoreHelper: KeyStoreManager) : LocalKeyStoreManager {
+import javax.inject.Inject
+
+class LocalKeyStoreManagerImpl @Inject constructor(private val keyStoreHelper: KeyStoreManager) :
+    LocalKeyStoreManager {
 
     override fun encryptData(data: ByteArray): ByteArray {
         return keyStoreHelper.encryptData(data)

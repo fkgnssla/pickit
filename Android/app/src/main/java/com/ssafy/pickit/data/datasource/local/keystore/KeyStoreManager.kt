@@ -11,8 +11,9 @@ import java.security.PublicKey
 import java.security.spec.RSAKeyGenParameterSpec
 import java.util.Calendar
 import javax.crypto.Cipher
+import javax.inject.Inject
 
-class KeyStoreManager(private val context: Context) {
+class KeyStoreManager @Inject constructor(private val context: Context) {
     private val KEYSTORE_PROVIDER = "AndroidKeyStore"
     private val ASYMMETRIC_KEY_ALIAS = "my_key_alias"
 

@@ -1,16 +1,13 @@
 package com.ssafy.pickit.data.datasource.local.preference
 
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.core.content.edit
+import dagger.hilt.android.qualifiers.ApplicationContext
+import javax.inject.Inject
 
-object SharedPreference {
-    lateinit var preferences: SharedPreferences
-    private const val DEFAULT_STRING_VALUE = ""
-
-    fun init(context: Context) {
-        preferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
-    }
+class SharedPreference @Inject constructor(@ApplicationContext context: Context) {
+    val preferences = context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+    private val DEFAULT_STRING_VALUE = ""
 
     fun setValue(key: String, value: String) {
         preferences.edit {
