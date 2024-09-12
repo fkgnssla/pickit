@@ -3,6 +3,7 @@ package com.ssafy.pickit.domain.voteSession.application.service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.Sort;
@@ -115,8 +116,9 @@ public class VoteSessionService {
 		return tempVoteSession.getCandidates()
 			.stream()
 			.map(request -> Candidate.builder()
+				.id(UUID.randomUUID().toString())
 				.name(request.getName())
-				.imgUrl(request.getImgUrl()) // 상수화된 이미지 URL
+				.imgUrl(request.getImgUrl())
 				.voteCnt(0L)
 				.build())
 			.toList();

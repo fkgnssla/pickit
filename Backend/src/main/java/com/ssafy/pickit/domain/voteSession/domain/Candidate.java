@@ -8,6 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class Candidate {
+	private String id;
+
 	private String name;
 
 	private String imgUrl;

@@ -5,5 +5,4 @@ import lombok.Data;
 @Data
 public class VoteSessionRequest {
 	private String id;
-	private String contractAddress;
 }
