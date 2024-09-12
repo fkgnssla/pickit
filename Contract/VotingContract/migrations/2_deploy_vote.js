@@ -10,7 +10,7 @@ module.exports = async function (callback) {
       throw new Error("Missing --candidate-names argument");
     }
 
-    const candidateNames = candidateNamesArg.split('=')[1].split(", ");
+    const candidateNames = candidateNamesArg.split('=')[1].split(",");
     
     // 계정 목록 불러오기
     const accounts = await web3.eth.getAccounts();
