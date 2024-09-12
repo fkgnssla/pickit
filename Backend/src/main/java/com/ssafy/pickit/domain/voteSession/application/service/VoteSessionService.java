@@ -36,7 +36,7 @@ public class VoteSessionService {
 
 		completableFuture.thenApply(contractAddress -> {
 			if (contractAddress != null) {
-				VoteSession voteSession = buildVoteSession(tempVoteSession, contractAddress,
+				VoteSession voteSession = VoteSession.of(tempVoteSession, contractAddress,
 					mapToCandidates(tempVoteSession));
 				tempVoteSessionService.delete(id);
 
@@ -84,59 +84,19 @@ public class VoteSessionService {
 
 	private static List<VoteSessionResponse> mapToVoteSessionResponse(List<VoteSession> voteSessions) {
 		return voteSessions.stream()
-			.map(voteSession -> {
-				return VoteSessionResponse.builder()
-					.id(voteSession.getId())
-					.title(voteSession.getTitle())
-					.description(voteSession.getDescription())
-					.imgUrl(voteSession.getImgUrl())
-					.winner(voteSession.getWinner())
-					.candidates(voteSession.getCandidates())
-					.startDate(voteSession.getStartDate())
-					.endDate(voteSession.getEndDate())
-					.build();
-			}).toList();
+			.map(VoteSessionResponse::of).toList();
 	}
 
 	private static List<VoteSessionListResponse> mapToVoteSessionListResponse(List<VoteSession> voteSessions) {
 		return voteSessions.stream()
-			.map(voteSession -> {
-				return VoteSessionListResponse.builder()
-					.id(voteSession.getId())
-					.title(voteSession.getTitle())
-					.imgUrl(voteSession.getImgUrl())
-					.startDate(voteSession.getStartDate())
-					.endDate(voteSession.getEndDate())
-					.build();
-			}).toList();
+			.map(VoteSessionListResponse::of).toList();
 	}
 
 	// 후보자 리스트 매핑 메서드로 분리
 	private List<Candidate> mapToCandidates(TempVoteSession tempVoteSession) {
 		return tempVoteSession.getCandidates()
 			.stream()
-			.map(request -> Candidate.builder()
-				.id(UUID.randomUUID().toString())
-				.name(request.getName())
-				.imgUrl(request.getImgUrl())
-				.voteCnt(0L)
-				.build())
+			.map(Candidate::of)
 			.toList();
-	}
-
-	// VoteSession 빌드 메서드로 분리
-	private VoteSession buildVoteSession(TempVoteSession tempVoteSession, String contractAddress,
-		List<Candidate> candidates) {
-		return VoteSession.builder()
-			.broadcastId(tempVoteSession.getBroadcastId())
-			.contractAddress(contractAddress)
-			.title(tempVoteSession.getTitle())
-			.description(tempVoteSession.getDescription())
-			.imgUrl(tempVoteSession.getImgUrl())
-			.winner(null)
-			.candidates(candidates)
-			.startDate(tempVoteSession.getStartDate())
-			.endDate(tempVoteSession.getEndDate())
-			.build();
 	}
 }

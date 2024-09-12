@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.ssafy.pickit.domain.tempVoteSession.domain.TempVoteSession;
+
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,5 +39,20 @@ public class VoteSession {
 	private LocalDateTime startDate;
 
 	private LocalDateTime endDate;
+
+	public static VoteSession of(TempVoteSession tempVoteSession, String contractAddress,
+		List<Candidate> candidates){
+		return VoteSession.builder()
+			.broadcastId(tempVoteSession.getBroadcastId())
+			.contractAddress(contractAddress)
+			.title(tempVoteSession.getTitle())
+			.description(tempVoteSession.getDescription())
+			.imgUrl(tempVoteSession.getImgUrl())
+			.winner(null)
+			.candidates(candidates)
+			.startDate(tempVoteSession.getStartDate())
+			.endDate(tempVoteSession.getEndDate())
+			.build();
+	}
 
 }

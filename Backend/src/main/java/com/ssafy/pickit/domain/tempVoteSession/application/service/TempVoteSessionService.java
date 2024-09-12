@@ -28,7 +28,7 @@ public class TempVoteSessionService {
 	public TempVoteSession create(TempVoteSessionRequest voteSessionRequest) {
 		List<TempCandidate> candidates = mapToCandidates(voteSessionRequest);
 
-		TempVoteSession voteSession = buildVoteSession(voteSessionRequest, "https://aws.s3", candidates);
+		TempVoteSession voteSession = TempVoteSession.of(voteSessionRequest, "https://aws.s3", candidates);
 
 		return voteSessionRepository.save(voteSession);
 	}
@@ -45,55 +45,29 @@ public class TempVoteSessionService {
 	}
 
 	public boolean delete(String id) {
-		if (voteSessionRepository.existsById(id)) { // 엔티티가 존재하는지 확인
-			voteSessionRepository.deleteById(id);
-			return true;  // 삭제 성공
-		}
-		return false;
+		return voteSessionRepository.findById(id)
+			.map(entity -> {
+				voteSessionRepository.deleteById(id);
+				return true;
+			})
+			.orElse(false);
 	}
+
 
 	private @NotNull List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
 		List<TempVoteSession> tempVoteSessions) {
-		List<TempVoteSessionResponse> tempVoteSessionResponses = tempVoteSessions.stream()
+		return tempVoteSessions.stream()
 			.map(tempVoteSession -> {
 				Broadcast findBroadcast = broadcastService.findById(tempVoteSession.getBroadcastId());
-				return TempVoteSessionResponse.builder()
-					.id(tempVoteSession.getId())
-					.broadcastName(findBroadcast.getName())
-					.title(tempVoteSession.getTitle())
-					.description(tempVoteSession.getDescription())
-					.candidates(tempVoteSession.getCandidates())
-					.imgUrl(tempVoteSession.getImgUrl())
-					.startDate(tempVoteSession.getStartDate())
-					.endDate(tempVoteSession.getEndDate())
-					.build();
+				return TempVoteSessionResponse.of(tempVoteSession, findBroadcast);
 			}).toList();
-		return tempVoteSessionResponses;
 	}
 
 	// 후보자 리스트 매핑 메서드로 분리
 	private List<TempCandidate> mapToCandidates(TempVoteSessionRequest voteSessionRequest) {
 		return voteSessionRequest.getCandidates()
 			.stream()
-			.map(request -> TempCandidate.builder()
-				.name(request.getName())
-				.imgUrl("sample_url") // 상수화된 이미지 URL
-				.voteCnt(0L)
-				.build())
+			.map(TempCandidate::of)
 			.toList();
-	}
-
-	// VoteSession 빌드 메서드로 분리
-	private TempVoteSession buildVoteSession(TempVoteSessionRequest voteSessionRequest,
-		String imgUrl, List<TempCandidate> candidates) {
-		return TempVoteSession.builder()
-			.broadcastId(voteSessionRequest.getBroadcastId())
-			.title(voteSessionRequest.getTitle())
-			.description(voteSessionRequest.getDescription())
-			.imgUrl(imgUrl)
-			.candidates(candidates)
-			.startDate(voteSessionRequest.getStartDate())
-			.endDate(voteSessionRequest.getEndDate())
-			.build();
 	}
 }

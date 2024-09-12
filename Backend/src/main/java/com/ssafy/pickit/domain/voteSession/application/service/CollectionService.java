@@ -16,12 +16,12 @@ public class CollectionService {
 		try {
 			if (!mongoTemplate.collectionExists(collectionName)) {
 				mongoTemplate.createCollection(collectionName);
-				log.info(collectionName + " 컬렉션이 생성되었습니다.");
+				log.info("{} 컬렉션이 생성되었습니다.", collectionName);
 			} else {
-				log.error(collectionName + " 컬렉션이 이미 존재합니다.");
+				log.error("{} 컬렉션이 이미 존재합니다.", collectionName);
 			}
 		} catch (Exception e) {
-			log.error("오류 발생: " + e.getMessage());
+			log.error("오류 발생: {}", e.getMessage());
 			e.printStackTrace();
 		}
 	}
