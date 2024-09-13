@@ -7,6 +7,7 @@ import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSour
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Keys
@@ -18,8 +19,8 @@ import java.math.BigInteger
 import javax.inject.Inject
 
 
-private const val INFURA_URL = "https://gethrpc.ssafy-blockchain.com"
-private const val DEFAULT_CONTRACT_ADDRESS = "0xb416BaBf252526eF1cF2Ba5fd55D19a0Ab9383F5"
+private const val INFURA_URL = "https://rpc.ssafy-blockchain.com"
+private const val DEFAULT_CONTRACT_ADDRESS = "0x8509156ac35243FABA465CF2Ebf5e21652b30F33"
 private const val TAG = "wallet info"
 
 class WalletFunctionImpl @Inject constructor(
@@ -55,7 +56,11 @@ class WalletFunctionImpl @Inject constructor(
                     contractGasProvider
                 )
                 val totalVotes = voting.totalVotes.send()
+                val candidateName = voting.candidates(BigInteger.valueOf(0)).send()
+
                 Log.d(TAG, totalVotes.toString())
+                Log.d(TAG, candidateName.toString())
+
 
             } catch (e: Exception) {
                 System.err.println("Error while fetching the balance: ${e.message}")
