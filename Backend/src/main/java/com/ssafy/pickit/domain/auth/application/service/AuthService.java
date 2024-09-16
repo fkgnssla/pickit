@@ -3,11 +3,10 @@ package com.ssafy.pickit.domain.auth.application.service;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,25 +20,23 @@ import com.ssafy.pickit.domain.wallet.application.service.WalletService;
 import com.ssafy.pickit.domain.wallet.domain.Wallet;
 import com.ssafy.pickit.global.jwt.utils.JwtConstants;
 import com.ssafy.pickit.global.jwt.utils.JwtUtils;
+import com.ssafy.pickit.global.response.ApiResponse;
+import com.ssafy.pickit.global.response.ResponseUtils;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
-	private static final String KAKAO_USER_INFO_URL = "https://kapi.kakao.com/v2/user/me";
-
+	@Value("${kakao.user-info-url}")
+	private String KAKAO_USER_INFO_URL;
 	private final RestTemplate restTemplate;
 	private final MemberService memberService;
 	private final WalletService walletService;
 
-	public AuthService(RestTemplateBuilder restTemplateBuilder, MemberService memberService,
-		WalletService walletService) {
-		this.restTemplate = restTemplateBuilder.build();
-		this.memberService = memberService;
-		this.walletService = walletService;
-	}
-
 	// 메인 로그인 처리
-	public ResponseEntity<?> login(String token) {
+	public ApiResponse<?> login(String token) {
 		Map<String, Object> userInfo = getUserInfoFromKakao(token);
 
 		Member findMember = memberService.findBySocialId(userInfo.get("id").toString());
@@ -64,23 +61,21 @@ public class AuthService {
 	}
 
 	// 신규 회원 처리 로직
-	private ResponseEntity<?> handleNewMember(String socialId) {
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).body(socialId);
+	private ApiResponse<?> handleNewMember(String socialId) {
+		return ResponseUtils.success("socialId", socialId);
 	}
 
 	// 기존 회원 처리 로직 (JWT 발급)
-	private ResponseEntity<?> handleExistingMember(Member findMember) {
+	private ApiResponse<?> handleExistingMember(Member findMember) {
 		Map<String, Object> claims = buildClaims(findMember);
 
 		String accessToken = JwtUtils.generateToken(claims, JwtConstants.ACCESS_EXP_TIME);
 		String refreshToken = JwtUtils.generateToken(claims, JwtConstants.REFRESH_EXP_TIME);
 
-		return ResponseEntity.ok(
-			TokenResponse.builder()
-				.accessToken(accessToken)
-				.refreshToken(refreshToken)
-				.build()
-		);
+		return ResponseUtils.success(TokenResponse.builder()
+			.accessToken(accessToken)
+			.refreshToken(refreshToken)
+			.build());
 	}
 
 	// JWT Claims 생성
@@ -92,7 +87,7 @@ public class AuthService {
 		return claims;
 	}
 
-	public ResponseEntity<?> signUp(SignUpRequest signUpRequest) {
+	public ApiResponse<?> signUp(SignUpRequest signUpRequest) {
 		Wallet newWallet = walletService.create(signUpRequest.getAddress());
 
 		Member newMember = Member.builder()
