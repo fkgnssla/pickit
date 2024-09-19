@@ -7,7 +7,6 @@ import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSour
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Keys
@@ -56,11 +55,9 @@ class WalletFunctionImpl @Inject constructor(
                     contractGasProvider
                 )
                 val totalVotes = voting.totalVotes.send()
-                val candidateName = voting.candidates(BigInteger.valueOf(0)).send()
-
                 Log.d(TAG, totalVotes.toString())
+                val candidateName = voting.candidates(BigInteger.valueOf(0)).send()
                 Log.d(TAG, candidateName.toString())
-
 
             } catch (e: Exception) {
                 System.err.println("Error while fetching the balance: ${e.message}")
