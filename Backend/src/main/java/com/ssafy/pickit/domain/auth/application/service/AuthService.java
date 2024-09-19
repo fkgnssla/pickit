@@ -38,16 +38,11 @@ public class AuthService {
 	// 메인 로그인 처리
 	public ApiResponse<?> login(String token) {
 		Map<String, Object> userInfo = getUserInfoFromKakao(token);
+		String socialId = userInfo.get("id").toString();
 
-		Member findMember = memberService.findBySocialId(userInfo.get("id").toString());
+		Member findMember = memberService.findBySocialId(socialId);
 
-		// 신규 회원일 때
-		if (findMember == null) {
-			return handleNewMember(userInfo.get("id").toString());
-		}
-
-		// 기존 회원일 때, JWT 발급
-		return handleExistingMember(findMember);
+		return (findMember != null) ? handleExistingMember(findMember) : handleNewMember(socialId);
 	}
 
 	// 카카오 API에서 사용자 정보 가져오기
@@ -90,13 +85,7 @@ public class AuthService {
 	public ApiResponse<?> signUp(SignUpRequest signUpRequest) {
 		Wallet newWallet = walletService.create(signUpRequest.getAddress());
 
-		Member newMember = Member.builder()
-			.name(signUpRequest.getName())
-			.age(signUpRequest.getAge())
-			.gender(signUpRequest.getGender()).socialId(signUpRequest.getSocialId())
-			.wallet(newWallet)
-			.role(Role.MEMBER).build();
-
+		Member newMember = Member.of(signUpRequest, newWallet);
 		memberService.create(newMember);
 
 		return handleExistingMember(newMember);
