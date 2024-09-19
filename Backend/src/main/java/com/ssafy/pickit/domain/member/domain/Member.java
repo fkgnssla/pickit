@@ -1,5 +1,6 @@
 package com.ssafy.pickit.domain.member.domain;
 
+import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
 import com.ssafy.pickit.domain.wallet.domain.Wallet;
 
 import jakarta.persistence.Entity;
@@ -39,5 +40,14 @@ public class Member {
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
+
+	public static Member of(SignUpRequest signUpRequest, Wallet newWallet){
+		return Member.builder()
+			.name(signUpRequest.getName())
+			.age(signUpRequest.getAge())
+			.gender(signUpRequest.getGender()).socialId(signUpRequest.getSocialId())
+			.wallet(newWallet)
+			.role(Role.MEMBER).build();
+	}
 
 }

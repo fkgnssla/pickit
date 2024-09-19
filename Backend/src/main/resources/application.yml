@@ -19,3 +19,5 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+kakao:
+  user-info-url: ${KAKAO_USER_INFO_URL}
