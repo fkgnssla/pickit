@@ -11,11 +11,8 @@ class WalletRepositoryImpl @Inject constructor(
         walletFunction.generateWallet()
     }
 
-    override suspend fun insertWallet(
-        privateKey: String,
-        address: String
-    ) {
-        walletFunction.insertUserWallet(privateKey, address)
+    override suspend fun insertWallet(privateKey: String) {
+        walletFunction.insertUserWallet(privateKey)
     }
 
     companion object {

@@ -6,10 +6,7 @@ import javax.inject.Inject
 class InsertWalletUseCase @Inject constructor(
     private val walletRepository: WalletRepository
 ) {
-    suspend operator fun invoke(
-        privateKey: String,
-        address: String
-    ) {
-        walletRepository.insertWallet(privateKey, address)
+    suspend operator fun invoke(privateKey: String) {
+        walletRepository.insertWallet(privateKey)
     }
 }

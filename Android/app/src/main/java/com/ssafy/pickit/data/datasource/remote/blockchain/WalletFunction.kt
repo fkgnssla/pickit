@@ -2,5 +2,5 @@ package com.ssafy.pickit.data.datasource.remote.blockchain
 
 interface WalletFunction {
     fun generateWallet()
-    fun insertUserWallet(privateKey: String, address: String)
+    fun insertUserWallet(privateKey: String)
 }

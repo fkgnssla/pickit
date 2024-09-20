@@ -21,4 +21,10 @@ class WalleltViewModel @Inject constructor(
             generateWalletUseCase()
         }
     }
+
+    fun insertWallet(privateKey : String) {
+        viewModelScope.launch {
+            insertWalletUseCase(privateKey)
+        }
+    }
 }

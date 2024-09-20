@@ -77,7 +77,9 @@ class WalletFunctionImpl @Inject constructor(
         return true
     }
 
-    override fun insertUserWallet(privateKey: String, address: String) {
+    override fun insertUserWallet(privateKey: String) {
+        val credentials : Credentials = Credentials.create(privateKey)
+        val address = credentials.address
         setWalletInformation(privateKey, address)
 
         GlobalScope.launch(Dispatchers.IO) {
