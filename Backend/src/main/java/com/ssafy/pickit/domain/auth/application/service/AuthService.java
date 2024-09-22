@@ -15,7 +15,6 @@ import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
 import com.ssafy.pickit.domain.auth.dto.TokenResponse;
 import com.ssafy.pickit.domain.member.application.service.MemberService;
 import com.ssafy.pickit.domain.member.domain.Member;
-import com.ssafy.pickit.domain.member.domain.Role;
 import com.ssafy.pickit.domain.wallet.application.service.WalletService;
 import com.ssafy.pickit.domain.wallet.domain.Wallet;
 import com.ssafy.pickit.global.jwt.utils.JwtConstants;
@@ -67,10 +66,7 @@ public class AuthService {
 		String accessToken = JwtUtils.generateToken(claims, JwtConstants.ACCESS_EXP_TIME);
 		String refreshToken = JwtUtils.generateToken(claims, JwtConstants.REFRESH_EXP_TIME);
 
-		return ResponseUtils.success(TokenResponse.builder()
-			.accessToken(accessToken)
-			.refreshToken(refreshToken)
-			.build());
+		return ResponseUtils.success(TokenResponse.of(accessToken, refreshToken));
 	}
 
 	// JWT Claims 생성
@@ -83,7 +79,7 @@ public class AuthService {
 	}
 
 	public ApiResponse<?> signUp(SignUpRequest signUpRequest) {
-		Wallet newWallet = walletService.create(signUpRequest.getAddress());
+		Wallet newWallet = walletService.create(signUpRequest.address());
 
 		Member newMember = Member.of(signUpRequest, newWallet);
 		memberService.create(newMember);

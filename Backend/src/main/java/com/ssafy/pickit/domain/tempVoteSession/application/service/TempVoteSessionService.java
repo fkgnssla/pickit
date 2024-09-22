@@ -53,7 +53,6 @@ public class TempVoteSessionService {
 			.orElse(false);
 	}
 
-
 	private @NotNull List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
 		List<TempVoteSession> tempVoteSessions) {
 		return tempVoteSessions.stream()
@@ -65,7 +64,7 @@ public class TempVoteSessionService {
 
 	// 후보자 리스트 매핑 메서드로 분리
 	private List<TempCandidate> mapToCandidates(TempVoteSessionRequest voteSessionRequest) {
-		return voteSessionRequest.getCandidates()
+		return voteSessionRequest.candidates()
 			.stream()
 			.map(TempCandidate::of)
 			.toList();

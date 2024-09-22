@@ -4,29 +4,21 @@ import java.time.LocalDateTime;
 
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Builder
-@Data
-public class VoteSessionListResponse {
-	private String id;
-
-	private String title;
-
-	private String imgUrl;
-
-	private LocalDateTime startDate;
-
-	private LocalDateTime endDate;
-
-	public static VoteSessionListResponse of(VoteSession voteSession){
-		return VoteSessionListResponse.builder()
-			.id(voteSession.getId())
-			.title(voteSession.getTitle())
-			.imgUrl(voteSession.getImgUrl())
-			.startDate(voteSession.getStartDate())
-			.endDate(voteSession.getEndDate())
-			.build();
+public record VoteSessionListResponse(
+	String id,
+	String title,
+	String imgUrl,
+	LocalDateTime startDate,
+	LocalDateTime endDate
+) {
+	public static VoteSessionListResponse from(VoteSession voteSession) {
+		return new VoteSessionListResponse(
+			voteSession.getId(),
+			voteSession.getTitle(),
+			voteSession.getImgUrl(),
+			voteSession.getStartDate(),
+			voteSession.getEndDate()
+		);
 	}
 }
+

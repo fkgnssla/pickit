@@ -1,11 +1,10 @@
 package com.ssafy.pickit.domain.auth.dto;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Builder
-@Data
-public class TokenResponse {
-	String accessToken;
-	String refreshToken;
+public record TokenResponse(
+	String accessToken,
+	String refreshToken
+) {
+	public static TokenResponse of(String accessToken, String refreshToken) {
+		return new TokenResponse(accessToken, refreshToken);
+	}
 }
