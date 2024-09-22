@@ -41,11 +41,11 @@ public class Member {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
-	public static Member of(SignUpRequest signUpRequest, Wallet newWallet){
+	public static Member of(SignUpRequest signUpRequest, Wallet newWallet) {
 		return Member.builder()
-			.name(signUpRequest.getName())
-			.age(signUpRequest.getAge())
-			.gender(signUpRequest.getGender()).socialId(signUpRequest.getSocialId())
+			.name(signUpRequest.name())
+			.age(signUpRequest.age())
+			.gender(signUpRequest.gender()).socialId(signUpRequest.socialId())
 			.wallet(newWallet)
 			.role(Role.MEMBER).build();
 	}

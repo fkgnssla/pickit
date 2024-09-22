@@ -29,11 +29,6 @@ public class BroadcastService {
 
 	private static List<BroadcastResponse> mapToBroadcastResponse(List<Broadcast> broadcasts) {
 		return broadcasts.stream()
-			.map(broadcast -> {
-				return BroadcastResponse.builder()
-					.id(broadcast.getId())
-					.name(broadcast.getName())
-					.imgUrl(broadcast.getImgUrl()).build();
-			}).toList();
+			.map(broadcast -> BroadcastResponse.from(broadcast)).toList();
 	}
 }

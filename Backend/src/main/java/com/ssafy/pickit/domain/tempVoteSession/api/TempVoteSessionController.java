@@ -1,10 +1,9 @@
 package com.ssafy.pickit.domain.tempVoteSession.api;
 
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,8 +25,8 @@ public class TempVoteSessionController {
 	private final TempVoteSessionService tempVoteSessionService;
 
 	@Operation(summary = "임시 투표 세션 생성", description = "임시 투표 세션을 생성합니다.")
-	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public ApiResponse<?> create(@ModelAttribute TempVoteSessionRequest voteSessionRequest) {
+	@PostMapping
+	public ApiResponse<?> create(@RequestBody TempVoteSessionRequest voteSessionRequest) {
 		return ResponseUtils.success(tempVoteSessionService.create(voteSessionRequest));
 	}
 

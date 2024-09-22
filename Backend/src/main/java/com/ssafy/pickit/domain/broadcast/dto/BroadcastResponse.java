@@ -1,12 +1,13 @@
 package com.ssafy.pickit.domain.broadcast.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import com.ssafy.pickit.domain.broadcast.domain.Broadcast;
 
-@Builder
-@Data
-public class BroadcastResponse {
-	private String id;
-	private String name;
-	private String imgUrl;
+public record BroadcastResponse(
+	String id,
+	String name,
+	String imgUrl
+) {
+	public static BroadcastResponse from(Broadcast broadcast) {
+		return new BroadcastResponse(broadcast.getId(), broadcast.getName(), broadcast.getImgUrl());
+	}
 }
