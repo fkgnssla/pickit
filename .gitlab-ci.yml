@@ -1,0 +1,40 @@
+image: ubuntu:latest
+
+stages:
+  - build
+  - deploy
+
+cache:
+  paths:
+    - .gradle/wrapper/
+    - .gradle/caches/
+
+before_script:
+  - apt-get update && apt-get install -y sshpass openjdk-21-jdk findutils
+  - java -version
+
+build_job:
+  stage: build
+  script:
+    - cd Backend
+    - chmod +x ./gradlew
+    - ./gradlew clean build -x test
+  artifacts:
+    paths:
+      - Backend/build/libs
+  tags:
+    - spring
+  only:
+    - release
+
+deploy_job:
+  stage: deploy
+  script:
+    - cd Backend
+    - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "sudo systemctl stop my-spring-app"
+    - sshpass -p "$SSH_PASSWORD" scp build/libs/pickit-0.0.1-SNAPSHOT.jar $SSH_USER@$SSH_HOST:/home/ubuntu/spring-docker/app.jar
+    - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "SPRING_ACTIVE_PROFILE=prod sudo systemctl start my-spring-app"
+  tags:
+    - spring
+  only:
+    - release
