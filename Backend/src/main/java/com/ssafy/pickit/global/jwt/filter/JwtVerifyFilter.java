@@ -3,9 +3,6 @@ package com.ssafy.pickit.global.jwt.filter;
 import java.io.IOException;
 import java.util.Map;
 
-import com.ssafy.pickit.global.jwt.exception.CustomNotExistJwtException;
-import com.ssafy.pickit.global.jwt.utils.JwtConstants;
-import com.ssafy.pickit.global.jwt.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -16,6 +13,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.pickit.global.jwt.exception.CustomJwtException;
+import com.ssafy.pickit.global.jwt.exception.CustomNotExistJwtException;
+import com.ssafy.pickit.global.jwt.utils.JwtConstants;
+import com.ssafy.pickit.global.jwt.utils.JwtUtils;
 import com.ssafy.pickit.global.util.IpUtil;
 import com.ssafy.pickit.global.util.RedisUtil;
 
@@ -32,7 +32,7 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
 	@Autowired
 	private RedisUtil redisUtil;
 
-	private static final String[] whitelist = {"/swagger-ui/**", "/v3/**", "/api/auth/login",
+	private static final String[] whitelist = {"/api/swagger-ui/**", "/api/v3/**", "/api/auth/login",
 		"/api/auth/sign-up"};
 
 	@Override

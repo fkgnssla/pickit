@@ -56,6 +56,10 @@ android {
         dataBinding = true
         viewBinding = true
     }
+
+    packagingOptions {
+        excludes.add("META-INF/DISCLAIMER")
+    }
 }
 
 dependencies {

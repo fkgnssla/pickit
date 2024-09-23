@@ -54,8 +54,9 @@ public class VoteSessionDeployService {
 
 		VoteSessionDeployResponse voteDeployResponse = response.getBody();
 		if (voteDeployResponse != null) {
+			log.info(voteDeployResponse.toString());
 			log.info("Vote session deploy success.");
-			return CompletableFuture.completedFuture(voteDeployResponse.getContract_address());
+			return CompletableFuture.completedFuture(voteDeployResponse.contractAddress());
 		} else {
 			return CompletableFuture.completedFuture(null);
 		}

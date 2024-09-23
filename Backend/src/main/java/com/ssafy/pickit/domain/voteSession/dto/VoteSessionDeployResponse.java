@@ -1,11 +1,12 @@
 package com.ssafy.pickit.domain.voteSession.dto;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Data
-public class VoteSessionDeployResponse {
-	private int status_code;
-	private String message;
-	private String contract_address;
-	private String output;
+public record VoteSessionDeployResponse(
+	@JsonProperty("status_code") Integer statusCode,
+	String message,
+	@JsonProperty("contract_address") String contractAddress,
+	String output
+) {
 }
+

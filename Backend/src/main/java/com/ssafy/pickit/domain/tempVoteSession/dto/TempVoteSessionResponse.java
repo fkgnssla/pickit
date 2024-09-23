@@ -7,38 +7,26 @@ import com.ssafy.pickit.domain.broadcast.domain.Broadcast;
 import com.ssafy.pickit.domain.tempVoteSession.domain.TempCandidate;
 import com.ssafy.pickit.domain.tempVoteSession.domain.TempVoteSession;
 
-import lombok.Builder;
-import lombok.Data;
-
-@Builder
-@Data
-public class TempVoteSessionResponse {
-	private String id;
-
-	private String broadcastName;
-
-	private String title;
-
-	private String description;
-
-	private String imgUrl;
-
-	private List<TempCandidate> candidates;
-
-	private LocalDateTime startDate;
-
-	private LocalDateTime endDate;
-
-	public static TempVoteSessionResponse of(TempVoteSession tempVoteSession, Broadcast broadcast){
-		return TempVoteSessionResponse.builder()
-			.id(tempVoteSession.getId())
-			.broadcastName(broadcast.getName())
-			.title(tempVoteSession.getTitle())
-			.description(tempVoteSession.getDescription())
-			.candidates(tempVoteSession.getCandidates())
-			.imgUrl(tempVoteSession.getImgUrl())
-			.startDate(tempVoteSession.getStartDate())
-			.endDate(tempVoteSession.getEndDate())
-			.build();
+public record TempVoteSessionResponse(
+	String id,
+	String broadcastName,
+	String title,
+	String description,
+	String imgUrl,
+	List<TempCandidate> candidates,
+	LocalDateTime startDate,
+	LocalDateTime endDate
+) {
+	public static TempVoteSessionResponse of(TempVoteSession tempVoteSession, Broadcast broadcast) {
+		return new TempVoteSessionResponse(
+			tempVoteSession.getId(),
+			broadcast.getName(),
+			tempVoteSession.getTitle(),
+			tempVoteSession.getDescription(),
+			tempVoteSession.getImgUrl(),
+			tempVoteSession.getCandidates(),
+			tempVoteSession.getStartDate(),
+			tempVoteSession.getEndDate()
+		);
 	}
 }

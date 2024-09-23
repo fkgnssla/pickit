@@ -12,14 +12,14 @@ import lombok.Getter;
 public class TempCandidate {
 	private String name;
 
-	private String imgUrl;
+	private String profileImg;
 
 	private Long voteCnt;
 
-	public static TempCandidate of(TempCandidateRequest request){
+	public static TempCandidate of(TempCandidateRequest request) {
 		return TempCandidate.builder()
-			.name(request.getName())
-			.imgUrl("sample_url") // 상수화된 이미지 URL
+			.name(request.name())
+			.profileImg(request.profileImg())
 			.voteCnt(0L)
 			.build();
 	}

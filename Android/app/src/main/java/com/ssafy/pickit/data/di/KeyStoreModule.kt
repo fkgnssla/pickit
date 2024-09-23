@@ -1,7 +1,8 @@
 package com.ssafy.pickit.data.di
 
+
 import android.content.Context
-import com.ssafy.pickit.data.datasource.local.preference.SharedPreference
+import com.ssafy.pickit.data.datasource.local.keystore.KeyStoreManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,8 +12,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object PreferenceModule {
+object KeyStoreModule {
     @Provides
     @Singleton
-    fun providesSharedPreference(@ApplicationContext context: Context) = SharedPreference(context)
+    fun provideKeyStoreHelper(@ApplicationContext context: Context) = KeyStoreManager(context)
 }

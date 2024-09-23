@@ -16,15 +16,15 @@ public class Candidate {
 
 	private String name;
 
-	private String imgUrl;
+	private String profileImg;
 
 	private Long voteCnt;
 
-	public static Candidate of(TempCandidate request){
+	public static Candidate of(TempCandidate request) {
 		return Candidate.builder()
 			.id(UUID.randomUUID().toString())
 			.name(request.getName())
-			.imgUrl(request.getImgUrl())
+			.profileImg(request.getProfileImg())
 			.voteCnt(0L)
 			.build();
 	}

@@ -3,7 +3,6 @@ package com.ssafy.pickit.domain.voteSession.application.service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.Sort;
@@ -84,12 +83,12 @@ public class VoteSessionService {
 
 	private static List<VoteSessionResponse> mapToVoteSessionResponse(List<VoteSession> voteSessions) {
 		return voteSessions.stream()
-			.map(VoteSessionResponse::of).toList();
+			.map(VoteSessionResponse::from).toList();
 	}
 
 	private static List<VoteSessionListResponse> mapToVoteSessionListResponse(List<VoteSession> voteSessions) {
 		return voteSessions.stream()
-			.map(VoteSessionListResponse::of).toList();
+			.map(VoteSessionListResponse::from).toList();
 	}
 
 	// 후보자 리스트 매핑 메서드로 분리

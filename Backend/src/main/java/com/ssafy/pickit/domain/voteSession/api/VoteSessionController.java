@@ -26,7 +26,7 @@ public class VoteSessionController {
 	@Operation(summary = "투표 세션 생성", description = "투표 세션을 생성합니다.")
 	@PostMapping
 	public ApiResponse<?> create(@RequestBody VoteSessionRequest voteSessionRequest) {
-		voteSessionService.create(voteSessionRequest.getId());
+		voteSessionService.create(voteSessionRequest.id());
 		return ResponseUtils.success();
 	}
 
