@@ -1,7 +1,6 @@
 package com.ssafy.pickit.data.datasource.remote.blockchain
 
 import android.util.Base64
-import android.util.Log
 import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManager
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import kotlinx.coroutines.Dispatchers
@@ -55,9 +54,7 @@ class WalletFunctionImpl @Inject constructor(
                     contractGasProvider
                 )
                 val totalVotes = voting.totalVotes.send()
-                Log.d(TAG, totalVotes.toString())
                 val candidateName = voting.candidates(BigInteger.valueOf(0)).send()
-                Log.d(TAG, candidateName.toString())
 
             } catch (e: Exception) {
                 System.err.println("Error while fetching the balance: ${e.message}")
@@ -78,7 +75,7 @@ class WalletFunctionImpl @Inject constructor(
     }
 
     override fun insertUserWallet(privateKey: String) {
-        val credentials : Credentials = Credentials.create(privateKey)
+        val credentials: Credentials = Credentials.create(privateKey)
         val address = credentials.address
         setWalletInformation(privateKey, address)
 
@@ -90,8 +87,6 @@ class WalletFunctionImpl @Inject constructor(
                     Credentials.create(privateKey),
                     contractGasProvider
                 )
-                val totalVotes = voting.totalVotes.send()
-                Log.d(TAG, totalVotes.toString())
 
             } catch (e: Exception) {
                 System.err.println("Error while fetching the balance: ${e.message}")
