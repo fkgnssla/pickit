@@ -6,7 +6,7 @@ import com.ssafy.pickit.domain.entity.LoginData
 object AuthMapper {
     fun mapperToLogInData(loginResponse: LoginResponse) : LoginData {
         return LoginData(
-            loginResponse.accessToken
+            loginResponse.isExist
         )
     }
 }
