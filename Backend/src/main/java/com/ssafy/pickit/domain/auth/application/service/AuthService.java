@@ -56,7 +56,7 @@ public class AuthService {
 
 	// 신규 회원 처리 로직
 	private ApiResponse<?> handleNewMember(String socialId) {
-		return ResponseUtils.success("socialId", socialId);
+		return ResponseUtils.success(TokenResponse.of(false, socialId, null, null));
 	}
 
 	// 기존 회원 처리 로직 (JWT 발급)
@@ -66,7 +66,7 @@ public class AuthService {
 		String accessToken = JwtUtils.generateToken(claims, JwtConstants.ACCESS_EXP_TIME);
 		String refreshToken = JwtUtils.generateToken(claims, JwtConstants.REFRESH_EXP_TIME);
 
-		return ResponseUtils.success(TokenResponse.of(accessToken, refreshToken));
+		return ResponseUtils.success(TokenResponse.of(true, null, accessToken, refreshToken));
 	}
 
 	// JWT Claims 생성
