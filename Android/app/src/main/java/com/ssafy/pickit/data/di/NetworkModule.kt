@@ -2,6 +2,7 @@ package com.ssafy.pickit.data.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.ssafy.pickit.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,7 +17,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = "https://dev-api.example.com/"
+    private const val BASE_URL = BuildConfig.BASE_URL
     private const val CONTENT_TYPE = "application/json"
 
     @Provides

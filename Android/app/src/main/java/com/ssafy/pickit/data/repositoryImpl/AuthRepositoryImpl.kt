@@ -14,14 +14,22 @@ class AuthRepositoryImpl @Inject constructor(
     private val authApi: AuthApi
 ) : AuthRepository {
     override suspend fun postLogin(logInItem: LogInItem): LoginData {
-        val loginResponse = authApi.kakaoLogin(LoginRequest(logInItem.kakaoToken))
-        saveToken(loginResponse.accessToken)
+        val loginResponse = authApi.kakaoLogin(LoginRequest(logInItem.token))
+        if(loginResponse.isExist && loginResponse.accessToken != null) {
+            saveToken(loginResponse.accessToken)
+        }else if(!loginResponse.isExist && loginResponse.socialId != null){
+            saveSocialId(loginResponse.socialId)
+        }
 
         return AuthMapper.mapperToLogInData(loginResponse)
     }
 
+    private fun saveSocialId(socialId : String) {
+        localPreferenceDataSource.setSocialId(socialId)
+    }
+
     private fun saveToken(accessToken: String) {
-        localPreferenceDataSource.setAccessToken(accessToken);
+        localPreferenceDataSource.setAccessToken(accessToken)
     }
 
     companion object {
