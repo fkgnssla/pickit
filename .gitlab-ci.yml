@@ -24,8 +24,8 @@ build_job:
       - Backend/build/libs
   tags:
     - spring
-#  only:
-#    - release
+  only:
+    - release
 
 deploy_job:
   stage: deploy
@@ -36,5 +36,5 @@ deploy_job:
     - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "SPRING_ACTIVE_PROFILE=prod sudo systemctl start my-spring-app"
   tags:
     - spring
-#  only:
-#    - release
+  only:
+    - release
