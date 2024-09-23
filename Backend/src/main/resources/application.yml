@@ -1,7 +1,7 @@
 spring:
   profiles:
     include: jwt
-    active: ${DEV_ACTIVE_PROFILE}
+    active: ${SPRING_ACTIVE_PROFILE:dev}
   mvc:
     servlet:
       path: /api
@@ -19,5 +19,7 @@ spring:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
+  config:
+    import: optional:file:.env[.properties]
 kakao:
   user-info-url: ${KAKAO_USER_INFO_URL}
