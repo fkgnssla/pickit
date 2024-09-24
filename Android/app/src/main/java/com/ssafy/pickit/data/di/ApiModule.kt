@@ -1,7 +1,9 @@
 package com.ssafy.pickit.data.di
 
+
 import com.ssafy.pickit.data.datasource.remote.api.auth.AuthApi
 import com.ssafy.pickit.data.datasource.remote.api.vote.VoteApi
+
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +23,6 @@ object ApiModule {
     @Singleton
     fun providesVoteApi(retrofit: Retrofit): VoteApi =
         retrofit.create(VoteApi::class.java)
+
+
 }

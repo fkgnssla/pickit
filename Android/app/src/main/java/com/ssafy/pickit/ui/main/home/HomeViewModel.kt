@@ -19,10 +19,11 @@ class HomeViewModel : ViewModel() {
 
     init {
         _items.value = listOf(
-            R.drawable.ic_vote1,
+
             R.drawable.ic_vote2,
+            R.drawable.ic_vote1,
             R.drawable.ic_vote3,
-            R.drawable.ic_vote4,
+
             R.drawable.ic_vote5
         )
 

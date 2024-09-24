@@ -15,15 +15,33 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tabTitle"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="80dp"
-            android:background="@drawable/gradient_background"
-            android:textColor="@color/white"
+            android:gravity="center"
+            android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.024" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/mypage"
+
             app:layout_constraintEnd_toEndOf="parent"
-            android:gravity="center" />
+            app:layout_constraintTop_toTopOf="@+id/tabTitle"
+            app:layout_constraintBottom_toBottomOf="@+id/tabTitle"
+            app:layout_constraintStart_toEndOf="@+id/tabTitle"
+            app:layout_constraintHorizontal_bias="0.0"/>
+
+
+
+
 
 
         <androidx.fragment.app.FragmentContainerView
@@ -37,17 +55,17 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bnv_main"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dp"
             android:background="@drawable/rectangle_top_gray03"
             app:itemBackground="@color/white"
-            app:itemIconTint="@color/black"
-            app:itemTextColor="@color/black"
+            app:itemIconTint="@drawable/menu_selector_color"
+            app:itemTextColor="@drawable/menu_selector_color"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/main"
             app:layout_constraintVertical_bias="1.0"
             app:menu="@menu/main_bottom_menu"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="27dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

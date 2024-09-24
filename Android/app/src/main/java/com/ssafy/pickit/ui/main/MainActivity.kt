@@ -2,14 +2,19 @@ package com.ssafy.pickit.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.ssafy.pickit.R
+import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.databinding.ActivityMainBinding
 import com.ssafy.pickit.ui.main.home.HomeFragment
 import com.ssafy.pickit.ui.main.mypage.MyPageFragment
 import com.ssafy.pickit.ui.main.vote.VoteFragment
+
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -27,6 +32,13 @@ class MainActivity : AppCompatActivity() {
         }
 
         setFragment()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.let { controller ->
+                controller.hide(WindowInsets.Type.systemBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
 
     }
 
@@ -56,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                     transaction.replace(R.id.fcv_main, VoteFragment())
                     updateTabTitle("Vote")
                 }
-                R.id.my_page -> {
+                R.id.my_vote -> {
                     transaction.replace(R.id.fcv_main, MyPageFragment())
                     updateTabTitle("My Page")
                 }
@@ -65,6 +77,8 @@ class MainActivity : AppCompatActivity() {
             return@setOnItemSelectedListener true
         }
     }
+
+
 
 
     companion object {

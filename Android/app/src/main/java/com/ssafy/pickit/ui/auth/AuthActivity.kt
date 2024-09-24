@@ -16,6 +16,8 @@ import com.kakao.sdk.user.UserApiClient
 import com.ssafy.pickit.R
 import com.ssafy.pickit.databinding.ActivityAuthBinding
 import com.ssafy.pickit.ui.main.MainActivity
+import com.ssafy.pickit.ui.wallet.SignupActivity
+import com.ssafy.pickit.ui.wallet.SignupFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -114,16 +116,23 @@ class AuthActivity : AppCompatActivity() {
                     )
                 }
             }
-            MainActivity.start(this)
+            navigateToSignupActivity()
         } else if (error != null) {
             Log.d("kakaoLogin", error.toString())
         }
     }
 
+    private fun navigateToSignupActivity() {
+        val intent = Intent(this, SignupActivity::class.java)
+        startActivity(intent)
+    }
+
+
 
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
 //            getKaKaoToken(kakaoLoginCallback)
+
             MainActivity.start(this)
 
 

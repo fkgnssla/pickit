@@ -25,17 +25,33 @@
                 android:id="@+id/ongoing_vote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="0dp"
                 android:layout_marginEnd="16dp"
                 android:gravity="center"
-                android:text="진행중인 투표"
+                android:text="@string/hot_text"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.13"
+                app:layout_constraintHorizontal_bias="0.046"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/additional_info"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:gravity="center"
+                android:text="이번주 참여수가 많은 투표를 확인해보세요"
+                android:textColor="@color/light_gray"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.113"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ongoing_vote" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_ongoing_vote"
@@ -43,53 +59,53 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ongoing_vote" />
+                app:layout_constraintTop_toBottomOf="@id/additional_info" />
 
 
             <TextView
                 android:id="@+id/tv_select_broadcast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="28dp"
                 android:gravity="center"
-                android:text="방송사 선택하기"
+                android:text="@string/broadcast"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.166"
+                app:layout_constraintHorizontal_bias="0.046"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recycler_ongoing_vote" />
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerChannelButtons"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:layout_marginTop="0dp"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_select_broadcast"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="4" />
-
-
 
             <TextView
                 android:id="@+id/best_ongoing_vote"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="20dp"
                 android:gravity="center"
                 android:text="현재 가장 인기 있는 투표"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.218"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/recyclerChannelButtons" />
 

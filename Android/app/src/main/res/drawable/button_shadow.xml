@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 그림자 아이템 (버튼 외부에 위치) -->
     <item android:left="0dp" android:right="0dp" android:top="4dp" android:bottom="4dp">
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/transparent"/> <!-- 그림자 색상 -->
-            <corners android:radius="8dp"/>   <!-- 그림자의 둥근 모서리 -->
-            <size android:width="48dp" android:height="48dp"/> <!-- 버튼보다 약간 크게 설정 -->
+            <solid android:color="@android:color/transparent"/>
+            <corners android:radius="8dp"/>
+            <size android:width="48dp" android:height="48dp"/>
             <stroke android:width="0dp" android:color="@android:color/transparent"/>
         </shape>
     </item>
-    <!-- 버튼 배경 아이템 (버튼 내부는 투명) -->
+
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@android:color/transparent"/> <!-- 버튼 내부는 투명 -->
-            <corners android:radius="8dp"/>   <!-- 버튼의 둥근 모서리 -->
-            <size android:width="40dp" android:height="40dp"/> <!-- 실제 버튼 크기와 동일하게 설정 -->
+            <solid android:color="@android:color/transparent"/>
+            <corners android:radius="8dp"/>
+            <size android:width="40dp" android:height="40dp"/>
         </shape>
     </item>
 </layer-list>

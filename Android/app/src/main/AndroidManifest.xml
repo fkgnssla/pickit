@@ -55,6 +55,10 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.wallet.SignupActivity" />
+        <activity android:name=".ui.main.voteDetail.VoteDetailActivity" />
+        <activity android:name=".ui.main.result.ResultActivity" />
+
     </application>
 
 </manifest>

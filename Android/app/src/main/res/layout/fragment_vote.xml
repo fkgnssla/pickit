@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.ssafy.pickit.ui.main.vote.VoteViewModel" />
@@ -11,43 +10,50 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <!-- 진행중 버튼 -->
         <Button
             android:id="@+id/buttonInProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="진행중"
-            android:backgroundTint="#F17E9D"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/buttonCompleted"
-            app:layout_constraintHorizontal_chainStyle="spread"/>
+            android:backgroundTint="@android:color/white"
+            android:background="?android:attr/selectableItemBackground"
+            android:minWidth="0dp"
+            android:minHeight="0dp"
+            android:padding="0dp"
+            android:text="진행 중"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@id/divider"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- 완료 버튼 -->
+        <TextView
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  |  "
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toStartOf="@id/buttonCompleted"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonInProgress" />
+
         <Button
             android:id="@+id/buttonCompleted"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="완료"
-            android:backgroundTint="#F17E9D"
+            android:text="종료"
+            android:backgroundTint="@android:color/white"
+            android:textColor="@color/light_gray"
+            android:padding="0dp"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:layout_marginEnd="30dp"
+
+            android:background="?android:attr/selectableItemBackground"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/buttonInProgress"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="@+id/buttonInProgress" />
 
-        <View
-            android:id="@+id/horizontalDivider"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:background="#F17E9D"
-            app:layout_constraintTop_toBottomOf="@id/buttonInProgress"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-
-        <!-- 투표 항목 리스트 -->
+        <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
@@ -55,7 +61,7 @@
             app:layout_constraintTop_toBottomOf="@id/buttonInProgress"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
