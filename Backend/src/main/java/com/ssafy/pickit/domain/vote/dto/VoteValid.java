@@ -6,7 +6,7 @@ public record VoteValid(
 	Long memberId,
 	String candidateId,
 	String transactionHash,
-	LocalDateTime startDate
+	LocalDateTime createDate
 ) {
 	public static VoteValid of(VoteRequest voteRequest) {
 		return new VoteValid(
