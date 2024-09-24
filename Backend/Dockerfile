@@ -1,3 +1,5 @@
-FROM openjdk:21-jdk
-COPY /build/libs/pickit-0.0.1-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install -y \
+    sshpass \
+    openjdk-21-jdk

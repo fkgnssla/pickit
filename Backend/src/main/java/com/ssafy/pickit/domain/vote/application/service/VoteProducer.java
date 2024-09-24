@@ -17,12 +17,12 @@ public class VoteProducer {
 
 	@Value("${rabbitmq.exchange.name}")
 	private String EXCHANGE_NAME;
-	
+
 	@Value("${rabbitmq.routing.key}")
 	private String ROUTING_KEY;
 
 	public void submitVote(Long memberId, VoteRequest voteRequest) {
-		voteRequest.setMemberId(memberId);
+		voteRequest.withMemberId(memberId);
 		log.info("==> [전송] : " + voteRequest.toString());
 		rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, voteRequest);
 	}
