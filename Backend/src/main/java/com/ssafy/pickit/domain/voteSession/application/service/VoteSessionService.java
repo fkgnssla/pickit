@@ -67,6 +67,20 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions);
 	}
 
+	public VoteSessionResponse findOne(String id) {
+		VoteSession voteSession = voteSessionRepository.findById(id)
+			.orElseThrow(() -> new RuntimeException("VoteSession with id " + id + " not found."));
+
+		return VoteSessionResponse.from(voteSession);
+	}
+
+	public void updateVoteCnt(String voteSessionId, String candidateId) {
+		VoteSession voteSession = voteSessionRepository.findById(voteSessionId)
+			.orElseThrow(() -> new RuntimeException("VoteSession with id " + voteSessionId + " not found."));
+		voteSession.updateVoteCnt(candidateId);
+		voteSessionRepository.save(voteSession);
+	}
+
 	// 각 VoteSession 내 candidates의 voteCnt 총합을 기준으로 정렬
 	private long calculateTotalVoteCnt(VoteSession voteSession) {
 		return voteSession.getCandidates().stream()

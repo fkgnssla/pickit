@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class TempVoteSessionService {
-	private final TempVoteSessionRepository voteSessionRepository;
 	private final TempVoteSessionRepository tempVoteSessionRepository;
 	private final BroadcastService broadcastService;
 
@@ -30,12 +29,11 @@ public class TempVoteSessionService {
 
 		TempVoteSession voteSession = TempVoteSession.of(voteSessionRequest, "https://aws.s3", candidates);
 
-		return voteSessionRepository.save(voteSession);
+		return tempVoteSessionRepository.save(voteSession);
 	}
 
 	public List<TempVoteSessionResponse> findAll() {
-		List<TempVoteSession> tempVoteSessions = voteSessionRepository.findAll();
-
+		List<TempVoteSession> tempVoteSessions = tempVoteSessionRepository.findAll();
 		return mapToTempVoteSessionResponse(tempVoteSessions);
 	}
 
@@ -45,9 +43,9 @@ public class TempVoteSessionService {
 	}
 
 	public boolean delete(String id) {
-		return voteSessionRepository.findById(id)
+		return tempVoteSessionRepository.findById(id)
 			.map(entity -> {
-				voteSessionRepository.deleteById(id);
+				tempVoteSessionRepository.deleteById(id);
 				return true;
 			})
 			.orElse(false);

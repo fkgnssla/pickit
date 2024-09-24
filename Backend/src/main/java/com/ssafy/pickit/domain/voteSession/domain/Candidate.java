@@ -7,9 +7,11 @@ import com.ssafy.pickit.domain.tempVoteSession.domain.TempCandidate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class Candidate {
 	private String id;
@@ -27,5 +29,9 @@ public class Candidate {
 			.profileImg(request.getProfileImg())
 			.voteCnt(0L)
 			.build();
+	}
+
+	public void updateVoteCnt() {
+		this.voteCnt++;
 	}
 }
