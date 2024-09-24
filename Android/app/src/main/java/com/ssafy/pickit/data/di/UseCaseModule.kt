@@ -2,7 +2,7 @@ package com.ssafy.pickit.data.di
 
 import com.ssafy.pickit.domain.repository.AuthRepository
 import com.ssafy.pickit.domain.repository.WalletRepository
-import com.ssafy.pickit.domain.usecase.AuthUseCase
+import com.ssafy.pickit.domain.usecase.auth.LoginUseCase
 import com.ssafy.pickit.domain.usecase.wallet.GenerateWalletUseCase
 import com.ssafy.pickit.domain.usecase.wallet.InsertWalletUseCase
 import dagger.Module
@@ -16,8 +16,8 @@ import javax.inject.Singleton
 object UseCaseModule {
     @Singleton
     @Provides
-    fun provideLoginUseCase(authRepository: AuthRepository): AuthUseCase =
-        AuthUseCase(authRepository)
+    fun provideLoginUseCase(authRepository: AuthRepository): LoginUseCase =
+        LoginUseCase(authRepository)
 
     @Singleton
     @Provides
