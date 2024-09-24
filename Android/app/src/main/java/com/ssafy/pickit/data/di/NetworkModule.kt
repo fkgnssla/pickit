@@ -3,6 +3,8 @@ package com.ssafy.pickit.data.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ssafy.pickit.BuildConfig
+import com.ssafy.pickit.data.AuthInterceptor
+import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,19 +24,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesAuthInterceptor(): Interceptor {
-        return Interceptor { chain ->
-            val original = chain.request()
-            val requestBuilder = original.newBuilder()
-                .header(
-                    "Authorization",
-                    "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MjE1NzI2NDYsImV4cCI6MTczNzEyNDY0NiwidXNlcklkIjoxfQ.oLVNqOHnhsYgCtXJ5HfpTdSqsAqROvTB_NNKq5wgwqUL7ncHrUBO11tEEW89sYOs7gRCy-1Kf-XEtySm65e4BQ"
-                )
-                .header("Content-Type", CONTENT_TYPE)
-            val request = requestBuilder.build()
-            chain.proceed(request)
-        }
-    }
+    fun providesAuthInterceptor(localPreferenceDataSource: LocalPreferenceDataSource): Interceptor = AuthInterceptor(localPreferenceDataSource)
 
     @Provides
     @Singleton
