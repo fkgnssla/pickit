@@ -47,6 +47,9 @@ dependencies {
     //RabbitMQ
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
 
+    // Kafka
+    implementation 'org.apache.kafka:kafka-clients:3.5.1'
+
     runtimeOnly 'com.mysql:mysql-connector-j'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
