@@ -67,16 +67,17 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions);
 	}
 
-	public VoteSessionResponse findOne(String id) {
-		VoteSession voteSession = voteSessionRepository.findById(id)
+	private VoteSession findById(String id) {
+		return voteSessionRepository.findById(id)
 			.orElseThrow(() -> new RuntimeException("VoteSession with id " + id + " not found."));
+	}
 
-		return VoteSessionResponse.from(voteSession);
+	public VoteSessionResponse findOne(String id) {
+		return VoteSessionResponse.from(findById(id));
 	}
 
 	public void updateVoteCnt(String voteSessionId, String candidateId) {
-		VoteSession voteSession = voteSessionRepository.findById(voteSessionId)
-			.orElseThrow(() -> new RuntimeException("VoteSession with id " + voteSessionId + " not found."));
+		VoteSession voteSession = findById(voteSessionId);
 		voteSession.updateVoteCnt(candidateId);
 		voteSessionRepository.save(voteSession);
 	}
