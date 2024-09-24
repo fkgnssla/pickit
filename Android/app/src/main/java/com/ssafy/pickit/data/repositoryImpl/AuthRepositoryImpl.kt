@@ -1,5 +1,6 @@
 package com.ssafy.pickit.data.repositoryImpl
 
+import android.util.Log
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import com.ssafy.pickit.data.datasource.remote.api.auth.AuthApi
 import com.ssafy.pickit.data.datasource.remote.request.LoginRequest
@@ -14,7 +15,8 @@ class AuthRepositoryImpl @Inject constructor(
     private val authApi: AuthApi
 ) : AuthRepository {
     override suspend fun postLogin(logInItem: LogInItem): LoginData {
-        val loginResponse = authApi.kakaoLogin(LoginRequest(logInItem.token))
+        val loginResponse = authApi.kakaoLogin(LoginRequest(logInItem.token)).data
+        //TODO : status == fail 일 경우 예외 처리
         if(loginResponse.isExist && loginResponse.accessToken != null) {
             saveToken(loginResponse.accessToken)
         }else if(!loginResponse.isExist && loginResponse.socialId != null){
