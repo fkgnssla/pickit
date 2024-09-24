@@ -23,7 +23,7 @@ public class VoteController {
 	@PostMapping
 	public ResponseEntity<?> createVote(@RequestBody VoteRequest voteRequest,
 		@AuthenticationPrincipal PrincipalDetail principalDetail) {
-		voteProducer.submitVote(1L, voteRequest);
+		voteProducer.submitVote(principalDetail.getId(), voteRequest);
 		return ResponseEntity.status(201).body("Vote Sended");
 	}
 }
