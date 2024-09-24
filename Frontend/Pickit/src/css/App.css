@@ -1,0 +1,54 @@
+body{
+  background-color: rgb(253, 255, 243);
+}
+
+#root {
+  /* max-width: 1280px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+  /* text-align: center; */
+}
+
+.div1{
+  width: 600px;
+}
+
+.div2{
+  width: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainImage{
+  max-width: 300px;
+  max-height: 600px;
+  border-radius: 10px;
+}
+
+.arrow{
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  padding: 0px 10px 0px 10px;
+}
+
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
