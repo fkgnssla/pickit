@@ -10,8 +10,7 @@ public record VoteSessionResponse(
 	String id,
 	String title,
 	String description,
-	String imgUrl,
-	Candidate winner,
+	String thumbnail,
 	List<Candidate> candidates,
 	LocalDateTime startDate,
 	LocalDateTime endDate
@@ -22,7 +21,6 @@ public record VoteSessionResponse(
 			voteSession.getTitle(),
 			voteSession.getDescription(),
 			voteSession.getImgUrl(),
-			voteSession.getWinner(),
 			voteSession.getCandidates(),
 			voteSession.getStartDate(),
 			voteSession.getEndDate()

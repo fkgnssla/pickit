@@ -5,9 +5,11 @@ import com.ssafy.pickit.domain.tempVoteSession.dto.TempCandidateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class TempCandidate {
 	private String name;

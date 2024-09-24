@@ -54,4 +54,10 @@ public class VoteSessionController {
 		return ResponseUtils.success(voteSessionService.findAllByBroadcastIdAndEnd(broadcastId));
 	}
 
+	@Operation(summary = "투표 세션 상세 정보 조회", description = "특정 방송사의 이미 종료된 투표 세션을 반환합니다.")
+	@GetMapping("/{id}")
+	public ApiResponse<?> findInfo(@PathVariable("id") String id) {
+		return ResponseUtils.success(voteSessionService.findOne(id));
+	}
+
 }
