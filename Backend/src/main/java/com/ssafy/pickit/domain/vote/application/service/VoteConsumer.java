@@ -21,8 +21,8 @@ public class VoteConsumer {
 	@RabbitListener(queues = "vote.queue")
 	public void receiveVoteRequest(VoteRequest voteRequest) {
 		log.info("<== [수신] : " + voteRequest.toString());
-		voteSessionService.updateVoteCnt(voteRequest.getVoteSessionId(), voteRequest.getCandidateId());
+		voteSessionService.updateVoteCnt(voteRequest.voteSessionId(), voteRequest.candidateId());
 		Vote vote = Vote.of(voteRequest);
-		mongoTemplate.insert(vote, voteRequest.getVoteSessionId());
+		mongoTemplate.insert(vote, voteRequest.voteSessionId());
 	}
 }
