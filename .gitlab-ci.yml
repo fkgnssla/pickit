@@ -9,7 +9,7 @@ cache:
     - .gradle/wrapper/
     - .gradle/caches/
 
-build_job:
+build_BE:
   stage: build
   script:
     - cd Backend
@@ -19,11 +19,11 @@ build_job:
     paths:
       - Backend/build/libs
   tags:
-    - spring
-  only:
-    - release
+    - backend
+#  only:
+#    - release
 
-deploy_job:
+deploy_BE:
   stage: deploy
   script:
     - cd Backend
@@ -32,6 +32,6 @@ deploy_job:
     - sshpass -p "$SSH_PASSWORD" scp build/libs/pickit-0.0.1-SNAPSHOT.jar $SSH_USER@$SSH_HOST:/home/ubuntu/spring-docker/app.jar
     - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "SPRING_ACTIVE_PROFILE=prod sudo systemctl start my-spring-app"
   tags:
-    - spring
-  only:
-    - release
+    - backend
+#  only:
+#    - release
