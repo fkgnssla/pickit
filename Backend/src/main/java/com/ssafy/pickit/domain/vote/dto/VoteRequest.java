@@ -6,8 +6,8 @@ public record VoteRequest(
 	String candidateId,
 	String transactionHash
 ) {
-	public VoteRequest withMemberId(Long newMemberId) {
-		return new VoteRequest(newMemberId, this.voteSessionId, this.candidateId, this.transactionHash);
+	public VoteRequest withMemberId(Long memberId) {
+		return new VoteRequest(memberId, this.voteSessionId, this.candidateId, this.transactionHash);
 	}
 }
 

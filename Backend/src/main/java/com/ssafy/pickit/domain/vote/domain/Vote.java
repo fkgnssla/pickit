@@ -19,9 +19,9 @@ public class Vote {
 
 	public static Vote of(VoteRequest voteRequest) {
 		return Vote.builder()
-			.memberId(voteRequest.getMemberId())
-			.candidateId(voteRequest.getCandidateId())
-			.transactionHash(voteRequest.getTransactionHash())
+			.memberId(voteRequest.memberId())
+			.candidateId(voteRequest.candidateId())
+			.transactionHash(voteRequest.transactionHash())
 			.startDate(LocalDateTime.now()).build();
 	}
 }

@@ -22,8 +22,8 @@ public class VoteProducer {
 	private String ROUTING_KEY;
 
 	public void submitVote(Long memberId, VoteRequest voteRequest) {
-		voteRequest.withMemberId(memberId);
-		log.info("==> [전송] : " + voteRequest.toString());
-		rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, voteRequest);
+		VoteRequest newVoteRequest = voteRequest.withMemberId(memberId);
+		log.info("==> [전송] : " + newVoteRequest.toString());
+		rabbitTemplate.convertAndSend(EXCHANGE_NAME, ROUTING_KEY, newVoteRequest);
 	}
 }

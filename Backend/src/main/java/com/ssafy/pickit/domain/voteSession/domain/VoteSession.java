@@ -41,7 +41,7 @@ public class VoteSession {
 	private LocalDateTime endDate;
 
 	public static VoteSession of(TempVoteSession tempVoteSession, String contractAddress,
-		List<Candidate> candidates){
+		List<Candidate> candidates) {
 		return VoteSession.builder()
 			.broadcastId(tempVoteSession.getBroadcastId())
 			.contractAddress(contractAddress)
@@ -55,4 +55,12 @@ public class VoteSession {
 			.build();
 	}
 
+	public void updateVoteCnt(String candidateId) {
+		for (Candidate candidate : candidates) {
+			if (candidate.getId().equals(candidateId)) {
+				candidate.updateVoteCnt();
+				break;
+			}
+		}
+	}
 }
