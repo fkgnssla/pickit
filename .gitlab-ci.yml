@@ -20,8 +20,8 @@ build_BE:
       - Backend/build/libs
   tags:
     - backend
-#  only:
-#    - release
+  only:
+    - release
 
 deploy_BE:
   stage: deploy
@@ -33,5 +33,5 @@ deploy_BE:
     - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "SPRING_ACTIVE_PROFILE=prod sudo systemctl start my-spring-app"
   tags:
     - backend
-#  only:
-#    - release
+  only:
+    - release
