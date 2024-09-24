@@ -14,18 +14,12 @@ Pickit 은 블록체인 투명성 기반 온라인 투표 앱 서비스입니다
 모든 투표 내역은 수정 및 삭제가 불가능하며 공정하고 투명한 투표가 가능합니다. 
 ```
 
-⚙️ v1.0.0 `현재는 v1 까지 진행되었습니다.`
+⚙️ v1.0.0 
+`현재는 v1 까지 진행되었습니다.`
 - [x] [API 명세서](https://glorious-airbus-27a.notion.site/API-72f4b843f9f246099923c59d9963f429?pvs=4)
 - [x] 단일 스프링 서버 
-- [x] GitLab CI 를 이용한 배포 자동화
+- [x] GitLab CI/CD
 - [x] nginx DDoS 공격 방어
-
-<div align="center">
-    <img src="https://velog.velcdn.com/images/gangintheremark/post/0a53f251-ae33-49b5-8b76-0ad2e22e790b/image.png" width="700">
-</div>
-
-
-
 
 ⚙️ v2.0.0
 
