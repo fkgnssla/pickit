@@ -1,6 +1,5 @@
 package com.ssafy.pickit.data.datasource.remote.blockchain
 
-import android.util.Base64
 import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManager
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import kotlinx.coroutines.Dispatchers
@@ -95,12 +94,9 @@ class WalletFunctionImpl @Inject constructor(
     }
 
     private fun setWalletInformation(privateKey: String, address: String) {
-        val encryptedPrivateKey: ByteArray =
-            localKeyStoreManager.encryptData(privateKey.toByteArray())
-        val encryptedAddress: ByteArray = localKeyStoreManager.encryptData(address.toByteArray())
-
-        val encodedPrivateKey = Base64.encodeToString(encryptedPrivateKey, Base64.DEFAULT)
-        val encodedAddress = Base64.encodeToString(encryptedAddress, Base64.DEFAULT)
+        val encodedPrivateKey =
+            localKeyStoreManager.encryptData(privateKey)
+        val encodedAddress = localKeyStoreManager.encryptData(address)
 
         localPreferenceDataSource.setPrivateKey(encodedPrivateKey)
         localPreferenceDataSource.setWalletAddress(encodedAddress)
