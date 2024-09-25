@@ -6,12 +6,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.ssafy.pickit.R
 import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.databinding.ActivityMainBinding
 import com.ssafy.pickit.ui.main.home.HomeFragment
+import com.ssafy.pickit.ui.main.mypage.MyPageActivity
 import com.ssafy.pickit.ui.main.mypage.MyPageFragment
 import com.ssafy.pickit.ui.main.vote.VoteFragment
 
@@ -30,6 +32,15 @@ class MainActivity : AppCompatActivity() {
         binding.apply {
             lifecycleOwner = this@MainActivity
         }
+
+        val imageView = findViewById<ImageView>(R.id.imageView)
+
+
+        imageView.setOnClickListener {
+            val intent = Intent(this, MyPageActivity::class.java)
+            startActivity(intent)
+        }
+
 
         setFragment()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {

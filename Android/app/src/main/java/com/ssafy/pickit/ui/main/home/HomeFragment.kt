@@ -12,14 +12,21 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.PieData
+import com.github.mikephil.charting.data.PieDataSet
+import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.utils.ColorTemplate
 import com.ssafy.pickit.R
 import com.ssafy.pickit.common.BaseFragment
+import com.ssafy.pickit.data.datasource.remote.response.CandidateResult
 import com.ssafy.pickit.databinding.FragmentHomeBinding
 import com.ssafy.pickit.databinding.FragmentMyPageBinding
 import com.ssafy.pickit.ui.main.mypage.MyPageViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
+    private lateinit var pieChart: PieChart
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,11 +45,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
         contentAreaWrapper.post {
             contentAreaWrapper.minimumHeight = nestedScrollView.height
         }
+
+        pieChart = binding.pieChart
+        observeVoteResultData()
     }
 
     private fun setupRecyclerView() {
         val adapter = HorizontalAdapter(requireContext())
-        binding.recyclerOngoingVote.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerOngoingVote.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerOngoingVote.adapter = adapter
 
         viewModel.items.observe(viewLifecycleOwner) { items ->
@@ -71,5 +82,24 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
                 Toast.makeText(requireContext(), "Button $it clicked", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun observeVoteResultData() {
+        viewModel.voteResultResponse.observe(viewLifecycleOwner) { voteResult ->
+            voteResult?.let {
+                updatePieChart(it.results)
+            }
+        }
+    }
+
+    private fun updatePieChart(results: List<CandidateResult>) {
+        val entries = results.map { PieEntry(it.voteCount.toFloat(), it.candidateName) }
+        val dataSet = PieDataSet(entries, "투표 결과").apply {
+            colors = ColorTemplate.MATERIAL_COLORS.toList()
+        }
+
+        val pieData = PieData(dataSet)
+        pieChart.data = pieData
+
     }
 }

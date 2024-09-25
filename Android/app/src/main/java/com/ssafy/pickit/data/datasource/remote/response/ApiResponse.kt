@@ -1,4 +1,7 @@
 package com.ssafy.pickit.data.datasource.remote.response
 
-class ApiResponse {
-}
+data class ApiResponse<T>(
+    val status: String,
+    val message: String?,
+    val data: T?
+)

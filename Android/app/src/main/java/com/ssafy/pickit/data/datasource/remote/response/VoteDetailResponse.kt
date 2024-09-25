@@ -1,6 +1,7 @@
 package com.ssafy.pickit.data.datasource.remote.response
 
 import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 
@@ -9,16 +10,16 @@ data class VoteSessionResponse(
     val id: String,
     val title: String,
     val description: String,
-    val imgUrl: String,
+    val thumbnail: String,
     val candidates: List<Candidate>,
-    val startDate: LocalDateTime,
-    val endDate: LocalDateTime,
+    @SerializedName("start_date") val startDate: LocalDateTime,
+    @SerializedName("end_date") val endDate: LocalDateTime
 
 ) : Parcelable
 
 @Parcelize
 data class Candidate(
     val name: String,
-    val imgUrl: String,
+    val profile_img: String,
     val voteCnt: Long
 ) : Parcelable

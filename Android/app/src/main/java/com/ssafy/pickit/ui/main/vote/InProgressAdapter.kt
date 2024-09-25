@@ -42,7 +42,7 @@ class InProgressAdapter(private val fragment: Fragment) : ListAdapter<VoteRespon
                 val context = binding.root.context
                 val intent = Intent(context, VoteDetailActivity::class.java).apply {
 
-                    putExtra("voteId", item.id)
+                    putExtra("voteSessionId", item.id)
                 }
                 context.startActivity(intent)
             }

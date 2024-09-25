@@ -1,5 +1,6 @@
 package com.ssafy.pickit.data.datasource.remote.api.vote
 
+import com.ssafy.pickit.data.datasource.remote.response.ApiResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
@@ -15,14 +16,14 @@ interface VoteApi {
     @GET("vote/status")
     suspend fun getVoteStatus(): VoteStatus
 
-    @GET("vote/in-progress")
-    suspend fun getInProgressData(): List<VoteResponse>
+    @GET("vote-session/ongoing")
+    suspend fun getInProgressVotes(): ApiResponse<List<VoteResponse>>
 
-    @GET("vote/completed")
-    suspend fun getCompletedData(): List<VoteResponse>
+    @GET("vote-session/end")
+    suspend fun getCompletedVotes(): ApiResponse<List<VoteResponse>>
 
     @GET("votes/{voteId}")
-    suspend fun getVoteDetail(@Path("voteId") voteId: String): VoteSessionResponse
+    suspend fun getVoteDetail(@Path("voteId") voteId: String): ApiResponse<VoteSessionResponse>
 
     @GET("vote/{voteId}/result")
     suspend fun getVoteResult(@Path("voteId") voteId: String): VoteResultResponse

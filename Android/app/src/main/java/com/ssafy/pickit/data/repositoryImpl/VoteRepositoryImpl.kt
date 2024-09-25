@@ -1,6 +1,7 @@
 package com.ssafy.pickit.data.repositoryImpl
 
 import com.ssafy.pickit.data.datasource.remote.api.vote.VoteApi
+import com.ssafy.pickit.data.datasource.remote.response.ApiResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
@@ -19,15 +20,16 @@ class VoteRepositoryImpl @Inject constructor(
         return voteApi.getVoteStatus()
     }
 
-    override suspend fun getInProgressData(): List<VoteResponse> {
-        return voteApi.getInProgressData()
+    override suspend fun getInProgressVotes(): ApiResponse<List<VoteResponse>> {
+
+        return voteApi.getInProgressVotes()
     }
 
-    override suspend fun getCompletedData(): List<VoteResponse> {
-        return voteApi.getCompletedData()
+    override suspend fun getCompletedVotes(): ApiResponse<List<VoteResponse>> {
+        return voteApi.getCompletedVotes()
     }
 
-    override suspend fun getVoteDetail(voteId: String): VoteSessionResponse{
+    override suspend fun getVoteDetail(voteId: String): ApiResponse<VoteSessionResponse>{
         return voteApi.getVoteDetail(voteId)
     }
 

@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ssafy.pickit.R
 import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.domain.usecase.VoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,93 +44,109 @@ class VoteViewModel @Inject constructor(
         fetchCompletedData()
     }
 
-    private fun fetchInProgressData() {
-        viewModelScope.launch {
-            // 실제 REST API 호출 예시
+    fun fetchInProgressData() {
+        setExampleInProgressData()
+//        viewModelScope.launch {
 //            try {
-//                val data = voteUseCase.getInProgressData()
-//                _voteData.value = data.map { vote ->
-//                    VoteResponse(
-//                        imageUrl = vote.imageUrl,
-//                        title = vote.title,
-//                        startDate = vote.startDate,
-//                        endDate = vote.endDate
-//                    )
+//                val response = voteUseCase.getInProgressVotes()
+//
+//                if (response.status == "SUCCESS") {
+//
+//                    val data = response.data ?: run {
+//                        Log.e("VoteViewModel", "No data received")
+//                        _voteData.value = emptyList()
+//                        return@launch // 함수 종료
+//                    }
+//                    _voteData.value = data
+//                } else {
+//
+//                    Log.e("VoteViewModel", "Error fetching data: ${response.message}")
+//                    _voteData.value = emptyList()
 //                }
 //            } catch (e: Exception) {
-//                Log.e("VoteViewModel", "Error fetching in-progress data", e)
+//                Log.e("VoteViewModel", "Exception: $e")
+//                _voteData.value = emptyList()
 //            }
-
-
-            val exampleData = listOf(
-                VoteResponse(
-                    id="1",
-                    imgUrl = "https://via.placeholder.com/300",
-                    title = "진행 중 항목 1",
-                    startDate = LocalDateTime.of(2024, 9, 1, 0, 0),
-                    endDate = LocalDateTime.of(2024, 9, 10, 0, 0)
-                ),
-                VoteResponse(
-                    id="2",
-                    imgUrl = "https://via.placeholder.com/300",
-                    title = "진행 중 항목 2",
-                    startDate = LocalDateTime.of(2024, 9, 2, 0, 0),
-                    endDate = LocalDateTime.of(2024, 9, 12, 0, 0)
-                ),
-                VoteResponse(
-                    id="3",
-                    imgUrl = "https://via.placeholder.com/300",
-                    title = "진행 중 항목 3",
-                    startDate = LocalDateTime.of(2024, 9, 3, 0, 0),
-                    endDate = LocalDateTime.of(2024, 9, 13, 0, 0)
-                )
-            )
-            _voteData.value = exampleData
-        }
+//        }
     }
 
     private fun fetchCompletedData() {
-        viewModelScope.launch {
-
+        setExampleCompletedData()
+//        viewModelScope.launch {
 //            try {
-//                val data = voteUseCase.getCompletedData()
-//                _voteData.value = data.map { vote ->
-//                    VoteResponse(
-//                        imageUrl = vote.imageUrl,
-//                        title = vote.title,
-//                        startDate = vote.startDate,
-//                        endDate = vote.endDate
-//                    )
+//                val response = voteUseCase.getCompletedVotes()
+//                if (response.status == "SUCCESS") {
+//
+//                    val data = response.data ?: run {
+//                        Log.e("VoteViewModel", "No data received")
+//                        _voteData.value = emptyList()
+//                        return@launch
+//                    }
+//                    _voteData.value = data
+//                } else {
+//
+//                    Log.e("VoteViewModel", "Error fetching data: ${response.message}")
+//                    _voteData.value = emptyList()
 //                }
 //            } catch (e: Exception) {
-//                Log.e("VoteViewModel", "Error fetching completed data", e)
+//                Log.e("VoteViewModel", "Exception: $e")
+//                _voteData.value = emptyList()
 //            }
+//        }
+    }
 
 
-            val exampleData = listOf(
-                VoteResponse(
-                    id="1",
-                    imgUrl = "https://via.placeholder.com/300",
-                    title = "진행 중 항목 1",
-                    startDate = LocalDateTime.of(2024, 8, 1, 0, 0),
-                    endDate = LocalDateTime.of(2024, 8, 10, 0, 0)
-                ),
-                VoteResponse(
-                    id="2",
-                    imgUrl = "https://via.placeholder.com/300",
-                    title = "진행 중 항목 2",
-                    startDate = LocalDateTime.of(2024, 8, 2, 0, 0),
-                    endDate = LocalDateTime.of(2024, 8, 12, 0, 0)
-                ),
-                VoteResponse(
-                    id="3",
-                    imgUrl = "https://via.placeholder.com/300",
-                    title = "진행 중 항목 3",
-                    startDate = LocalDateTime.of(2024, 8, 3, 0, 0),
-                    endDate = LocalDateTime.of(2024, 8, 13, 0, 0)
-                )
+    private fun setExampleInProgressData() {
+        val exampleData = listOf(
+            VoteResponse(
+                id = "1",
+                thumbnail = "https://via.placeholder.com/300",
+                title = "진행 중 항목 1",
+                startDate = LocalDateTime.of(2024, 9, 1, 0, 0),
+                endDate = LocalDateTime.of(2024, 9, 10, 0, 0)
+            ),
+            VoteResponse(
+                id = "2",
+                thumbnail = "https://via.placeholder.com/300",
+                title = "진행 중 항목 2",
+                startDate = LocalDateTime.of(2024, 9, 2, 0, 0),
+                endDate = LocalDateTime.of(2024, 9, 12, 0, 0)
+            ),
+            VoteResponse(
+                id = "3",
+                thumbnail = "https://via.placeholder.com/300",
+                title = "진행 중 항목 3",
+                startDate = LocalDateTime.of(2024, 9, 3, 0, 0),
+                endDate = LocalDateTime.of(2024, 9, 13, 0, 0)
             )
-            _voteData.value = exampleData
-        }
+        )
+        _voteData.value = exampleData
+    }
+
+    private fun setExampleCompletedData() {
+        val exampleData = listOf(
+            VoteResponse(
+                id = "1",
+                thumbnail = "https://via.placeholder.com/300",
+                title = "종료된 항목 1",
+                startDate = LocalDateTime.of(2024, 8, 1, 0, 0),
+                endDate = LocalDateTime.of(2024, 8, 10, 0, 0)
+            ),
+            VoteResponse(
+                id = "2",
+                thumbnail = "https://via.placeholder.com/300",
+                title = "종료된 항목 2",
+                startDate = LocalDateTime.of(2024, 8, 2, 0, 0),
+                endDate = LocalDateTime.of(2024, 8, 12, 0, 0)
+            ),
+            VoteResponse(
+                id = "3",
+                thumbnail = "https://via.placeholder.com/300",
+                title = "종료된 항목 3",
+                startDate = LocalDateTime.of(2024, 8, 3, 0, 0),
+                endDate = LocalDateTime.of(2024, 8, 13, 0, 0)
+            )
+        )
+        _voteData.value = exampleData
     }
 }

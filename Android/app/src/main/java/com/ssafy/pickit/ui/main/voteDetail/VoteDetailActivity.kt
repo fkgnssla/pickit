@@ -18,6 +18,7 @@ import com.ssafy.pickit.data.datasource.remote.response.Candidate
 import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
 import com.ssafy.pickit.databinding.ActivityVoteDetailBinding
 import com.ssafy.pickit.databinding.DialogCandidateBinding
+import com.ssafy.pickit.databinding.GridItemLayoutBinding
 import com.ssafy.pickit.ui.main.result.ResultActivity
 //import com.ssafy.pickit.ui.main.result.ResultActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,15 +37,22 @@ class VoteDetailActivity : AppCompatActivity() {
         binding = ActivityVoteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val voteSession: VoteSessionResponse? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getParcelableExtra("voteSession", VoteSessionResponse::class.java)
-        } else {
-            intent.getParcelableExtra("voteSession") as? VoteSessionResponse
+
+//        val voteSession: VoteSessionResponse? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            intent.getParcelableExtra("voteSession", VoteSessionResponse::class.java)
+//        } else {
+//            intent.getParcelableExtra("voteSession") as? VoteSessionResponse
+//        }
+//
+//        voteSession?.let {
+//            viewModel.setVoteSessionResponse(it)
+//        }
+        val voteSessionId= intent.getStringExtra("voteSessionId")
+        if (voteSessionId != null) {
+            viewModel.fetchVoteSessionData(voteSessionId)
         }
 
-        voteSession?.let {
-            viewModel.setVoteSessionResponse(it)
-        }
+
 
         viewModel.voteSessionResponse.observe(this) { response ->
             response?.let {
@@ -52,7 +60,7 @@ class VoteDetailActivity : AppCompatActivity() {
                 binding.textViewStartDate.text = it.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 binding.textViewEndDate.text = it.endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
                 Glide.with(this)
-                    .load(it.imgUrl)
+                    .load(it.thumbnail)
                     .into(binding.imageView)
                 loadItemsToGrid(it)
             }
@@ -91,7 +99,7 @@ class VoteDetailActivity : AppCompatActivity() {
 
 
         Glide.with(this)
-            .load(selectedCandidate.imgUrl)
+            .load(selectedCandidate.profile_img)
             .into(dialogBinding.dialogImageView)
         dialogBinding.dialogNameTextView.text = selectedCandidate.name
 
@@ -120,18 +128,15 @@ class VoteDetailActivity : AppCompatActivity() {
         gridLayout.removeAllViews()
 
         voteSessionResponse.candidates.forEach { candidate ->
-            val itemLayout = layoutInflater.inflate(R.layout.grid_item_layout, gridLayout, false)
-            val imageView = itemLayout.findViewById<ImageView>(R.id.imageView)
-            val textView = itemLayout.findViewById<TextView>(R.id.textViewName)
-            val checkBox = itemLayout.findViewById<CheckBox>(R.id.checkBox)
+            val itemBinding = GridItemLayoutBinding.inflate(layoutInflater, gridLayout, false)
 
             Glide.with(this)
-                .load(candidate.imgUrl)
-                .into(imageView)
+                .load(candidate.profile_img)
+                .into(itemBinding.imageView)
 
-            textView.text = candidate.name
+            itemBinding.textViewName.text = candidate.name
 
-            checkBox.setOnCheckedChangeListener { _, isChecked ->
+            itemBinding.checkBox.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     if (selectedCandidate != null) {
                         // 기존 선택된 후보자 제거
@@ -139,7 +144,7 @@ class VoteDetailActivity : AppCompatActivity() {
                         previouslySelectedCheckbox?.isChecked = false
                     }
                     selectedCandidate = candidate
-                    checkBox.tag = candidate.name
+                    itemBinding.checkBox.tag = candidate.name
                 } else {
                     if (selectedCandidate == candidate) {
                         selectedCandidate = null
@@ -147,7 +152,7 @@ class VoteDetailActivity : AppCompatActivity() {
                 }
             }
 
-            gridLayout.addView(itemLayout)
+            gridLayout.addView(itemBinding.root)
         }
     }
 }

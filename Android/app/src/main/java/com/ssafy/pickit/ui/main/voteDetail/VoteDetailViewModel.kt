@@ -15,7 +15,8 @@ import java.time.LocalDateTime
 
 @HiltViewModel
 class VoteDetailViewModel @Inject constructor(
-    private val repository: VoteUseCase
+    private val repository: VoteUseCase,
+
 ) : ViewModel() {
 
     private val _voteSessionResponse = MutableLiveData<VoteSessionResponse>()
@@ -23,50 +24,82 @@ class VoteDetailViewModel @Inject constructor(
     private val _userVoted = MutableLiveData<Boolean>(false)
     val userVoted: LiveData<Boolean> get() = _userVoted
 
-
-    fun setVoteSessionResponse(response: VoteSessionResponse) {
-        _voteSessionResponse.value = response
-    }
-
     init {
-        // 예시 데이터 설정
-        setExampleData()
+        fetchVoteSessionData("1")
     }
 
-    private fun setExampleData() {
+
+    private fun setExampleData(id: String) {
         val exampleCandidates = listOf(
-            Candidate(name = "Person 1", imgUrl = "https://via.placeholder.com/150", voteCnt = 10),
-            Candidate(name = "Person 2", imgUrl = "https://via.placeholder.com/150", voteCnt = 20),
-            Candidate(name = "Person 3", imgUrl = "https://via.placeholder.com/150", voteCnt = 30),
-            Candidate(name = "Person 4", imgUrl = "https://via.placeholder.com/150", voteCnt = 40),
-            Candidate(name = "Person 5", imgUrl = "https://via.placeholder.com/150", voteCnt = 50),
-            Candidate(name = "Person 6", imgUrl = "https://via.placeholder.com/150", voteCnt = 60),
-            Candidate(name = "Person 7", imgUrl = "https://via.placeholder.com/150", voteCnt = 70),
-            Candidate(name = "Person 8", imgUrl = "https://via.placeholder.com/150", voteCnt = 80),
-            Candidate(name = "Person 9", imgUrl = "https://via.placeholder.com/150", voteCnt = 90)
+            Candidate(name = "Person 1", profile_img = "https://via.placeholder.com/150", voteCnt = 10),
+            Candidate(name = "Person 2", profile_img = "https://via.placeholder.com/150", voteCnt = 20),
+            Candidate(name = "Person 3", profile_img = "https://via.placeholder.com/150", voteCnt = 30),
+            Candidate(name = "Person 4", profile_img = "https://via.placeholder.com/150", voteCnt = 40),
+            Candidate(name = "Person 5", profile_img = "https://via.placeholder.com/150", voteCnt = 50),
+            Candidate(name = "Person 6", profile_img = "https://via.placeholder.com/150", voteCnt = 60),
+            Candidate(name = "Person 7", profile_img = "https://via.placeholder.com/150", voteCnt = 70),
+            Candidate(name = "Person 8", profile_img = "https://via.placeholder.com/150", voteCnt = 80),
+            Candidate(name = "Person 9", profile_img = "https://via.placeholder.com/150", voteCnt = 90)
         )
 
-        val exampleVoteSession = VoteSessionResponse(
-            id = "example_id",
-            title = "Example Title",
-            description = "This is an example description.",
-            imgUrl = "https://via.placeholder.com/300",
-            candidates = exampleCandidates,
-            startDate = LocalDateTime.now().minusDays(1),
+        val exampleVoteSession = when (id) {
+            "1" -> VoteSessionResponse(
+                id = id,
+                title = "Title for Vote 1",
+                description = "Description for Vote 1.",
+                thumbnail = "https://via.placeholder.com/300",
+                candidates = exampleCandidates.take(3), // 3명의 후보
+                startDate = LocalDateTime.now().minusDays(1),
+                endDate = LocalDateTime.now().plusDays(1)
+            )
+            "2" -> VoteSessionResponse(
+                id = id,
+                title = "Title for Vote 2",
+                description = "Description for Vote 2.",
+                thumbnail = "https://via.placeholder.com/300",
+                candidates = exampleCandidates.take(6), // 6명의 후보
+                startDate = LocalDateTime.now().minusDays(2),
+                endDate = LocalDateTime.now().plusDays(2)
+            )
+            "3" -> VoteSessionResponse(
+                id = id,
+                title = "Title for Vote 3",
+                description = "Description for Vote 3.",
+                thumbnail = "https://via.placeholder.com/300",
+                candidates = exampleCandidates.take(9), // 9명의 후보
+                startDate = LocalDateTime.now().minusDays(3),
+                endDate = LocalDateTime.now().plusDays(3)
+            )
+            else -> null
+        }
+
+        _voteSessionResponse.value = exampleVoteSession ?: VoteSessionResponse(
+            id = "default_id",
+            title = "Default Title",
+            description = "No valid vote session found.",
+            thumbnail = "https://via.placeholder.com/300",
+            candidates = emptyList(),
+            startDate = LocalDateTime.now(),
             endDate = LocalDateTime.now().plusDays(1)
         )
 
-        _voteSessionResponse.value = exampleVoteSession
     }
 
-
-    private fun fetchVoteSessionData(id: String) {
+    fun fetchVoteSessionData(id: String) {
         viewModelScope.launch {
             try {
-                val response = repository.getVoteDetail(id)
-                _voteSessionResponse.value = response
+
+                setExampleData(id)
+
+                // val response = repository.getVoteDetail(id)
+                // _voteSessionResponse.value = response
             } catch (e: Exception) {
+                // 예외 처리 (로그 출력 등)
             }
         }
     }
+
+
+
+
 }

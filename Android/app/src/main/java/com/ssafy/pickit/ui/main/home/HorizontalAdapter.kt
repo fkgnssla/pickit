@@ -28,11 +28,11 @@ class HorizontalAdapter(
         return items.size
     }
 
-    // Method to update the list of items
+
     fun submitList(newItems: List<Int>) {
         items.clear()
         items.addAll(newItems)
-        notifyDataSetChanged() // Notify the adapter of data changes
+        notifyDataSetChanged()
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

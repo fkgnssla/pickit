@@ -1,5 +1,6 @@
 package com.ssafy.pickit.domain.usecase
 
+import com.ssafy.pickit.data.datasource.remote.response.ApiResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
@@ -18,16 +19,17 @@ class VoteUseCase @Inject constructor(
         return voteRepository.getVoteStatus()
     }
 
-    suspend fun getInProgressData(): List<VoteResponse> {
-        return voteRepository.getInProgressData()
+
+    suspend fun getInProgressVotes(): ApiResponse<List<VoteResponse>> {
+        return voteRepository.getInProgressVotes()
     }
 
-    suspend fun getCompletedData(): List<VoteResponse> {
-        return voteRepository.getCompletedData()
+    suspend fun getCompletedVotes(): ApiResponse<List<VoteResponse>>  {
+        return voteRepository.getCompletedVotes()
     }
 
 
-    suspend fun getVoteDetail(voteId : String): VoteSessionResponse {
+    suspend fun getVoteDetail(voteId : String): ApiResponse<VoteSessionResponse> {
         return voteRepository.getVoteDetail(voteId)
     }
 
