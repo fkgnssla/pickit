@@ -3,6 +3,7 @@ package com.ssafy.pickit.domain.voteSession.application.service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.CompletableFuture;
 
 import org.springframework.data.domain.Sort;
@@ -43,7 +44,7 @@ public class VoteSessionService {
 				collectionService.createCollection(newVoteSession.getId());
 				return null;
 			} else {
-				throw new RuntimeException("VoteSession deploy failed.");
+				throw new RuntimeException("투표 네트워크 자동 배포에 실패했습니다.");
 			}
 		});
 	}
@@ -69,7 +70,7 @@ public class VoteSessionService {
 
 	private VoteSession findById(String id) {
 		return voteSessionRepository.findById(id)
-			.orElseThrow(() -> new RuntimeException("VoteSession with id " + id + " not found."));
+			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
 	}
 
 	public VoteSessionResponse findOne(String id) {
