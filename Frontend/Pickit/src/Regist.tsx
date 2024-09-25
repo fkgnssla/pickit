@@ -10,7 +10,7 @@ const Regist = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>('');
   const [contact, setContact] = useState<string>('');
-  const [broadcast, setBroadcast] = useState<string>('default');
+  const [broadcast, setBroadcast] = useState<string>('');
   const [title, setTitle] = useState<string>('');
   const [mainImage, setMainImage] = useState<string>('');
   const [imageName, setImageName] = useState<string>('');
@@ -19,6 +19,7 @@ const Regist = () => {
   const [startPeriod, setStartPeriod] = useState<string>('');
   const [endPeriod, setEndPeriod] = useState<string>('');
   const [openResult, setOpenResult] = useState(false);
+  const [shouldValidate, setShouldValidate] = useState(false); // 빈 값이 없는지 검사하는 상태
   const [shouldNavigate, setShouldNavigate] = useState(false); // 상태 업데이트를 감지하기 위한 상태 추가
   const [candidates, setCandidates] = useState(
     Array.from({ length: 2 }, () => ({ name: "", imageName: "", image: "" }))
@@ -29,7 +30,7 @@ const Regist = () => {
     candidates: Array({name: "", imageName: "", image: ""}),
   });
   
-  /// 투표 기간 관련 영역
+  /// 투표 기간 영역
   function ConvertTo2Digits(newNum: number) {
     return newNum.toString().padStart(2, '0');
   }
@@ -91,7 +92,7 @@ const Regist = () => {
       }
     }
   }
-  /// 투표 기간 관련 영역(끝)
+  /// 투표 기간 영역(끝)
 
   useEffect(() => {
     if (shouldNavigate) {
@@ -100,25 +101,53 @@ const Regist = () => {
     }
   }, [shouldNavigate]);
 
+  // 빈 값이 없으면 shouldNavigate = true 후 post요청, page이동
+  useEffect(() =>{
+    if(shouldValidate) {
+      const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
+      const elements = [name, contact, broadcast, title, mainImage, description, startPeriod, endPeriod];
+      
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i] === "") {
+          alert(messages[i]);
+          setShouldValidate(false);
+          return;
+        }
+      }
+      // 후보자들 이름이 빈 값인지 검사
+      const hasEmptyCandidateName = candidates.some(candidate => candidate.name === "");
+      if (hasEmptyCandidateName) {
+        alert("후보자 이름을 작성하세요(빈 칸은 삭제하세요)");
+        setShouldValidate(false);
+        return;
+      }
+      // 다 채웠으면 통과
+      setShouldNavigate(true);
+    }
+  }, [shouldValidate])
+
   const regist = () => {
     const today2 = changeDateFormat(new Date()) + " 00:00:00";
     const startPeriod2 = startPeriod + " 00:00:00";
     const endPeriod2 = endPeriod + " 23:59:59";
-
-    if((new Date(today2).getTime() > new Date(startPeriod2).getTime())){
+  
+    if((new Date(today2).getTime() > new Date(startPeriod2).getTime())) {
       alert("투표 시작 기간을 확인해주세요 (폼 작성 도중 날짜가 지났는지 확인하세요.)")
       setNow(changeDateFormat(new Date()));
       return;
-    } else{
+    } else {
       // 투표 생성 도중 날짜가 바뀌지 않았다면
       setResult({
         host: { name: name, contact: contact, broadcast: broadcast },
         content: { title: title, mainImage: mainImage, description: description, startPeriod: startPeriod2, endPeriod: endPeriod2, openResult: openResult },
         candidates: candidates,
       });
-      setShouldNavigate(true);
+  
+      setShouldValidate(true);
     }
   };
+  
+  
 
   const addCandidate = () => {
     setCandidates([...candidates, {name: "", imageName: "", image: ""}]);
@@ -178,14 +207,14 @@ const Regist = () => {
     const file = fileInput.files ? fileInput.files[0] : null;
   
     if (!file) {
-      if(index > -1) {
-      const updatedCandidates = [...candidates];
-      updatedCandidates[index].imageName = "";
-      updatedCandidates[index].image = "";
-      setCandidates(updatedCandidates);
-      } else {
+      if(index = 99999) {
         setMainImage("");
         setImageName("");
+      } else {
+        const updatedCandidates = [...candidates];
+        updatedCandidates[index].imageName = "";
+        updatedCandidates[index].image = "";
+        setCandidates(updatedCandidates);
       }
     } else {
       // 파일 확장자 검증 로직
@@ -221,10 +250,10 @@ const Regist = () => {
         <div className="box">
           <div><img src={redDot} alt="redDot" className="redDot"/> 방송사</div>
           <select value={broadcast} onChange={(e) => setBroadcast(e.target.value)}>
-            <option value="default" disabled hidden>
+            <option value="" disabled hidden>
               선택하세요
             </option>
-            <option value="">기타(해당 없음)</option>
+            <option value="none">기타(해당 없음)</option>
             <option value="SBS">SBS</option>
             <option value="KBS">KBS</option>
             <option value="MBC">MBC</option>
@@ -261,7 +290,7 @@ const Regist = () => {
                 type="file"
                 accept=".jpg,.jpeg,.png,.webp,.gif,.bmp"
                 onChange={(e) =>
-                  validateFile(e, (file) => mainImageChange(file), -1) // 검증 통과 시 mainImageChange 호출
+                  validateFile(e, (file) => mainImageChange(file), 99999) // 검증 통과 시 mainImageChange 호출
                 }
               />
               <span>{imageName === "" ? "선택된 파일 없음" : imageName}</span>

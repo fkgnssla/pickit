@@ -68,17 +68,21 @@ input[type="file"]{
 label {
     display: inline-block;
     padding: .1em .75em;
-    color: #999;
+    color: white;
     font-size: inherit;
     line-height: normal;
     vertical-align: middle;
-    background-color: black;
+    background-color: rgb(233, 188, 194);
     cursor: pointer;
-    border: 1px solid rgb(196, 196, 196);
+    /* border: 1px solid rgb(187, 150, 155); */
     border-radius: 5px;
     width: 75px;
-    margin-right: 10px;
+    margin-right: 5px;
   }
+
+label:hover{
+    background-color: rgb(187, 150, 155);
+}
 
 textarea{
     border: solid 1px;
