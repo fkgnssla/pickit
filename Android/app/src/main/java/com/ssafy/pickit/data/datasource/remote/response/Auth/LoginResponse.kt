@@ -1,4 +1,4 @@
-package com.ssafy.pickit.data.datasource.remote.response
+package com.ssafy.pickit.data.datasource.remote.response.Auth
 
 import com.google.gson.annotations.SerializedName
 

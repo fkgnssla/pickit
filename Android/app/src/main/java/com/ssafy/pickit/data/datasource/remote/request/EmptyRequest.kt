@@ -1,6 +1,5 @@
 package com.ssafy.pickit.data.datasource.remote.request
 
-
-data class LoginRequest(
-    val token: String
+data class EmptyRequest (
+    val empty: String
 )
