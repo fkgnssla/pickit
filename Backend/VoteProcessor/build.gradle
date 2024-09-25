@@ -25,36 +25,17 @@ repositories {
 
 dependencies {
     // Spring boot
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-    implementation 'org.springframework.boot:spring-boot-starter-kafka'
-    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
     // Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
     implementation 'org.apache.kafka:kafka-clients'
-
-    // Web3j
-    implementation 'org.web3j:core:4.8.7'
-
-    // MongoDB
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
     // Swagger
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 
-    // Kafka
-    implementation 'org.apache.kafka:kafka-clients:3.5.1'
-
-    runtimeOnly 'com.mysql:mysql-connector-j'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.kafka:spring-kafka-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
 }
