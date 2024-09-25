@@ -1,31 +1,9 @@
 spring:
-  # MySQL 연결 정보
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${DEV_MYSQL_URL}
-    username: ${DEV_MYSQL_USERNAME}
-    password: ${DEV_MYSQL_PASSWORD}
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 5
-      idle-timeout: 60000
-      max-lifetime: 1800000
-      connection-timeout: 30000
   data:
     # MongoDB 연결 정보
     mongodb:
       uri: ${DEV_MONGO_URL}
-    # Redis 연결 정보
-    redis:
-      host: ${DEV_REDIS_HOST}
-      port: ${DEV_REDIS_PORT}
-      password: ${DEV_REDIS_PASSWORD}
-  # RabbitMQ 연결 정보
-  rabbitmq:
-    host: ${DEV_RABBITMQ_HOST}
-    port: ${DEV_RABBITMQ_PORT}
-    username: ${DEV_RABBITMQ_USEANAME}
-    password: ${DEV_RABBITMQ_PASSWORD}
+      database: ${DEV_MONGO_DATABASE}
   # Kafka 연결 정보
   kafka:
     bootstrap-servers: ${DEV_KAFKA_BOOTSTRAP_SERVERS}
@@ -36,8 +14,5 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       properties:
         spring.json.trusted.packages: "*"
-
-# 블록체인 네트워크 자동 배포 URL
-vote-session:
-  deploy:
-    url: ${VOTE_SESSION_DEPLOY_URL}
+    topic:
+      vote-topic: ${DEV_KAFKA_TOPIC_NAME}

@@ -1,27 +1,14 @@
 spring:
   profiles:
-    include: jwt
     active: ${SPRING_ACTIVE_PROFILE:dev}
   jackson:
     property-naming-strategy: SNAKE_CASE
   mvc:
     servlet:
       path: /api
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    defer-datasource-initialization: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-        show_sql: true
   servlet:
     multipart:
       max-file-size: 50MB
       max-request-size: 50MB
   config:
     import: optional:file:.env[.properties]
-kakao:
-  user-info-url: ${KAKAO_USER_INFO_URL}
