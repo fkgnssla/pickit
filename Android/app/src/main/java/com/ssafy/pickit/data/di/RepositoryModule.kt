@@ -1,5 +1,6 @@
 package com.ssafy.pickit.data.di
 
+import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManager
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import com.ssafy.pickit.data.datasource.remote.api.auth.AuthApi
 import com.ssafy.pickit.data.datasource.remote.blockchain.WalletFunction
@@ -20,8 +21,9 @@ object RepositoryModule {
     @Singleton
     fun providesAuthRepository(
         localPreferenceDataSource: LocalPreferenceDataSource,
+        localKeyStoreManager: LocalKeyStoreManager,
         authApi: AuthApi
-    ): AuthRepository = AuthRepositoryImpl(localPreferenceDataSource, authApi)
+    ): AuthRepository = AuthRepositoryImpl(localPreferenceDataSource, localKeyStoreManager, authApi)
 
     @Provides
     @Singleton
