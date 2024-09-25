@@ -30,7 +30,7 @@ public class VoteSession {
 
 	private String description;
 
-	private String imgUrl;
+	private String thumbnail;
 
 	private Candidate winner;
 
@@ -47,7 +47,7 @@ public class VoteSession {
 			.contractAddress(contractAddress)
 			.title(tempVoteSession.getTitle())
 			.description(tempVoteSession.getDescription())
-			.imgUrl(tempVoteSession.getImgUrl())
+			.thumbnail(tempVoteSession.getThumbnail())
 			.winner(null)
 			.candidates(candidates)
 			.startDate(tempVoteSession.getStartDate())

@@ -7,7 +7,7 @@ import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
 public record VoteSessionListResponse(
 	String id,
 	String title,
-	String imgUrl,
+	String thumbnail,
 	LocalDateTime startDate,
 	LocalDateTime endDate
 ) {
@@ -15,7 +15,7 @@ public record VoteSessionListResponse(
 		return new VoteSessionListResponse(
 			voteSession.getId(),
 			voteSession.getTitle(),
-			voteSession.getImgUrl(),
+			voteSession.getThumbnail(),
 			voteSession.getStartDate(),
 			voteSession.getEndDate()
 		);

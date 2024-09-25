@@ -2,6 +2,8 @@ package com.ssafy.pickit.global.response;
 
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -30,15 +32,15 @@ public class ResponseUtils {
 	 * 에러
 	 */
 
-	public static ApiResponse<Void> error(String code, String message) {
-		return error(code, null, message);
+	public static ApiResponse<Void> error(HttpStatus httpStatus, String message) {
+		return error(httpStatus, null, message);
 	}
 
-	public static <T> ApiResponse<T> error(String code, T data, String message) {
+	public static <T> ApiResponse<T> error(HttpStatus httpStatus, T data, String message) {
 		return ApiResponse.<T>builder()
 			.data(data)
 			.status(ResponseStatus.ERROR)
-			.code(code)
+			.code(httpStatus.value() + "")
 			.message(message)
 			.build();
 	}
