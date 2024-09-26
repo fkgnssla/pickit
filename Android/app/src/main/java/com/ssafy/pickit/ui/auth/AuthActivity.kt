@@ -1,7 +1,6 @@
 package com.ssafy.pickit.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -29,22 +28,18 @@ class AuthActivity : AppCompatActivity() {
         }
         initButtonClickListener()
         initViewModelObserve()
-
-        /* 작업 환경 변경시 해당 해시값 카카오 디벨로퍼에 등록
-        var keyHash = Utility.getKeyHash(this)
-        Log.d("kakaoHash", keyHash)
-         */
-
     }
 
     private fun initViewModelObserve() {
         viewModel.loginState.observe(this) { state ->
             when (state) {
                 is AuthViewModel.LoginState.OldUserState -> {
+                    finish()
                     MainActivity.start(this)
                 }
 
                 is AuthViewModel.LoginState.NewUserState -> {
+                    finish()
                     RegisterActivity.start(this)
                 }
 
@@ -58,13 +53,11 @@ class AuthActivity : AppCompatActivity() {
     private fun getKaKaoToken(callback: (OAuthToken?, Throwable?) -> Unit) {
         val isKakaoLoginAvailable = UserApiClient.instance.isKakaoTalkLoginAvailable(this)
         if (isKakaoLoginAvailable) {
-            Log.d("kakaoLogin", "카카오톡으로 로그인 가능")
             UserApiClient.instance.loginWithKakaoTalk(
                 this,
                 callback = callback
             )
         } else {
-            Log.d("kakaoLogin", "카카오톡으로 로그인 불가능")
             UserApiClient.instance.loginWithKakaoAccount(
                 this,
                 callback = callback
