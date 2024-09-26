@@ -131,9 +131,9 @@ class AuthActivity : AppCompatActivity() {
 
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
-            getKaKaoToken(kakaoLoginCallback)
+//            getKaKaoToken(kakaoLoginCallback)
 
-//            MainActivity.start(this)
+            MainActivity.start(this)
 
 
         }
