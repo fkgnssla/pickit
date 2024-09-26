@@ -11,9 +11,6 @@ cache:
 build_Core:
   stage: build
   script:
-    - cd /home/ubuntu/PickIt/S11P21A309/Backend/Core
-    - chmod +x ./gradlew
-    - ./gradlew clean build -x test
     - sh ~/spring.sh
     - sh ~/contract.sh # 임시
   only:
