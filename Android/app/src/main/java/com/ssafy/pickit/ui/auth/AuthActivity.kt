@@ -27,6 +27,7 @@ class AuthActivity : AppCompatActivity() {
             this.authViewModel = viewModel
         }
         initButtonClickListener()
+<<<<<<< HEAD
         initViewModelObserve()
     }
 
@@ -47,6 +48,8 @@ class AuthActivity : AppCompatActivity() {
                 }
             }
         }
+=======
+>>>>>>> develop
     }
 
     //TODO : util 함수로 분리할 것(activity context 넘기는 방식으로)
@@ -65,6 +68,19 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
+<<<<<<< HEAD
+=======
+    private val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
+        if (token != null) {
+            // 사용자 정보 가져오기
+            MainActivity.start(this)
+        } else if (error != null) {
+            Log.d("kakaoLogin", error.toString())
+        }
+    }
+
+
+>>>>>>> develop
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
             getKaKaoToken(viewModel.kakaoLoginCallback)
