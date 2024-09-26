@@ -66,6 +66,7 @@ class RegisterActivity : AppCompatActivity() {
             when (state) {
                 is RegisterViewModel.ApiState.SuccessState -> {
                     Toast.makeText(this, "정보 등록 완료", Toast.LENGTH_SHORT).show()
+                    MainActivity.start(this)
                 }
                 is RegisterViewModel.ApiState.FailState -> {
                     Toast.makeText(this, "정보 등록 실패", Toast.LENGTH_SHORT).show()
