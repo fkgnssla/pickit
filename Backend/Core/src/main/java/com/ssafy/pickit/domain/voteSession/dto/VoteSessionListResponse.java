@@ -9,15 +9,17 @@ public record VoteSessionListResponse(
 	String title,
 	String thumbnail,
 	LocalDateTime startDate,
-	LocalDateTime endDate
+	LocalDateTime endDate,
+	Boolean isVote
 ) {
-	public static VoteSessionListResponse from(VoteSession voteSession) {
+	public static VoteSessionListResponse from(VoteSession voteSession, Boolean isVote) {
 		return new VoteSessionListResponse(
 			voteSession.getId(),
 			voteSession.getTitle(),
 			voteSession.getThumbnail(),
 			voteSession.getStartDate(),
-			voteSession.getEndDate()
+			voteSession.getEndDate(),
+			isVote
 		);
 	}
 }

@@ -4,17 +4,26 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.pickit.domain.tempVoteSession.application.service.TempVoteSessionService;
 import com.ssafy.pickit.domain.tempVoteSession.domain.TempVoteSession;
+import com.ssafy.pickit.domain.vote.application.service.VoteService;
+import com.ssafy.pickit.domain.vote.domain.Vote;
+import com.ssafy.pickit.domain.vote.dto.VoteValid;
 import com.ssafy.pickit.domain.voteSession.application.repository.VoteSessionRepository;
 import com.ssafy.pickit.domain.voteSession.domain.Candidate;
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
+import com.ssafy.pickit.domain.voteSession.dto.CandidateResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
@@ -28,6 +37,8 @@ public class VoteSessionService {
 	private final TempVoteSessionService tempVoteSessionService;
 	private final VoteSessionDeployService voteSessionDeployService;
 	private final CollectionService collectionService;
+	private final MongoTemplate mongoTemplate;
+	private final VoteService voteService;
 
 	@Transactional
 	public void create(String id) {
@@ -49,23 +60,28 @@ public class VoteSessionService {
 		});
 	}
 
-	public List<VoteSessionListResponse> findAllByOngoing() {
+	public List<VoteSessionListResponse> findAllByOngoing(Long memberId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
-		return mapToVoteSessionListResponse(voteSessions);
+
+		List<Vote> votes = voteService.findByMemberId(memberId);
+
+		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
 	public List<VoteSessionListResponse> findAllByEnd() {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByEnd(LocalDateTime.now(),
 			Sort.by(Sort.Direction.DESC, "endDate"));
-		return mapToVoteSessionListResponse(voteSessions);
+		return mapToVoteSessionListResponse(voteSessions, null);
 	}
 
-	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, String broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
 			LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
-		return mapToVoteSessionListResponse(voteSessions);
+		List<Vote> votes = voteService.findByMemberId(memberId);
+
+		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
 	private VoteSession findById(String id) {
@@ -73,8 +89,29 @@ public class VoteSessionService {
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
 	}
 
-	public VoteSessionResponse findOne(String id) {
-		return VoteSessionResponse.from(findById(id));
+	public VoteSessionResponse findOne(String voteSessionId) {
+		return VoteSessionResponse.from(findById(voteSessionId));
+	}
+
+	public List<CandidateResponse> findResult(Long memberId, String voteSessionId) {
+		VoteSession voteSession = findById(voteSessionId);
+		List<Candidate> candidates = voteSession.getCandidates();
+		String candidateId = checkVotedCandidate(memberId, voteSessionId);
+
+		return candidates.stream()
+			.map(candidate -> {
+				if (candidate.getId().equals(candidateId)) {
+					return CandidateResponse.of(candidate, true);
+				} else
+					return CandidateResponse.of(candidate, false);
+			}).toList();
+	}
+
+	public String checkVotedCandidate(Long memberId, String voteSessionId) {
+		Query query = new Query();
+		query.addCriteria(Criteria.where("memberId").is(memberId));
+		VoteValid voteValid = mongoTemplate.findOne(query, VoteValid.class, voteSessionId);
+		return (voteValid != null) ? voteValid.candidateId() : null;
 	}
 
 	public void updateVoteCnt(String voteSessionId, String candidateId) {
@@ -94,7 +131,7 @@ public class VoteSessionService {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndEnd(broadcastId,
 			LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "endDate"));
 
-		return mapToVoteSessionListResponse(voteSessions);
+		return mapToVoteSessionListResponse(voteSessions, null);
 	}
 
 	private static List<VoteSessionResponse> mapToVoteSessionResponse(List<VoteSession> voteSessions) {
@@ -102,9 +139,21 @@ public class VoteSessionService {
 			.map(VoteSessionResponse::from).toList();
 	}
 
-	private static List<VoteSessionListResponse> mapToVoteSessionListResponse(List<VoteSession> voteSessions) {
+	private static List<VoteSessionListResponse> mapToVoteSessionListResponse(List<VoteSession> voteSessions,
+		List<Vote> votes) {
+		if (votes == null) {
+			return voteSessions.stream()
+				.map(vs -> VoteSessionListResponse.from(vs, false))
+				.toList();
+		}
+
+		Set<String> votedSessionIds = votes.stream()
+			.map(Vote::getVoteSessionId)
+			.collect(Collectors.toSet());
+
 		return voteSessions.stream()
-			.map(VoteSessionListResponse::from).toList();
+			.map(vs -> VoteSessionListResponse.from(vs, votedSessionIds.contains(vs.getId())))
+			.toList();
 	}
 
 	// 후보자 리스트 매핑 메서드로 분리
