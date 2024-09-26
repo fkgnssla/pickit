@@ -1,7 +1,9 @@
 package com.ssafy.pickit.data.datasource.remote.api.auth
 
-import com.ssafy.pickit.data.datasource.remote.request.LoginRequest
-import com.ssafy.pickit.data.datasource.remote.response.LoginResponse
+import com.ssafy.pickit.data.datasource.remote.request.auth.LoginRequest
+import com.ssafy.pickit.data.datasource.remote.request.auth.RegisterRequest
+import com.ssafy.pickit.data.datasource.remote.response.Auth.LoginResponse
+import com.ssafy.pickit.data.datasource.remote.response.ResponseWrapper
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -10,5 +12,10 @@ interface AuthApi {
     @POST("auth/login")
     suspend fun kakaoLogin(
         @Body request: LoginRequest
-    ): LoginResponse
+    ): ResponseWrapper<LoginResponse>
+
+    @POST("auth/sign-up")
+    suspend fun register(
+        @Body request: RegisterRequest
+    ): ResponseWrapper<LoginResponse>
 }

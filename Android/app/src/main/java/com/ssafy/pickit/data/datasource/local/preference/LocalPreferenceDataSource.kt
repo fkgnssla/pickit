@@ -13,4 +13,8 @@ interface LocalPreferenceDataSource {
 
     fun getWalletAddress(): String?
 
+    fun setSocialId(socialId: String)
+
+    fun getSocialId(): String?
+
 }

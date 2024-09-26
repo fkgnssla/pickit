@@ -1,14 +1,11 @@
 package com.ssafy.pickit.ui.auth
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
-import com.ssafy.pickit.R
 import com.ssafy.pickit.databinding.ActivityAuthBinding
 import com.ssafy.pickit.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +27,26 @@ class AuthActivity : AppCompatActivity() {
             this.authViewModel = viewModel
         }
         initButtonClickListener()
+        initViewModelObserve()
+    }
+
+    private fun initViewModelObserve() {
+        viewModel.loginState.observe(this) { state ->
+            when (state) {
+                is AuthViewModel.LoginState.OldUserState -> {
+                    finish()
+                    MainActivity.start(this)
+                }
+
+                is AuthViewModel.LoginState.NewUserState -> {
+                    finish()
+                    RegisterActivity.start(this)
+                }
+
+                is AuthViewModel.LoginState.LoadingState -> {
+                }
+            }
+        }
     }
 
     //TODO : util 함수로 분리할 것(activity context 넘기는 방식으로)
@@ -48,20 +65,10 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (token != null) {
-            // 사용자 정보 가져오기
-            MainActivity.start(this)
-        } else if (error != null) {
-            Log.d("kakaoLogin", error.toString())
-        }
-    }
-
 
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
-            getKaKaoToken(kakaoLoginCallback)
-
+            getKaKaoToken(viewModel.kakaoLoginCallback)
         }
     }
 }
