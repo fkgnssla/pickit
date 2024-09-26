@@ -15,7 +15,9 @@ build_Core:
     - chmod +x ./gradlew
     - ./gradlew clean build -x test
     - sh ~/spring.sh
+    - sh ~/contract.sh # 임시
   only:
     - release
   tags:
     - backend
+
