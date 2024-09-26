@@ -1,6 +1,7 @@
 package com.ssafy.pickit.domain.tempVoteSession.application.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
@@ -39,7 +40,7 @@ public class TempVoteSessionService {
 
 	public TempVoteSession findById(String id) {
 		return tempVoteSessionRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Invalid tempVoteSession id: " + id));
+			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 임시 투표 정보입니다."));
 	}
 
 	public boolean delete(String id) {

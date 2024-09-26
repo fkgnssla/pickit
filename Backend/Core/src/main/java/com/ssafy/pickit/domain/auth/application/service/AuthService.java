@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
 import com.ssafy.pickit.domain.auth.dto.TokenResponse;
+import com.ssafy.pickit.domain.auth.exception.KakaoAPIException;
 import com.ssafy.pickit.domain.member.application.service.MemberService;
 import com.ssafy.pickit.domain.member.domain.Member;
 import com.ssafy.pickit.domain.wallet.application.service.WalletService;
@@ -51,6 +52,13 @@ public class AuthService {
 		HttpEntity<String> entity = new HttpEntity<>("", headers);
 
 		ResponseEntity<Map> response = restTemplate.exchange(KAKAO_USER_INFO_URL, HttpMethod.GET, entity, Map.class);
+		if (!response.getStatusCode().is2xxSuccessful()) {
+			throw new KakaoAPIException("카카오 자원 서버 API 요청 실패");
+		}
+
+		if (response.getBody() == null || response.getBody().isEmpty()) {
+			throw new KakaoAPIException("카카오 자원 서버 API 요청 실패");
+		}
 		return response.getBody();
 	}
 

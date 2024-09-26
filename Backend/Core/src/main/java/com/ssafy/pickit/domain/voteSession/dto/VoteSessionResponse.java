@@ -20,7 +20,7 @@ public record VoteSessionResponse(
 			voteSession.getId(),
 			voteSession.getTitle(),
 			voteSession.getDescription(),
-			voteSession.getImgUrl(),
+			voteSession.getThumbnail(),
 			voteSession.getCandidates(),
 			voteSession.getStartDate(),
 			voteSession.getEndDate()
