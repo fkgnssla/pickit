@@ -66,6 +66,13 @@ public class VoteSessionController {
 		return ResponseUtils.success(voteSessionService.findOne(id));
 	}
 
+	@Operation(summary = "투표 세션 결과 조회", description = "투표 세션의 결과를 반환합니다.")
+	@GetMapping("/results/{id}")
+	public ApiResponse<?> findResult(@PathVariable("id") String id,
+		@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(voteSessionService.findResult(principalDetail.getId(), id));
+	}
+
 	@Operation(summary = "내가 투표한 후보자 식별자 조회", description = "내가 투표한 후보자의 식별자를 조회합니다.")
 	@GetMapping("/validate/{id}")
 	public ApiResponse<?> findInfo(@PathVariable("id") String id,

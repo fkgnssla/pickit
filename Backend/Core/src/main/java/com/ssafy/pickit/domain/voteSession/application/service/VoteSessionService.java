@@ -23,6 +23,7 @@ import com.ssafy.pickit.domain.vote.dto.VoteValid;
 import com.ssafy.pickit.domain.voteSession.application.repository.VoteSessionRepository;
 import com.ssafy.pickit.domain.voteSession.domain.Candidate;
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
+import com.ssafy.pickit.domain.voteSession.dto.CandidateResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
@@ -90,6 +91,20 @@ public class VoteSessionService {
 
 	public VoteSessionResponse findOne(String voteSessionId) {
 		return VoteSessionResponse.from(findById(voteSessionId));
+	}
+
+	public List<CandidateResponse> findResult(Long memberId, String voteSessionId) {
+		VoteSession voteSession = findById(voteSessionId);
+		List<Candidate> candidates = voteSession.getCandidates();
+		String candidateId = checkVotedCandidate(memberId, voteSessionId);
+
+		return candidates.stream()
+			.map(candidate -> {
+				if (candidate.getId().equals(candidateId)) {
+					return CandidateResponse.of(candidate, true);
+				} else
+					return CandidateResponse.of(candidate, false);
+			}).toList();
 	}
 
 	public String checkVotedCandidate(Long memberId, String voteSessionId) {
