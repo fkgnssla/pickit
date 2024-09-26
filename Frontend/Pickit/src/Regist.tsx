@@ -1,9 +1,10 @@
 import { useState, ChangeEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import noFile from "./assets/no_file.png";
 import redDot from "./assets/red_dot.png";
-import deleteIcon from "./assets/delete.svg"
-import addIcon from "./assets/add.svg"
+import deleteIcon from "./assets/delete.svg";
+import addIcon from "./assets/add.svg";
 import "./css/regist.css";
 
 const Regist = () => {
@@ -15,11 +16,11 @@ const Regist = () => {
   const [mainImage, setMainImage] = useState<string>('');
   const [imageName, setImageName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [now, setNow] = useState<string>(changeDateFormat(new Date())); // 날짜 형식 yyyy-mm-dd
+  const [now, setNow] = useState<string>(changeDateFormat(new Date())); // 날짜 형식 yyyy-mm-dd hh-mm
   const [startPeriod, setStartPeriod] = useState<string>('');
   const [endPeriod, setEndPeriod] = useState<string>('');
   const [openResult, setOpenResult] = useState(false);
-  const [shouldValidate, setShouldValidate] = useState(false); // 빈 값이 없는지 검사하는 상태
+  const [shouldPeriodValidate, setShouldPeriodValidate] = useState(false); // 투표 시간이 유효한지 확인
   const [shouldNavigate, setShouldNavigate] = useState(false); // 상태 업데이트를 감지하기 위한 상태 추가
   const [candidates, setCandidates] = useState(
     Array.from({ length: 2 }, () => ({ name: "", imageName: "", image: "" }))
@@ -51,103 +52,119 @@ const Regist = () => {
      );
   }
   
-  const validateStartPeriod = (period: string) => {
-    const period2 = period + " 00:00:00";
-    const now2 = now.substring(0, 10) + " 00:00:00";
-    // 시작날이 어제 이전이면 예외처리
-    if(new Date(period2).getTime() < new Date(now2).getTime()){
-      alert("투표 시작 날짜가 오늘 이전일 수 없습니다.")
-      return;
-    } else {
-      if(endPeriod === ""){
-        setStartPeriod(period);
+  const validatePeriod = (period: string, type: string) => {
+    if(type === "startPeriod") {
+      // 시작 시간이 과거면 예외처리
+      if(new Date(period).getTime() < new Date(now).getTime()){
+        alert("투표 시작 시간이 현재 이전일 수 없습니다.")
+        return;
       } else {
-        // 종료 날짜보다 뒤에 있으면 예외처리
-        const endPeriod2 = endPeriod + " 23:59:59";
-        if(new Date(period2).getTime() > new Date(endPeriod2).getTime()){
-          alert("투표 종료 날짜를 확인하세요");
-          setStartPeriod(""); 
-        } else{
-         setStartPeriod(period); 
+        // 시작 시간 > 종료 시간이면 예외처리
+        if(endPeriod === ""){
+          setStartPeriod(period);
+        } else {
+          if(new Date(period).getTime() >= new Date(endPeriod).getTime()){
+            alert("투표 종료 날짜를 확인하세요");
+            setStartPeriod(""); 
+          } else{
+           setStartPeriod(period); 
+          }
         }
       }
-    }
-  }
-
-  const validateEndPeriod = (period: string) => {
-    const period2 = period + " 23:59:59";
-    const startPeriod2 = startPeriod + " 00:00:00";
-    // 시작 기간을 먼저 입력하게
-    if(startPeriod===""){
-      alert("투표 시작 날짜를 먼저 선택하세요")
-      setEndPeriod(""); 
-      return;
-    } else {
-      // 종료 기간이 시작 기간 이전이면 예외처리
-      if(new Date(startPeriod2).getTime() > new Date(period2).getTime()){
-        alert("투표 시작 날짜를 확인하세요");
+    } else if (type === "endPeriod") {
+      // 시작 시간이 먼저 있어야 함
+      if(startPeriod === ""){
+        alert("투표 시작 날짜를 먼저 선택하세요")
         setEndPeriod(""); 
-      } else{
-        setEndPeriod(period); 
+        return;
+      } else {
+        // 시작 시간 >= 종료 시간 이전이면 예외처리
+        if(new Date(startPeriod).getTime() >= new Date(period).getTime()){
+          alert("투표 시작 시간를 확인하세요");
+          setEndPeriod(""); 
+        } else {
+          setEndPeriod(period); 
+        }
       }
     }
   }
   /// 투표 기간 영역(끝)
 
+  // 잘 입력되었으면 전송
   useEffect(() => {
     if (shouldNavigate) {
-      // console.log(result);
+
+      const formData = new FormData();
+      formData.append('broadcast_id', broadcast);
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('start_date', startPeriod);
+      formData.append('end_date', endPeriod);
+      if (mainImage) {
+        formData.append('thumbnail', mainImage); // 메인 이미지 파일
+      }
+      candidates.forEach((candidate, index) => {
+        formData.append(`candidates[${index}].name`, candidate.name);
+        if (candidate.image) {
+          formData.append(`candidates[${index}].profile_img`, candidate.image); // 후보자 이미지 파일
+        }
+      });
+
+      axios({
+        method: 'post',
+        url: 'http://43.202.60.229:8080/api/temp-vote-session',
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'Authorization': '???????????',
+        },
+        data: formData
+      });
+           
       navigate("/done");
     }
   }, [shouldNavigate]);
 
-  // 빈 값이 없으면 shouldNavigate = true 후 post요청, page이동
+  // 빈 값이 없고, 투표 시간이 적절하면 통과
   useEffect(() =>{
-    if(shouldValidate) {
-      const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
-      const elements = [name, contact, broadcast, title, mainImage, description, startPeriod, endPeriod];
-      
-      for (let i = 0; i < elements.length; i++) {
-        if (elements[i] === "") {
-          alert(messages[i]);
-          setShouldValidate(false);
-          return;
-        }
+    if(shouldPeriodValidate) {
+      // 투표 시작시간이 과거면 에러처리
+      setNow(changeDateFormat(new Date()));
+      if((new Date(now).getTime() > new Date(startPeriod).getTime())) {
+        alert("투표 시작 시간을 확인해주세요 (폼 작성 도중 시작 시간을 지났는지 확인하세요.)")
+        setNow(changeDateFormat(new Date()));
+        setStartPeriod("");
+        setEndPeriod("");
+        setShouldPeriodValidate(false);
+        return;
+      } else {
+        setResult({
+          host: { name: name, contact: contact, broadcast: broadcast },
+          content: { title: title, mainImage: mainImage, description: description, startPeriod: startPeriod, endPeriod: endPeriod, openResult: openResult },
+          candidates: candidates,
+        });
+        setShouldNavigate(true);
       }
-      // 후보자들 이름이 빈 값인지 검사
-      const hasEmptyCandidateName = candidates.some(candidate => candidate.name === "");
-      if (hasEmptyCandidateName) {
-        alert("후보자 이름을 작성하세요(빈 칸은 삭제하세요)");
-        setShouldValidate(false);
+    }
+  }, [shouldPeriodValidate])
+
+  const isNull = () => {
+    const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
+    const elements = [name, contact, broadcast, title, mainImage, description, startPeriod, endPeriod];
+    
+    for (let i = 0; i < elements.length; i++) {
+      if (elements[i] === "") {
+        alert(messages[i]);
         return;
       }
-      // 다 채웠으면 통과
-      setShouldNavigate(true);
     }
-  }, [shouldValidate])
-
-  const regist = () => {
-    const today2 = changeDateFormat(new Date()) + " 00:00:00";
-    const startPeriod2 = startPeriod + " 00:00:00";
-    const endPeriod2 = endPeriod + " 23:59:59";
-  
-    if((new Date(today2).getTime() > new Date(startPeriod2).getTime())) {
-      alert("투표 시작 기간을 확인해주세요 (폼 작성 도중 날짜가 지났는지 확인하세요.)")
-      setNow(changeDateFormat(new Date()));
+    // 후보자들 이름이 빈 값인지 검사
+    const hasEmptyCandidateName = candidates.some(candidate => candidate.name === "");
+    if (hasEmptyCandidateName) {
+      alert("후보자 이름을 작성하세요(빈 칸은 삭제하세요)");
       return;
-    } else {
-      // 투표 생성 도중 날짜가 바뀌지 않았다면
-      setResult({
-        host: { name: name, contact: contact, broadcast: broadcast },
-        content: { title: title, mainImage: mainImage, description: description, startPeriod: startPeriod2, endPeriod: endPeriod2, openResult: openResult },
-        candidates: candidates,
-      });
-  
-      setShouldValidate(true);
     }
+    setShouldPeriodValidate(true);
   };
-  
-  
 
   const addCandidate = () => {
     setCandidates([...candidates, {name: "", imageName: "", image: ""}]);
@@ -207,7 +224,7 @@ const Regist = () => {
     const file = fileInput.files ? fileInput.files[0] : null;
   
     if (!file) {
-      if(index = 99999) {
+      if (index === 99999) {
         setMainImage("");
         setImageName("");
       } else {
@@ -305,19 +322,22 @@ const Regist = () => {
         <div className="box">
         <img src={redDot} alt="redDot" className="redDot"/>
           <span> 시작 </span>
-          <input type="date" value={startPeriod} onChange={(e) => validateStartPeriod(e.target.value)}/>
+          <input type="datetime-local" value={startPeriod} onChange={(e) => validatePeriod(e.target.value, "startPeriod")}/>
           <span> ~ 종료 </span>
-          <input type="date" value={endPeriod} onChange={(e) => validateEndPeriod(e.target.value)}/>
+          <input type="datetime-local" value={endPeriod} onChange={(e) => validatePeriod(e.target.value, "endPeriod")}/>
         </div>
         <div className="box">
           <span><img src={redDot} alt="redDot" className="redDot" /> 중간결과 공개 여부 </span>
-          <input type="checkbox" onChange={(e) => setOpenResult(!openResult)}/>
+          <input type="checkbox" checked={openResult} onChange={(e) => setOpenResult(!e.target.value)}/>
         </div>
-      </div>
+      {/* </div> */}
       <br />
-      <h3>후보자</h3>
-      <span><img src={redDot} alt="redDot" className="redDot"/> 최소 2명 이상 등록</span>
-      <div className="border">
+      <div className="box">
+        <h4>후보자</h4>
+        <span><img src={redDot} alt="redDot" className="redDot"/> 최소 2명 이상 등록</span>
+        <hr />
+      </div>
+      {/* <div className="border"> */}
         {candidates.map((candidate, index) => (
           <div className="box" key={index}>
             <div className="candidateHeader">
@@ -367,7 +387,7 @@ const Regist = () => {
       </div>
       <br />
       <div className="okButtonBox">
-        <p className="okButton" onClick={regist}>제출</p>
+        <p className="okButton" onClick={isNull}>제출</p>
       </div>
     </div>
   );
