@@ -1,0 +1,18 @@
+spring:
+  data:
+    # MongoDB 연결 정보
+    mongodb:
+      uri: ${DEV_MONGO_URL}
+      database: ${DEV_MONGO_DATABASE}
+  # Kafka 연결 정보
+  kafka:
+    bootstrap-servers: ${DEV_KAFKA_BOOTSTRAP_SERVERS}
+    consumer:
+      group-id: ${DEV_KAFKA_CONSUMER_GROUP_ID}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+    topic:
+      vote-topic: ${DEV_KAFKA_TOPIC_NAME}
