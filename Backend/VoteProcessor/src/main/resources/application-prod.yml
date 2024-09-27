@@ -6,7 +6,7 @@ spring:
       database: ${PROD_MONGO_DATABASE}
   # Kafka 연결 정보
   kafka:
-    bootstrap-servers: ${DEV_KAFKA_BOOTSTRAP_SERVERS}
+    bootstrap-servers: ${PROD_KAFKA_BOOTSTRAP_SERVERS}
     consumer:
       group-id: ${PROD_KAFKA_CONSUMER_GROUP_ID}
       auto-offset-reset: earliest
