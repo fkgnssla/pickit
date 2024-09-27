@@ -3,24 +3,28 @@ server:
 
 eureka:
   client:
-    register-with-eureka: true # eureka server? registry? ???? ??
-    fetch-registry: true       # registry? ?? ???? ???? ??
+    register-with-eureka: true
+    fetch-registry: true
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: ${DEV_EUREKA_SERVICE_URL}
 
 
 spring:
   application:
     name: pickit-gateway-service
+  profiles:
+    include: jwt
   cloud:
     gateway:
+      default-filters:
+        - name: AuthenticationFilter #Global Filter
+          args:
+            baseMessage: Spring Cloud Gateway Authentication Filter
+            preLogger: true
+            postLogger: true
       routes:
         - id: pickit-core-service
           uri: http://localhost:8080/
           predicates:
-            - Path=/api/** # ?????
-            - Method=GET,POST,PUT,DELETE # ?? HTTP ???? ??
-#          filters:
-#            - RewritePath=/api/temp-vote-session/(?<segment>.*), /$\{segment}
-#            - RemoveRequestHeader=Cookie # ?? ?? ??
-#            - AuthorizationHeaderFilter # ??? ?? ???
+            - Path=/api/** # endpoint
+            - Method=GET,POST,PUT,DELETE
