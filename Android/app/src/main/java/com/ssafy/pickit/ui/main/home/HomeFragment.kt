@@ -3,10 +3,7 @@ package com.ssafy.pickit.ui.main.home
 import ChannelButtonAdapter
 import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.NestedScrollView
@@ -19,10 +16,8 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.ssafy.pickit.R
 import com.ssafy.pickit.common.BaseFragment
-import com.ssafy.pickit.data.datasource.remote.response.CandidateResult
+import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
 import com.ssafy.pickit.databinding.FragmentHomeBinding
-import com.ssafy.pickit.databinding.FragmentMyPageBinding
-import com.ssafy.pickit.ui.main.mypage.MyPageViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()

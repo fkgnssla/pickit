@@ -1,39 +1,72 @@
 package com.ssafy.pickit.data.repositoryImpl
 
 import com.ssafy.pickit.data.datasource.remote.api.vote.VoteApi
-import com.ssafy.pickit.data.datasource.remote.response.ApiResponse
-import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
-import com.ssafy.pickit.data.datasource.remote.response.VoteResultResponse
-import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
+import com.ssafy.pickit.data.datasource.remote.request.vote.VoteRequest
+import com.ssafy.pickit.data.datasource.remote.response.ResponseWrapper
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
+
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
+import com.ssafy.pickit.data.mapper.VoteMapper
+import com.ssafy.pickit.data.mapper.VoteMapper.mapperToVoteSessionData
+import com.ssafy.pickit.domain.entity.VoteItem
+import com.ssafy.pickit.domain.entity.VoteListData
+import com.ssafy.pickit.domain.entity.VoteSessionData
 import com.ssafy.pickit.domain.repository.VoteRepository
-import com.ssafy.pickit.domain.model.VoteStatus
 import javax.inject.Inject
 
+//TODO : 실패시 예외 response 처리할 것
 class VoteRepositoryImpl @Inject constructor(
     private val voteApi: VoteApi
 ) : VoteRepository {
-    override suspend fun getVoteItems(): List<String> {
-        return voteApi.getVoteItems()
+    override suspend fun getOnGoingVoteList(): List<VoteListData> {
+        val response = voteApi.getOnGoingVoteList()
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
     }
 
-    override suspend fun getVoteStatus(): VoteStatus {
-        return voteApi.getVoteStatus()
+    override suspend fun getEndVoteList(): List<VoteListData> {
+        val response = voteApi.getEndVoteList()
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
     }
 
-    override suspend fun getInProgressVotes(): ApiResponse<List<VoteResponse>> {
-
-        return voteApi.getInProgressVotes()
+    override suspend fun getOnGoingBroadcastVoteList(broadcastId: String): List<VoteListData> {
+        val response = voteApi.getOnGoingBroadcastVoteList(broadcastId)
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
     }
 
-    override suspend fun getCompletedVotes(): ApiResponse<List<VoteResponse>> {
-        return voteApi.getCompletedVotes()
+    override suspend fun getEndBroadcastVoteList(broadcastId: String): List<VoteListData> {
+        val response = voteApi.getEndBroadcastVoteList(broadcastId)
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
     }
 
-    override suspend fun getVoteDetail(voteId: String): ApiResponse<VoteSessionResponse>{
-        return voteApi.getVoteDetail(voteId)
+    override suspend fun postVote(voteItem: VoteItem): Boolean {
+        //TODO : 투표 트랜잭션 실행 후 투표 API호출로 변경할 것
+        val voteRequest = VoteRequest(
+            voteItem.voteSessionId,
+            voteItem.candidateId,
+            voteItem.transactionHash
+        )
+        val response = voteApi.postVote(voteRequest)
+
+
+        //TODO : status = fail일 경우 예외처리할 것
+        return response.status.equals("SUCCESS")
     }
+
+    override suspend fun getVoteDetail(voteId: String): VoteSessionData {
+        val response = voteApi.getVoteDetail(voteId)
+        val voteSessionResponse = response.data ?: throw Exception("Failed to retrieve vote detail")
+
+
+        return mapperToVoteSessionData(voteSessionResponse)
+    }
+
 
     override suspend fun getVoteResult(voteId: String): VoteResultResponse {
         return voteApi.getVoteResult(voteId)
     }
 }
+

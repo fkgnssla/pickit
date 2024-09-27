@@ -4,13 +4,12 @@ import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.ssafy.pickit.R
-import com.ssafy.pickit.data.datasource.remote.response.VoteResultResponse
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
 import com.ssafy.pickit.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,7 +26,7 @@ class ResultActivity : AppCompatActivity() {
         horizontalBarChart = findViewById(R.id.horizontalBarChart)
 
         val voteSessionId = intent.getStringExtra("voteSessionId") ?: return
-        viewModel.fetchVoteResultData(voteSessionId)
+//        viewModel.fetchVoteResultData(voteSessionId)
 
         viewModel.voteResultResponse.observe(this) { response ->
             response?.let {

@@ -1,8 +1,11 @@
 package com.ssafy.pickit.data.di
 
-import com.ssafy.pickit.data.datasource.local.LocalPreferenceDataSource
-import com.ssafy.pickit.data.datasource.local.LocalPreferenceDataSourceImpl
-import com.ssafy.pickit.data.datasource.local.SharedPreference
+import com.ssafy.pickit.data.datasource.local.keystore.KeyStoreManager
+import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManager
+import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManagerImpl
+import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
+import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSourceImpl
+import com.ssafy.pickit.data.datasource.local.preference.SharedPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +17,14 @@ import javax.inject.Singleton
 class LocalDataSourceModule {
     @Provides
     @Singleton
-    fun providesLocalPreferences(): LocalPreferenceDataSource =
-        LocalPreferenceDataSourceImpl(SharedPreference)
+    fun providesLocalPreferences(preference: SharedPreference): LocalPreferenceDataSource =
+        LocalPreferenceDataSourceImpl(preference)
+
+    @Provides
+    @Singleton
+    fun provideLocalKeyStoreHelper(
+        keyStoreManager: KeyStoreManager
+    ): LocalKeyStoreManager {
+        return LocalKeyStoreManagerImpl(keyStoreManager)
+    }
 }

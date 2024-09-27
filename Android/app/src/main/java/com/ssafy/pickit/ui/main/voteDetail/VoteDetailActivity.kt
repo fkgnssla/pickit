@@ -5,20 +5,18 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.ssafy.pickit.R
-import com.ssafy.pickit.data.datasource.remote.response.Candidate
-import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
+
 import com.ssafy.pickit.databinding.ActivityVoteDetailBinding
 import com.ssafy.pickit.databinding.DialogCandidateBinding
 import com.ssafy.pickit.databinding.GridItemLayoutBinding
+import com.ssafy.pickit.domain.entity.CandidateData
+import com.ssafy.pickit.domain.entity.VoteSessionData
 import com.ssafy.pickit.ui.main.result.ResultActivity
 //import com.ssafy.pickit.ui.main.result.ResultActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +27,7 @@ class VoteDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVoteDetailBinding
     private val viewModel: VoteDetailViewModel by viewModels()
-    private var selectedCandidate: Candidate? = null
+    private var selectedCandidate: CandidateData? = null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -90,7 +88,7 @@ class VoteDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun showCandidateDialog(selectedCandidate: Candidate) {
+    private fun showCandidateDialog(selectedCandidate: CandidateData) {
         val dialogBinding = DialogCandidateBinding.inflate(layoutInflater)
 
         val customDialog = AlertDialog.Builder(this)
@@ -99,7 +97,7 @@ class VoteDetailActivity : AppCompatActivity() {
 
 
         Glide.with(this)
-            .load(selectedCandidate.profile_img)
+            .load(selectedCandidate.profileImg)
             .into(dialogBinding.dialogImageView)
         dialogBinding.dialogNameTextView.text = selectedCandidate.name
 
@@ -123,15 +121,15 @@ class VoteDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun loadItemsToGrid(voteSessionResponse: VoteSessionResponse) {
+    private fun loadItemsToGrid(voteSessionData: VoteSessionData) {
         val gridLayout = binding.gridLayoutImages
         gridLayout.removeAllViews()
 
-        voteSessionResponse.candidates.forEach { candidate ->
+        voteSessionData.candidates.forEach { candidate ->
             val itemBinding = GridItemLayoutBinding.inflate(layoutInflater, gridLayout, false)
 
             Glide.with(this)
-                .load(candidate.profile_img)
+                .load(candidate.profileImg)
                 .into(itemBinding.imageView)
 
             itemBinding.textViewName.text = candidate.name

@@ -3,7 +3,7 @@
     <data>
         <variable
             name="item"
-            type="com.ssafy.pickit.data.datasource.remote.response.VoteResponse" />
+            type="com.ssafy.pickit.domain.entity.VoteListData" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"
@@ -73,7 +73,7 @@
                     android:id="@+id/textViewStartDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:formattedDateTime="@{item.startDate}" />
+                    android:text="@{item.startDate}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
                     android:id="@+id/textViewEndDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:formattedDateTime="@{item.endDate}" />
+                    android:text="@{item.endDate}" />
             </LinearLayout>
     </LinearLayout>
 </layout>

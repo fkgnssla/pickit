@@ -4,10 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.ssafy.pickit.R
-import com.ssafy.pickit.data.datasource.remote.response.Candidate
-import com.ssafy.pickit.data.datasource.remote.response.CandidateResult
-import com.ssafy.pickit.data.datasource.remote.response.VoteResultResponse
-import com.ssafy.pickit.data.datasource.remote.response.VoteSessionResponse
+import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResponse
+
+import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 
 import com.ssafy.pickit.ui.main.channel.ChannelButton
 import java.time.LocalDateTime
@@ -87,9 +88,9 @@ class HomeViewModel : ViewModel() {
             title = "예시 투표",
             description = "투표 설명",
             thumbnail = "https://via.placeholder.com/150",
-            candidates = exampleResults.map { Candidate(it.candidateName, "", it.voteCount) }, // Candidate로 변환
-            startDate = LocalDateTime.now(),
-            endDate = LocalDateTime.now().plusDays(1)
+            candidates = exampleResults.map { CandidateResponse(it.candidateName, "", it.voteCount) }, // Candidate로 변환
+            startDate = "2024-09-27T00:00:00",
+            endDate = "2024-09-28T00:00:00"
         )
 
 

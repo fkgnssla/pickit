@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataResponse
 import com.ssafy.pickit.databinding.ItemVoteBinding
+import com.ssafy.pickit.domain.entity.VoteListData
 import com.ssafy.pickit.ui.main.result.ResultActivity
 
-class CompletedAdapter : ListAdapter<VoteResponse, CompletedAdapter.CompletedViewHolder>(DiffCallback()) {
+class CompletedAdapter : ListAdapter<VoteListData, CompletedAdapter.CompletedViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CompletedViewHolder {
         val binding = ItemVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -26,7 +27,7 @@ class CompletedAdapter : ListAdapter<VoteResponse, CompletedAdapter.CompletedVie
     inner class CompletedViewHolder(private val binding: ItemVoteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: VoteResponse) {
+        fun bind(item: VoteListData) {
             binding.item = item
 
 
@@ -46,11 +47,11 @@ class CompletedAdapter : ListAdapter<VoteResponse, CompletedAdapter.CompletedVie
         }
     }
 
-    private class DiffCallback : DiffUtil.ItemCallback<VoteResponse>() {
-        override fun areItemsTheSame(oldItem: VoteResponse, newItem: VoteResponse): Boolean =
+    private class DiffCallback : DiffUtil.ItemCallback<VoteListData>() {
+        override fun areItemsTheSame(oldItem: VoteListData, newItem: VoteListData): Boolean =
             oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: VoteResponse, newItem: VoteResponse): Boolean =
+        override fun areContentsTheSame(oldItem: VoteListData, newItem: VoteListData): Boolean =
             oldItem == newItem
     }
 }

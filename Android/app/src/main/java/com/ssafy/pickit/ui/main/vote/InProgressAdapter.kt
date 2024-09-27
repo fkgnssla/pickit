@@ -12,15 +12,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.pickit.R
-import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
+import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataResponse
 import com.ssafy.pickit.databinding.ItemVoteBinding
+import com.ssafy.pickit.domain.entity.VoteListData
 import com.ssafy.pickit.ui.main.voteDetail.VoteDetailActivity
 
 
 
 
 
-class InProgressAdapter(private val fragment: Fragment) : ListAdapter<VoteResponse, InProgressAdapter.InProgressViewHolder>(DiffCallback()) {
+class InProgressAdapter(private val fragment: Fragment) : ListAdapter<VoteListData, InProgressAdapter.InProgressViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InProgressViewHolder {
         val binding = ItemVoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -35,7 +36,7 @@ class InProgressAdapter(private val fragment: Fragment) : ListAdapter<VoteRespon
     inner class InProgressViewHolder(private val binding: ItemVoteBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: VoteResponse) {
+        fun bind(item: VoteListData) {
             binding.item = item
             binding.executePendingBindings()
             binding.root.setOnClickListener {
@@ -53,11 +54,11 @@ class InProgressAdapter(private val fragment: Fragment) : ListAdapter<VoteRespon
 
 
 
-    private class DiffCallback : DiffUtil.ItemCallback<VoteResponse>() {
-        override fun areItemsTheSame(oldItem: VoteResponse, newItem: VoteResponse): Boolean =
+    private class DiffCallback : DiffUtil.ItemCallback<VoteListData>() {
+        override fun areItemsTheSame(oldItem: VoteListData, newItem: VoteListData): Boolean =
             oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: VoteResponse, newItem: VoteResponse): Boolean =
+        override fun areContentsTheSame(oldItem: VoteListData, newItem: VoteListData): Boolean =
             oldItem == newItem
     }
 }

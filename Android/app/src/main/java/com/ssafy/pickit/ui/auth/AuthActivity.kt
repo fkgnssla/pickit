@@ -3,9 +3,7 @@ package com.ssafy.pickit.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.ImageButton
-import android.widget.VideoView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -16,13 +14,11 @@ import com.kakao.sdk.user.UserApiClient
 import com.ssafy.pickit.R
 import com.ssafy.pickit.databinding.ActivityAuthBinding
 import com.ssafy.pickit.ui.main.MainActivity
-import com.ssafy.pickit.ui.wallet.SignupActivity
-import com.ssafy.pickit.ui.wallet.SignupFragment
+
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityAuthBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: ServicePageAdapter
@@ -35,14 +31,40 @@ class AuthActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityAuthBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.apply {
             lifecycleOwner = this@AuthActivity
-            authViewModel = viewModel
+            this.authViewModel = viewModel
         }
-
         setupViewPager()
         initButtonClickListener()
+        initViewModelObserve()
+
+
+    }
+
+//    private fun navigateToSignupActivity() {
+//        val intent = Intent(this, SignupActivity::class.java)
+//        startActivity(intent)
+//    }
+
+    private fun initViewModelObserve() {
+        viewModel.loginState.observe(this) { state ->
+            when (state) {
+                is AuthViewModel.LoginState.OldUserState -> {
+                    finish()
+                    MainActivity.start(this)
+                }
+
+                is AuthViewModel.LoginState.NewUserState -> {
+                    finish()
+                    RegisterActivity.start(this)
+
+                }
+
+                is AuthViewModel.LoginState.LoadingState -> {
+                }
+            }
+        }
     }
 
     private fun setupViewPager() {
@@ -78,17 +100,16 @@ class AuthActivity : AppCompatActivity() {
 
     }
 
+
     //TODO : util 함수로 분리할 것(activity context 넘기는 방식으로)
     private fun getKaKaoToken(callback: (OAuthToken?, Throwable?) -> Unit) {
         val isKakaoLoginAvailable = UserApiClient.instance.isKakaoTalkLoginAvailable(this)
         if (isKakaoLoginAvailable) {
-            Log.d("kakaoLogin", "카카오톡으로 로그인 가능")
             UserApiClient.instance.loginWithKakaoTalk(
                 this,
                 callback = callback
             )
         } else {
-            Log.d("kakaoLogin", "카카오톡으로 로그인 불가능")
             UserApiClient.instance.loginWithKakaoAccount(
                 this,
                 callback = callback
@@ -96,46 +117,18 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-    private val kakaoLoginCallback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
-        if (token != null) {
-            Log.d("kakaoLogin", "카카오계정 로그인 성공 ${token.accessToken}")
-            // 사용자 정보 가져오기
-            UserApiClient.instance.me { user, error ->
-                if (error != null) {
-                    Log.d("kakaoLogin", "카카오계정 사용자 정보 가져오기 실패")
-                } else if (user != null) {
-                    user.id
-                    Log.d(
-                        "kakaoLogin",
-                        "카카오계정 사용자 정보 가져오기 성공\n" +
-                                "닉네임 = ${user.kakaoAccount?.profile?.nickname}\n " +
-                                "프사 : ${user.kakaoAccount?.profile?.profileImageUrl}\n" +
-                                "이메일 : ${user.kakaoAccount?.email}\n" +
-                                "아이디 : ${user.id}\n" +
-                                "이름 : ${user.kakaoAccount?.name}"
-                    )
-                }
-            }
-            navigateToSignupActivity()
-        } else if (error != null) {
-            Log.d("kakaoLogin", error.toString())
-        }
-    }
-
-    private fun navigateToSignupActivity() {
-        val intent = Intent(this, SignupActivity::class.java)
-        startActivity(intent)
-    }
-
 
 
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
-//            getKaKaoToken(kakaoLoginCallback)
+            getKaKaoToken(viewModel.kakaoLoginCallback)
+//            MainActivity.start(this)
 
-            MainActivity.start(this)
 
 
         }
     }
+
+
+
 }

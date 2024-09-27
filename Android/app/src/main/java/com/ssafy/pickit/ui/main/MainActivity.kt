@@ -10,7 +10,6 @@ import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.ssafy.pickit.R
-import com.ssafy.pickit.data.datasource.remote.response.VoteResponse
 import com.ssafy.pickit.databinding.ActivityMainBinding
 import com.ssafy.pickit.ui.main.home.HomeFragment
 import com.ssafy.pickit.ui.main.mypage.MyPageActivity

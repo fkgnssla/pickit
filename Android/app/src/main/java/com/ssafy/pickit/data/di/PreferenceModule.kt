@@ -1,7 +1,7 @@
 package com.ssafy.pickit.data.di
 
 import android.content.Context
-import android.content.SharedPreferences
+import com.ssafy.pickit.data.datasource.local.preference.SharedPreference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,5 @@ import javax.inject.Singleton
 object PreferenceModule {
     @Provides
     @Singleton
-    fun providesLocalPreferences(@ApplicationContext context: Context): SharedPreferences =
-        context.getSharedPreferences(context.packageName, Context.MODE_PRIVATE)
+    fun providesSharedPreference(@ApplicationContext context: Context) = SharedPreference(context)
 }

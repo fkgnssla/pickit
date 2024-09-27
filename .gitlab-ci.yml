@@ -1,0 +1,20 @@
+image: 8.10.1-jdk21
+
+stages:
+  - build
+
+cache:
+  paths:
+    - .gradle/wrapper/
+    - .gradle/caches/
+
+build_Core:
+  stage: build
+  script:
+    - sh ~/spring.sh
+    - sh ~/contract.sh # 임시
+  only:
+    - release
+  tags:
+    - backend
+
