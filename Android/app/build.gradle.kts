@@ -13,6 +13,8 @@ localProperties.load(FileInputStream(rootProject.file("local.properties")))
 
 val kakaoAppKey = localProperties["KAKAO_APP_KEY"] as? String
     ?: error("KAKAO_APP_KEY not found in local.properties")
+val baseUrl = localProperties["BASE_URL"] as? String
+    ?: error("BASE_URL not found in local.properties")
 
 android {
     namespace = "com.ssafy.pickit"
@@ -30,11 +32,13 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
             buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
             manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
         }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
             buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
             manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
             proguardFiles(
@@ -55,6 +59,10 @@ android {
         buildConfig = true
         dataBinding = true
         viewBinding = true
+    }
+
+    packagingOptions {
+        excludes.add("META-INF/DISCLAIMER")
     }
 }
 
