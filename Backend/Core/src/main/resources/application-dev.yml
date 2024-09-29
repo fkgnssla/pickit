@@ -37,3 +37,11 @@ rabbitmq:
 vote-session:
   deploy:
     url: ${VOTE_SESSION_DEPLOY_URL}
+
+# 디스커버리 서비스
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: ${DEV_EUREKA_SERVICE_URL}

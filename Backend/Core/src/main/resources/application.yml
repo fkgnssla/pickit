@@ -1,4 +1,9 @@
+server:
+  port: 8080
+
 spring:
+  application:
+    name: pickit-core-service
   profiles:
     include: jwt
     active: ${SPRING_ACTIVE_PROFILE:dev}
