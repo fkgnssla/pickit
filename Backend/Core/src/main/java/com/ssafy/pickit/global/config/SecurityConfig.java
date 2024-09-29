@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.ssafy.pickit.global.jwt.filter.JwtVerifyFilter;
+import com.ssafy.pickit.global.filter.AuthenticationRegisterFilter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,8 +26,8 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	public JwtVerifyFilter jwtVerifyFilter() {
-		return new JwtVerifyFilter();
+	public AuthenticationRegisterFilter AuthenticationRegisterFilter() {
+		return new AuthenticationRegisterFilter();
 	}
 
 	@Bean
@@ -43,7 +43,7 @@ public class SecurityConfig {
 			.requestMatchers("/plan/**").hasAnyRole("USER") // 인가 테스트용
 			.anyRequest().permitAll());
 
-		http.addFilterBefore(jwtVerifyFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(AuthenticationRegisterFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		http.formLogin(AbstractHttpConfigurer::disable);
 
