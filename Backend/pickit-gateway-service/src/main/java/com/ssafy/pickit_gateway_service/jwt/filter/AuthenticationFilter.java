@@ -39,10 +39,13 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 
 	@Override
 	public GatewayFilter apply(Config config) {
+
 		// pre
 		return (exchange, chain) -> {
 			ServerHttpRequest request = exchange.getRequest();
 			ServerHttpResponse response = exchange.getResponse();
+
+			log.info("Request = " + request.getURI().getPath());
 
 			if (validator.isSecured.test(request)) {
 				List<String> authHeaders = request.getHeaders().get(HttpHeaders.AUTHORIZATION);
@@ -64,15 +67,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 						return handleUnauthorizedError(response, "토큰이 유효하지 않습니다.");
 					}
 
-					String userId = JwtUtils.extractUserId(token);
-					System.out.println("userId = " + userId);
-
-					// 사용자 ID를 새로운 헤더로 추가
-					ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
-						.header("X-User-ID", userId) // 'X-User-ID' 헤더로 사용자 ID 추가
-						.build();
-
-					return chain.filter(exchange.mutate().request(modifiedRequest).build());
+					return chain.filter(exchange);
 				} else {
 					log.error("잘못된 토큰입니다.");
 					return handleUnauthorizedError(response, "잘못된 토큰입니다.");
