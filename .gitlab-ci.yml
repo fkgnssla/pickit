@@ -3,15 +3,17 @@ image: 8.10.1-jdk21
 stages:
   - build
 
-cache:
-  paths:
-    - .gradle/wrapper/
-    - .gradle/caches/
+before_script:
+  - cd /home/ubuntu/PickIt/S11P21A309
+  - git pull origin release  
 
 build_Core:
   stage: build
   script:
-    - sh ~/spring.sh
+    - cd /home/ubuntu/PickIt/S11P21A309/Backend/Core
+    - chmod +x ./gradlew
+    - ./gradlew clean build -x test
+    - sh ~/core/core-deploy.sh
     - sh ~/contract.sh # 임시
   only:
     - release
