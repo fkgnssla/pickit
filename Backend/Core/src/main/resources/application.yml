@@ -17,3 +17,6 @@ kakao:
   user-info-url: ${KAKAO_USER_INFO_URL}
 mm-logger:
   base-url: ${MM_LOGGER}
+logging:
+  level:
+    com.ssafy.pickit: DEBUG
