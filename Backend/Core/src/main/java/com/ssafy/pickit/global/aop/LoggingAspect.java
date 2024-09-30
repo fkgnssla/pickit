@@ -21,7 +21,7 @@ public class LoggingAspect {
 
 	private static final String WEBHOOK_MESSAGE = "Error occurs : Webhooks sent";
 
-	@Pointcut("within(@com.mitchinmat.global.aop.LogExecution *)")
+	@Pointcut("within(@com.ssafy.pickit.global.aop.LogExecution *)")
 	public void beanAnnotatedWithLogExecution() {
 	}
 
