@@ -5,13 +5,14 @@ import shlex
 import uvicorn
 import re
 import os
+import datatime
 
 app = FastAPI()
 
 class DeployRequest(BaseModel):
     candidate_names: list[str]
-    startTime: datetime
-    endTime: datetime
+    start_time: datetime
+    end_time: datetime
 
 @app.get("/test")
 def test():
