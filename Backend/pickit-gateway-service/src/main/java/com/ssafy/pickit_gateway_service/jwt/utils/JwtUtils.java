@@ -1,14 +1,9 @@
 package com.ssafy.pickit_gateway_service.jwt.utils;
 
 import java.nio.charset.StandardCharsets;
-import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
-
-import com.ssafy.pickit_gateway_service.jwt.exception.CustomExpiredJwtException;
-import com.ssafy.pickit_gateway_service.jwt.exception.CustomJwtException;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -36,7 +31,6 @@ public class JwtUtils {
 		return claim.get("id").toString();
 	}
 
-
 	public static Map<String, Object> validateToken(String token) {
 		try {
 			SecretKey key = Keys.hmacShaKeyFor(JwtUtils.secretKey.getBytes(StandardCharsets.UTF_8));
@@ -49,10 +43,10 @@ public class JwtUtils {
 			return claim;
 		} catch (ExpiredJwtException expiredJwtException) {
 			log.error("만료된 토큰입니다.");
-			throw new CustomExpiredJwtException("만료된 토큰입니다.", expiredJwtException);
+			throw new RuntimeException("만료된 토큰입니다.", expiredJwtException);
 		} catch (Exception e) {
 			log.error("존재하지 않는 토큰입니다.");
-			throw new CustomJwtException("존재하지 않는 토큰입니다.");
+			throw new RuntimeException("존재하지 않는 토큰입니다.");
 		}
 	}
 
@@ -61,7 +55,7 @@ public class JwtUtils {
 		try {
 			validateToken(token);
 		} catch (Exception e) {
-			return (e instanceof CustomExpiredJwtException);
+			return (e instanceof RuntimeException);
 		}
 		return false;
 	}
