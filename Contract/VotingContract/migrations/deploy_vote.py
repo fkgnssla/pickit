@@ -30,8 +30,8 @@ async def deploy_voting_contract(request: DeployRequest):
         deploy_script_path = os.path.join(current_dir, "deploy_vote.sh")
 
         #print(deploy_script_path)
-        start_timestamp = int(start_time.timestamp())
-        end_timestamp = int(end_time.timestamp())   
+        start_timestamp = int(request.start_time.timestamp())
+        end_timestamp = int(request.end_time.timestamp())  
 
         command = f"sh {shlex.quote(deploy_script_path)} {shlex.quote(candidate_names)} {start_timestamp} {end_timestamp}"
 
