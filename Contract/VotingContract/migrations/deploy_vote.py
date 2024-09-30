@@ -1,11 +1,11 @@
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 import subprocess
 import shlex
 import uvicorn
 import re
 import os
-import datetime
+from datetime import datetime
 
 app = FastAPI()
 
@@ -13,6 +13,8 @@ class DeployRequest(BaseModel):
     candidate_names: list[str]
     start_time: datetime
     end_time: datetime
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 @app.get("/test")
 def test():
