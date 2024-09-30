@@ -7,16 +7,6 @@ spring:
   mvc:
     servlet:
       path: /api
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: create
-    defer-datasource-initialization: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
-        format_sql: true
-        show_sql: true
   servlet:
     multipart:
       max-file-size: 50MB
