@@ -14,7 +14,5 @@ class VoteUseCase @Inject constructor(
 
 
 
-    suspend fun getVoteResult(voteId: String): VoteResultResponse {
-        return voteRepository.getVoteResult(voteId)
-    }
+
 }

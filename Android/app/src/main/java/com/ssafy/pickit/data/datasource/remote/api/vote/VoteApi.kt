@@ -32,8 +32,8 @@ interface VoteApi {
     @GET("vote-session/{voteId}")
     suspend fun getVoteDetail(@Path("voteId") voteId: String): ResponseWrapper<VoteSessionResponse>
 
-    @GET("vote/{voteId}/result")
-    suspend fun getVoteResult(@Path("voteId") voteId: String): VoteResultResponse
+    @GET("vote-session/results/{voteId}")
+    suspend fun getVoteResult(@Path("voteId") voteId: String): ResponseWrapper<VoteResultResponse>
 
 
 

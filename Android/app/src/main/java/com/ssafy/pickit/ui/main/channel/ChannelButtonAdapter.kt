@@ -6,7 +6,7 @@ import com.ssafy.pickit.ui.main.channel.ChannelButton
 
 class ChannelButtonAdapter(
     private var items: List<ChannelButton>,
-    private val clickListener: (Int) -> Unit
+    private val clickListener: (String) -> Unit
 ) : RecyclerView.Adapter<ChannelButtonAdapter.ChannelButtonViewHolder>() {
 
     inner class ChannelButtonViewHolder(private val binding: ItemChannelButtonBinding) : RecyclerView.ViewHolder(binding.root) {

@@ -34,6 +34,7 @@ class VoteDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVoteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.lifecycleOwner = this
 
 
 //        val voteSession: VoteSessionResponse? = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -84,7 +85,7 @@ class VoteDetailActivity : AppCompatActivity() {
                 putExtra("voteSessionId", voteSessionId)
             }
             startActivity(intent)
-            finish() // Close the current activity
+            finish()
         }
     }
 
@@ -137,7 +138,7 @@ class VoteDetailActivity : AppCompatActivity() {
             itemBinding.checkBox.setOnCheckedChangeListener { _, isChecked ->
                 if (isChecked) {
                     if (selectedCandidate != null) {
-                        // 기존 선택된 후보자 제거
+
                         val previouslySelectedCheckbox = gridLayout.findViewWithTag<CheckBox>(selectedCandidate?.name)
                         previouslySelectedCheckbox?.isChecked = false
                     }

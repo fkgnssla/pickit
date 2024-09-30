@@ -5,6 +5,7 @@ import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 import com.ssafy.pickit.domain.entity.VoteItem
 import com.ssafy.pickit.domain.entity.VoteListData
+import com.ssafy.pickit.domain.entity.VoteResultData
 import com.ssafy.pickit.domain.entity.VoteSessionData
 
 interface VoteRepository {
@@ -25,5 +26,5 @@ interface VoteRepository {
 
    suspend fun getVoteDetail(voteId: String): VoteSessionData
 
-    suspend fun getVoteResult(voteId: String): VoteResultResponse
+    suspend fun getVoteResult(voteId: String): VoteResultData
 }

@@ -26,6 +26,7 @@ class VoteFragment : BaseFragment<FragmentVoteBinding>(R.layout.fragment_vote) {
             recyclerView.layoutManager = LinearLayoutManager(context)
 
         }
+        binding.lifecycleOwner = this
 
         viewModel.voteData.observe(viewLifecycleOwner) { data ->
             Log.d("VoteFragment", "Data received: $data")

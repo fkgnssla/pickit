@@ -1,6 +1,7 @@
 package com.ssafy.pickit.ui.main.home
 
 import ChannelButtonAdapter
+import android.content.Intent
 import androidx.fragment.app.viewModels
 import android.os.Bundle
 import android.view.View
@@ -18,6 +19,8 @@ import com.ssafy.pickit.R
 import com.ssafy.pickit.common.BaseFragment
 import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
 import com.ssafy.pickit.databinding.FragmentHomeBinding
+import com.ssafy.pickit.ui.main.broadcast.BroadCastVoteActivity
+
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
@@ -58,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     private fun setupChannelButtonsRecyclerView() {
         val adapter = ChannelButtonAdapter(emptyList()) { id ->
-            viewModel.onButtonClick(id)
+            navigateToChannelActivity(id)
         }
 
         binding.recyclerChannelButtons.apply {
@@ -70,6 +73,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             adapter.updateItems(buttons ?: emptyList())
         }
     }
+
+    private fun navigateToChannelActivity(broadCastId: String) {
+
+        val intent = Intent(requireContext(), BroadCastVoteActivity::class.java).apply {
+            putExtra("BROADCAST_ID", broadCastId)
+        }
+        startActivity(intent)
+    }
+
 
     private fun observeViewModel() {
         viewModel.buttonClicked.observe(viewLifecycleOwner) { buttonNumber ->

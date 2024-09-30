@@ -9,7 +9,7 @@ import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
 import com.ssafy.pickit.R
-import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
+import com.ssafy.pickit.domain.entity.VoteResultData
 import com.ssafy.pickit.viewmodel.ResultViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,8 +25,10 @@ class ResultActivity : AppCompatActivity() {
 
         horizontalBarChart = findViewById(R.id.horizontalBarChart)
 
+
+
         val voteSessionId = intent.getStringExtra("voteSessionId") ?: return
-//        viewModel.fetchVoteResultData(voteSessionId)
+        viewModel.fetchVoteResultData(voteSessionId)
 
         viewModel.voteResultResponse.observe(this) { response ->
             response?.let {
@@ -35,7 +37,7 @@ class ResultActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupHorizontalBarChart(voteResultResponse: VoteResultResponse) {
+    private fun setupHorizontalBarChart(voteResultResponse: VoteResultData) {
         val entries = mutableListOf<BarEntry>()
         val colors = mutableListOf<Int>()
         val selectedCandidateId = viewModel.selectedCandidateId.value
