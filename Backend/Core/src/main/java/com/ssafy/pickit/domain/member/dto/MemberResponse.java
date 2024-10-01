@@ -11,7 +11,7 @@ public record MemberResponse(
 		return new MemberResponse(
 			member.getName(),
 			member.getAge(),
-			member.getGender()
+			member.getGender().toString()
 		);
 	}
 }
