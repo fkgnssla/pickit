@@ -1,5 +1,6 @@
 package com.ssafy.pickit.domain.voteSession.application.service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +35,8 @@ public class VoteSessionDeployService {
 	private String url;
 
 	@Async
-	public CompletableFuture<String> deploy(List<TempCandidate> candidates) {
+	public CompletableFuture<String> deploy(LocalDateTime startDate,
+		LocalDateTime endDate, List<TempCandidate> candidates) {
 		// 요청 헤더 설정
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
@@ -44,6 +46,8 @@ public class VoteSessionDeployService {
 		String[] candidateNames = candidates.stream()
 			.map(candidate -> candidate.getName()).toArray(String[]::new);
 		requestBody.put("candidate_names", candidateNames);
+		requestBody.put("start_time", startDate.toString());
+		requestBody.put("end_time", endDate.toString());
 
 		// HttpEntity 객체로 헤더와 바디 설정
 		HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);

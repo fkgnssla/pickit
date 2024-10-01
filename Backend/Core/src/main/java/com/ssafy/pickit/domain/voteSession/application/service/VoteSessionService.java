@@ -43,7 +43,9 @@ public class VoteSessionService {
 	@Transactional
 	public void create(String id) {
 		TempVoteSession tempVoteSession = tempVoteSessionService.findById(id);
-		CompletableFuture<String> completableFuture = voteSessionDeployService.deploy(tempVoteSession.getCandidates());
+		CompletableFuture<String> completableFuture = voteSessionDeployService.deploy(tempVoteSession.getStartDate(),
+			tempVoteSession.getEndDate(),
+			tempVoteSession.getCandidates());
 
 		completableFuture.thenApply(contractAddress -> {
 			if (contractAddress != null) {

@@ -1,15 +1,20 @@
 from fastapi import FastAPI, HTTPException, status
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 import subprocess
 import shlex
 import uvicorn
 import re
 import os
+from datetime import datetime
 
 app = FastAPI()
 
 class DeployRequest(BaseModel):
     candidate_names: list[str]
+    start_time: datetime
+    end_time: datetime
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 @app.get("/test")
 def test():
@@ -24,9 +29,11 @@ async def deploy_voting_contract(request: DeployRequest):
         current_dir = os.path.dirname(os.path.abspath(__file__))
         deploy_script_path = os.path.join(current_dir, "deploy_vote.sh")
 
-        print(deploy_script_path)
+        #print(deploy_script_path)
+        start_timestamp = int(request.start_time.timestamp())
+        end_timestamp = int(request.end_time.timestamp())  
 
-        command = f"sh {shlex.quote(deploy_script_path)} {shlex.quote(candidate_names)}"
+        command = f"sh {shlex.quote(deploy_script_path)} {shlex.quote(candidate_names)} {start_timestamp} {end_timestamp}"
 
         try:
             result = subprocess.run(shlex.split(command), capture_output=True, text=True, timeout=50)

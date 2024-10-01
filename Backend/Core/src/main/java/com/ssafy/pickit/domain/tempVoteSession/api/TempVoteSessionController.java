@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pickit.domain.tempVoteSession.application.service.TempVoteSessionService;
 import com.ssafy.pickit.domain.tempVoteSession.dto.TempVoteSessionRequest;
+import com.ssafy.pickit.global.aop.LogExecution;
 import com.ssafy.pickit.global.response.ApiResponse;
 import com.ssafy.pickit.global.response.ResponseUtils;
 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/temp-vote-session")
 @RequiredArgsConstructor
+@LogExecution
 public class TempVoteSessionController {
 	private final TempVoteSessionService tempVoteSessionService;
 
