@@ -1,11 +1,13 @@
 package com.ssafy.pickit.ui.main.mypage
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.EditText
+import android.widget.TextView
+import androidx.fragment.app.viewModels
+import androidx.appcompat.app.AlertDialog
 import com.ssafy.pickit.R
 import com.ssafy.pickit.common.BaseFragment
 import com.ssafy.pickit.databinding.FragmentMyPageBinding
@@ -21,5 +23,10 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             this.viewModel = viewModel
             lifecycleOwner = this@MyPageFragment
         }
+
+
     }
+
+
 }
+

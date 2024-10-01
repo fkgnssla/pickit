@@ -3,59 +3,163 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
 
+<data>
         <variable
             name="registerViewModel"
             type="com.ssafy.pickit.ui.auth.RegisterViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/register"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.auth.RegisterActivity">
+        android:orientation="vertical"
+        android:padding="20dp">
 
-        <EditText
-            android:id="@+id/et_name"
-            android:layout_width="100dp"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
-            android:hint="이름"
-            android:text="@={registerViewModel.name}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_gravity="center"
+            android:text="회원 가입"
+            android:textSize="24sp"
+            android:layout_marginBottom="24dp"/>
 
-        <!-- 나이를 입력받는 EditText -->
+        <!-- 이름 입력 필드 -->
         <EditText
-            android:id="@+id/et_age"
-            android:layout_width="100dp"
+            android:id="@+id/nameInput"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:hint="나이"
+            android:hint="이름을 입력하세요"
+            android:layout_marginBottom="16dp"
+            android:inputType="text"
+            android:padding="16dp"
+            android:text="@={registerViewModel.name}"/>
+
+        <!-- 나이 입력 필드 -->
+        <EditText
+            android:id="@+id/ageInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="나이를 입력하세요"
+            android:layout_marginBottom="16dp"
             android:inputType="number"
-            android:text="@={registerViewModel.age}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_name" />
+            android:padding="16dp"
+            android:text="@={registerViewModel.age}"/>
 
-        <Button
-            android:id="@+id/btn_create_wallet"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_age" />
+            android:text="성별을 선택하세요"
+            android:textSize="18sp"
+            android:layout_marginBottom="8dp"/>
 
-        <Button
-            android:id="@+id/btn_register"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/genderGroup"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_create_wallet" />
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <RadioButton
+                android:id="@+id/radioMale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="남성"
+                android:layout_marginEnd="16dp"
+                 />
 
+            <RadioButton
+                android:id="@+id/radioFemale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="여성"
+                />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="16dp">
+
+            <Button
+                android:id="@+id/walletButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="지갑 자동 생성하기"
+                android:textSize="16sp"
+                android:layout_marginEnd="10dp"
+                android:onClick="@{() -> registerViewModel.createWallet()}" />
+
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+            android:background="@drawable/border"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:id="@+id/termsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/terms_of_service"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <CheckBox
+                android:id="@+id/checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:onCheckedChanged="@{(buttonView, isChecked) -> registerViewModel.setTermsAccepted(isChecked)}"/>
+
+            <TextView
+                android:id="@+id/checkBoxText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="지갑 생성을 위해 위 약관에 동의합니다."
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="end">
+
+            <Button
+                android:id="@+id/cancelButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"
+                android:layout_marginEnd="16dp"
+                android:onClick="@{() -> registerViewModel.cancel()}"/>
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장"
+                android:onClick="@{() -> registerViewModel.register()}"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </layout>
