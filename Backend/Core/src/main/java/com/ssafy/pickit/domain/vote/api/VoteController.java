@@ -26,7 +26,7 @@ public class VoteController {
 	private final VoteService voteService;
 
 	@PostMapping
-	public ApiResponse<?> createVote(@RequestBody VoteRequest voteRequest,
+	public ApiResponse<?> sendVoteRequest(@RequestBody VoteRequest voteRequest,
 		@AuthenticationPrincipal PrincipalDetail principalDetail) {
 		kafkaProducerService.sendVoteRequest(principalDetail.getId(), voteRequest);
 		return ResponseUtils.success();
