@@ -16,6 +16,7 @@ public class KafkaConsumerService {
 	private final VoteRepository voteRepository;
 
 	@KafkaListener(topics = "${spring.kafka.topic.vote-topic}", groupId = "${spring.kafka.consumer.group-id}")
+
 	public void listenVoteRequests(ConsumerRecord<String, String> record) {
 		VoteEntity voteEntity = new VoteEntity(record.key(), record.value());
 		voteRepository.save(voteEntity);
