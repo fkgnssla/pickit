@@ -15,10 +15,10 @@ public class KafkaProducerService {
 
 	private final KafkaTemplate<Long, VoteRequest> kafkaTemplate;
 
-	private final String topic = "${spring.kafka.topic.vote-topic}";
+	private final String VOTE_TOPIC = "${spring.kafka.topic.vote-topic}";
 
 	public void sendVoteRequest(Long id, VoteRequest voteRequest) {
-		kafkaTemplate.send(topic, id, voteRequest);
+		kafkaTemplate.send(VOTE_TOPIC, id, voteRequest);
 		log.debug("투표 요청 전송 -> id : " + id + " | value: " + voteRequest);
 	}
 }

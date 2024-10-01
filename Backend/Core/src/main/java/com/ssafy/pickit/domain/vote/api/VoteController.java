@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pickit.domain.member.domain.PrincipalDetail;
 import com.ssafy.pickit.domain.vote.application.service.KafkaProducerService;
+import com.ssafy.pickit.domain.vote.application.service.VoteService;
 import com.ssafy.pickit.domain.vote.dto.VoteRequest;
 import com.ssafy.pickit.global.response.ApiResponse;
 import com.ssafy.pickit.global.response.ResponseUtils;
@@ -18,8 +19,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/vote")
 public class VoteController {
-	// private final VoteService voteService;
+
 	private final KafkaProducerService kafkaProducerService;
+	private final VoteService voteService;
 
 	@PostMapping
 	public ApiResponse<?> createVote(@RequestBody VoteRequest voteRequest,
