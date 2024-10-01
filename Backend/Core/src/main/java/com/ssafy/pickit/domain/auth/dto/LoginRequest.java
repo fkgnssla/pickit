@@ -1,6 +1,6 @@
 package com.ssafy.pickit.domain.auth.dto;
 
-public record TokenRequest(
+public record LoginRequest(
 	String token
 ) {
 }

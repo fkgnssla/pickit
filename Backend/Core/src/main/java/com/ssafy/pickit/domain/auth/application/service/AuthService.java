@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.ssafy.pickit.domain.auth.dto.LoginResponse;
 import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
-import com.ssafy.pickit.domain.auth.dto.TokenResponse;
 import com.ssafy.pickit.domain.auth.exception.KakaoAPIException;
 import com.ssafy.pickit.domain.member.application.service.MemberService;
 import com.ssafy.pickit.domain.member.domain.Member;
@@ -64,7 +64,7 @@ public class AuthService {
 
 	// 신규 회원 처리 로직
 	private ApiResponse<?> handleNewMember(String socialId) {
-		return ResponseUtils.success(TokenResponse.of(false, socialId, null, null));
+		return ResponseUtils.success(LoginResponse.of(null, false, socialId, null, null));
 	}
 
 	// 기존 회원 처리 로직 (JWT 발급)
@@ -74,7 +74,7 @@ public class AuthService {
 		String accessToken = JwtUtils.generateToken(claims, JwtConstants.ACCESS_EXP_TIME);
 		String refreshToken = JwtUtils.generateToken(claims, JwtConstants.REFRESH_EXP_TIME);
 
-		return ResponseUtils.success(TokenResponse.of(true, null, accessToken, refreshToken));
+		return ResponseUtils.success(LoginResponse.of(findMember.getId(), true, null, accessToken, refreshToken));
 	}
 
 	// JWT Claims 생성

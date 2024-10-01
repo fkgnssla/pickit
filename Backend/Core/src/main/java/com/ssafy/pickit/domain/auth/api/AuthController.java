@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pickit.domain.auth.application.service.AuthService;
+import com.ssafy.pickit.domain.auth.dto.LoginRequest;
 import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
-import com.ssafy.pickit.domain.auth.dto.TokenRequest;
 import com.ssafy.pickit.global.response.ApiResponse;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,8 +24,8 @@ public class AuthController {
 
 	@Operation(summary = "카카오 소셜 로그인", description = "카카오 자원 서버에 token을 사용하여 회원 정보를 요청합니다.")
 	@PostMapping("/login")
-	public ApiResponse<?> kakaoLogin(@RequestBody TokenRequest tokenRequest) {
-		return authService.login(tokenRequest.token());
+	public ApiResponse<?> kakaoLogin(@RequestBody LoginRequest loginRequest) {
+		return authService.login(loginRequest.token());
 	}
 
 	@Operation(summary = "회원 가입", description = "추가 정보를 사용하여 회원가입합니다.")
