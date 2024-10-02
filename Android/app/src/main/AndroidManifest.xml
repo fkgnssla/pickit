@@ -70,6 +70,10 @@
             android:name=".ui.main.broadcast.BroadCastVoteActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".ui.main.result.ResultActivity"
+            android:exported="false">
+        </activity>
 
     </application>
 

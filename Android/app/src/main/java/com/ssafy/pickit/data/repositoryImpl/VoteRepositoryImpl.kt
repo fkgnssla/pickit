@@ -1,11 +1,10 @@
 package com.ssafy.pickit.data.repositoryImpl
 
+import android.util.Log
 import com.ssafy.pickit.data.datasource.remote.api.vote.VoteApi
+import com.ssafy.pickit.data.datasource.remote.blockchain.TransactionState
+import com.ssafy.pickit.data.datasource.remote.blockchain.WalletFunction
 import com.ssafy.pickit.data.datasource.remote.request.vote.VoteRequest
-import com.ssafy.pickit.data.datasource.remote.response.ResponseWrapper
-import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
-
-import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 import com.ssafy.pickit.data.mapper.VoteMapper
 import com.ssafy.pickit.data.mapper.VoteMapper.mapperToVoteResultData
 import com.ssafy.pickit.data.mapper.VoteMapper.mapperToVoteSessionData
@@ -18,7 +17,8 @@ import javax.inject.Inject
 
 //TODO : 실패시 예외 response 처리할 것
 class VoteRepositoryImpl @Inject constructor(
-    private val voteApi: VoteApi
+    private val voteApi: VoteApi,
+    private val walletFunction: WalletFunction
 ) : VoteRepository {
     override suspend fun getOnGoingVoteList(): List<VoteListData> {
         val response = voteApi.getOnGoingVoteList()
@@ -45,17 +45,20 @@ class VoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postVote(voteItem: VoteItem): Boolean {
-        //TODO : 투표 트랜잭션 실행 후 투표 API호출로 변경할 것
-        val voteRequest = VoteRequest(
-            voteItem.voteSessionId,
-            voteItem.candidateId,
-            voteItem.transactionHash
-        )
-        val response = voteApi.postVote(voteRequest)
+        val transactionResponse =
+            walletFunction.vote(voteItem.contractAddress, voteItem.candidateId)
 
-
-        //TODO : status = fail일 경우 예외처리할 것
-        return response.status.equals("SUCCESS")
+        if (transactionResponse.status == TransactionState.Success && transactionResponse.transactionHash != null) {
+            val voteRequest = VoteRequest(
+                voteItem.contractAddress,
+                voteItem.candidateId,
+                transactionResponse.transactionHash
+            )
+            val response = voteApi.postVote(voteRequest)
+            return response.status.equals("SUCCESS")
+        }
+        Log.d("testtttt", transactionResponse.message.toString())
+        return false
     }
 
     override suspend fun getVoteDetail(voteId: String): VoteSessionData {

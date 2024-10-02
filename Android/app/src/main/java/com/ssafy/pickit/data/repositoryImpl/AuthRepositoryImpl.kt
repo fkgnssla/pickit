@@ -23,8 +23,9 @@ class AuthRepositoryImpl @Inject constructor(
         //TODO : status == fail 일 경우(data non-null assertion 처리할 것) 예외 처리
         val data = loginResponse.data!!
 
-        if (data.isExist && data.accessToken != null) {
+        if (data.isExist && data.accessToken != null && data.memberId != null) {
             saveToken(data.accessToken)
+            saveMemberId(data.memberId)
         } else if (!data.isExist && data.socialId != null) {
             saveSocialId(data.socialId)
         }
@@ -49,8 +50,9 @@ class AuthRepositoryImpl @Inject constructor(
 
         //TODO : status == fail 일 경우(data non-null assertion 처리할 것) 예외 처리
         val data = registerResponse.data!!
-        if (data.accessToken != null) {
+        if (data.accessToken != null && data.memberId != null) {
             saveToken(data.accessToken)
+            saveMemberId(data.memberId)
         } else return false
 
         return true
@@ -62,6 +64,10 @@ class AuthRepositoryImpl @Inject constructor(
 
     private fun saveToken(accessToken: String) {
         localPreferenceDataSource.setAccessToken(accessToken)
+    }
+
+    private fun saveMemberId(memberId: String) {
+        localPreferenceDataSource.setMemberId(memberId)
     }
 
     companion object {
