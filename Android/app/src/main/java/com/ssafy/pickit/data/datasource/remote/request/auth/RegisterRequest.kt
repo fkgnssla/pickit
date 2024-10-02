@@ -7,6 +7,8 @@ data class RegisterRequest(
     val name: String,
     @SerializedName("age")
     val age: Int,
+    @SerializedName("gender")
+    val gender: String,
     @SerializedName("social_id")
     val socialId: String,
     @SerializedName("address")
