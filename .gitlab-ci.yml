@@ -17,13 +17,11 @@ build_Core:
     - |
       if [ $? -eq 0 ]; then
         curl -X POST -H 'Content-Type: application/json' -d '{
-          "text": "👋 Core 배포가 성공적으로 완료되었습니다 👋",
-          "username": "GitLab CI"
+          "text": "🐳 Core 배포가 성공적으로 완료되었습니다 \n'$(date "+%Y-%m-%d %H:%M:%S")'"
         }' https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
       else
         curl -X POST -H 'Content-Type: application/json' -d '{
-          "text": "😢 Core 배포가 실패했습니다 😢",
-          "username": "GitLab CI"
+          "text": "🤔 Core 배포가 실패했습니다 \n'$(date "+%Y-%m-%d %H:%M:%S")'"
         }' https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
       fi
   only:
@@ -41,13 +39,11 @@ build_VoteProcessor:
     - |
       if [ $? -eq 0 ]; then  
         curl -X POST -H 'Content-Type: application/json' -d '{
-          "text": "👋 VoteProcessor 배포가 성공적으로 완료되었습니다 👋",
-          "username": "GitLab CI"
+          "text": "🐳 VoteProcessor 배포가 성공적으로 완료되었습니다 \n'$(date "+%Y-%m-%d %H:%M:%S")'"
         }' https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
       else
         curl -X POST -H 'Content-Type: application/json' -d '{
-          "text": "😢 VoteProcessor 배포가 실패했습니다 😢",
-          "username": "GitLab CI"
+          "text": "🤔 VoteProcessor 배포가 실패했습니다 \n'$(date "+%Y-%m-%d %H:%M:%S")'"
         }' https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
       fi
   only:
@@ -64,6 +60,16 @@ build_Contract:
     - cd migrations/
     - sudo kill -9 $(sudo lsof -t -i :8000)
     - nohup python3.12 -m uvicorn deploy_vote:app --host 0.0.0.0 --port 8000 > /home/ubuntu/logs/contract.log 2>&1 &
+    - |
+      if [ $? -eq 0 ]; then  
+        curl -X POST -H 'Content-Type: application/json' -d '{
+          "text": "🐳 Contract 배포가 성공적으로 완료되었습니다 \n'$(date "+%Y-%m-%d %H:%M:%S")'"
+        }' https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      else
+        curl -X POST -H 'Content-Type: application/json' -d '{
+          "text": "🤔 Contract 배포가 실패했습니다 \n'$(date "+%Y-%m-%d %H:%M:%S")'"
+        }' https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      fi
   only:
     - release
   tags:
