@@ -38,6 +38,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesVoteRepository(
-        voteApi: VoteApi
-    ): VoteRepository = VoteRepositoryImpl(voteApi)
+        voteApi: VoteApi,
+        walletFunction: WalletFunction
+    ): VoteRepository = VoteRepositoryImpl(voteApi, walletFunction)
 }

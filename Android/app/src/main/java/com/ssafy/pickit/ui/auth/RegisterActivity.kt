@@ -53,8 +53,8 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.genderGroup.setOnCheckedChangeListener { group, checkedId ->
             val selectedGender = when (checkedId) {
-                R.id.radioMale -> "남성"
-                R.id.radioFemale -> "여성"
+                R.id.radioMale -> "male"
+                R.id.radioFemale -> "female"
                 else -> null
             }
             if (selectedGender != null) {

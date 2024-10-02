@@ -17,4 +17,8 @@ interface LocalPreferenceDataSource {
 
     fun getSocialId(): String?
 
+    fun setMemberId(memberId : String)
+
+    fun getMemberId(): String?
+
 }
