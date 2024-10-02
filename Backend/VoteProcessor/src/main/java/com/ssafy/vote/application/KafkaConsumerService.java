@@ -23,7 +23,7 @@ public class KafkaConsumerService {
 	@KafkaListener(topics = "${spring.kafka.topic.vote-topic}", groupId = "${spring.kafka.consumer.group-id}")
 	public void listenVoteRequests(ConsumerRecord<String, VoteRequest> record) {
 		VoteRequest voteRequest = record.value();
-		//voteSessionService.updateVoteCnt(voteRequest.voteSessionId(), voteRequest.candidateId());
+		voteSessionService.updateVoteCnt(voteRequest.voteSessionId(), voteRequest.candidateId());
 		log.info("받음" + record.key());
 		String collectionName = voteRequest.voteSessionId();
 		mongoTemplate.save(VoteRecord.of(voteRequest), collectionName);
