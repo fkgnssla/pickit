@@ -24,6 +24,7 @@ import com.ssafy.pickit.domain.voteSession.application.repository.VoteSessionRep
 import com.ssafy.pickit.domain.voteSession.domain.Candidate;
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
 import com.ssafy.pickit.domain.voteSession.dto.CandidateResponse;
+import com.ssafy.pickit.domain.voteSession.dto.PopularVoteSessionResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
@@ -89,6 +90,17 @@ public class VoteSessionService {
 	private VoteSession findById(String id) {
 		return voteSessionRepository.findById(id)
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
+	}
+
+	public List<PopularVoteSessionResponse> findAllByPopular() {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
+		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
+
+		// 최대 3개의 투표 세션을 반환
+		return voteSessions.stream()
+			.limit(3)  // 최대 3개의 요소만 선택
+			.map(PopularVoteSessionResponse::from)  // VoteSession을 PopularVoteSessionResponse로 변환
+			.collect(Collectors.toList());  // 리스트로 반환
 	}
 
 	public VoteSessionResponse findOne(String voteSessionId) {
