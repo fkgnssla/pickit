@@ -13,12 +13,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-	private final KafkaTemplate<Long, VoteRequest> kafkaTemplate;
+	private final KafkaTemplate<String, VoteRequest> kafkaTemplate;
 
 	private final String VOTE_TOPIC = "${spring.kafka.topic.vote-topic}";
 
 	public void sendVoteRequest(Long id, VoteRequest voteRequest) {
-		kafkaTemplate.send(VOTE_TOPIC, id, voteRequest);
-		log.debug("투표 요청 전송 -> id : " + id + " | value: " + voteRequest);
+		if(voteRequest.memberId().equals(id)){
+			kafkaTemplate.send(VOTE_TOPIC, voteRequest.transactionHash(), voteRequest);
+			log.debug("투표 요청 전송 -> id : " + id + " | value: " + voteRequest);
+		}
 	}
 }
