@@ -21,14 +21,19 @@ const Regist = () => {
   const [endPeriod, setEndPeriod] = useState<string>('');
   const [openResult, setOpenResult] = useState(false);
   const [shouldPeriodValidate, setShouldPeriodValidate] = useState(false); // 투표 시간이 유효한지 확인
-  const [shouldNavigate, setShouldNavigate] = useState(false); // 상태 업데이트를 감지하기 위한 상태 추가
+  const [shouldUpdateResult, setShouldUpdateResult] = useState(false);
+  const [shouldNavigate, setShouldNavigate] = useState(false);
   const [candidates, setCandidates] = useState(
     Array.from({ length: 2 }, () => ({ name: "", imageName: "", image: "" }))
   );
+  const [imgLinks, setImgLinks] = useState({
+
+  });
   const [result, setResult] = useState({
-    host: { name: "", contact: "", broadcast: "" },
-    content: { title: "", mainImage: "", description: "", startPeriod: "", endPeriod: "", openResult: false },
-    candidates: Array({name: "", imageName: "", image: ""}),
+    // name: "", contact: "",
+    broadcast_id: "" ,
+    title: "", description: "", start_date: "", end_date: "", thumbnail: "", openResult: false ,
+    candidates: Array({ number: 0, name: "", profile_img: "" }),
   });
   
   /// 투표 기간 영역
@@ -90,46 +95,55 @@ const Regist = () => {
   }
   /// 투표 기간 영역(끝)
 
-  // 잘 입력되었으면 전송
+  // Regist 4단계: result 갱신 되면 axios 요청, done 페이지 이동
   useEffect(() => {
     if (shouldNavigate) {
+      console.log(result)
+      // const formData = new FormData();
+      // formData.append('broadcast_id', broadcast);
+      // formData.append('title', title);
+      // formData.append('description', description);
+      // formData.append('start_date', startPeriod);
+      // formData.append('end_date', endPeriod);
+      // if (mainImage) {
+      //   formData.append('thumbnail', mainImage); // 메인 이미지 파일
+      // }
+      // candidates.forEach((candidate, index) => {
+      //   formData.append(`candidates[${index}].name`, candidate.name);
+      //   if (candidate.image) {
+      //     formData.append(`candidates[${index}].profile_img`, candidate.image); // 후보자 이미지 파일
+      //   }
+      // });
 
-      const formData = new FormData();
-      formData.append('broadcast_id', broadcast);
-      formData.append('title', title);
-      formData.append('description', description);
-      formData.append('start_date', startPeriod);
-      formData.append('end_date', endPeriod);
-      if (mainImage) {
-        formData.append('thumbnail', mainImage); // 메인 이미지 파일
-      }
-      candidates.forEach((candidate, index) => {
-        formData.append(`candidates[${index}].name`, candidate.name);
-        if (candidate.image) {
-          formData.append(`candidates[${index}].profile_img`, candidate.image); // 후보자 이미지 파일
-        }
-      });
-
-      axios({
-        method: 'post',
-        url: 'http://43.202.60.229:8080/api/temp-vote-session',
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': '???????????',
-        },
-        data: formData
-      });
+      // axios({
+      //   method: 'post',
+      //   url: 'http://43.202.60.229:8080/api/temp-vote-session',
+      //   headers: {
+      //     'Content-Type': 'multipart/form-data',
+      //     'Authorization': '???????????',
+      //   },
+      //   data: formData
+      // });
            
       navigate("/done");
     }
   }, [shouldNavigate]);
 
-  // 빈 값이 없고, 투표 시간이 적절하면 통과
+  // Regist 3단계: 입력값 & 이미지 링크로 result 갱신
+  useEffect(() => {
+    if(shouldUpdateResult) {
+      
+
+      setShouldUpdateResult(false);
+      setShouldNavigate(true);
+    }
+  },[shouldUpdateResult])
+
+  // Regist 2단계: 투표 시간이 적절한지 확인, 적절하면 이미지 먼저 등록하고 imgLinks 갱신
   useEffect(() =>{
     if(shouldPeriodValidate) {
       // 투표 시작시간이 과거면 에러처리
-      setNow(changeDateFormat(new Date()));
-      if((new Date(now).getTime() > new Date(startPeriod).getTime())) {
+      if((new Date().getTime() > new Date(startPeriod).getTime())) {
         alert("투표 시작 시간을 확인해주세요 (폼 작성 도중 시작 시간을 지났는지 확인하세요.)")
         setNow(changeDateFormat(new Date()));
         setStartPeriod("");
@@ -138,19 +152,24 @@ const Regist = () => {
         return;
       } else {
         setResult({
-          host: { name: name, contact: contact, broadcast: broadcast },
-          content: { title: title, mainImage: mainImage, description: description, startPeriod: startPeriod, endPeriod: endPeriod, openResult: openResult },
-          candidates: candidates,
+          // name: name, contact: contact, 
+          broadcast_id: broadcast, title: title, description: description, start_date: startPeriod + ":00", end_date: endPeriod + ":00", thumbnail: mainImage, openResult: openResult,
+          candidates: candidates.map((candidate, index) => ({
+            number: index + 1,
+            name: candidate.name,
+            profile_img: candidate.image
+          })),
         });
-        setShouldNavigate(true);
+        setShouldPeriodValidate(false);
+        setShouldUpdateResult(true);
       }
     }
   }, [shouldPeriodValidate])
 
+  // Regist 1단계: 빈 값이 있는지 확인
+  const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
+  const elements = [name, contact, broadcast, title, mainImage, description, startPeriod, endPeriod];
   const isNull = () => {
-    const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
-    const elements = [name, contact, broadcast, title, mainImage, description, startPeriod, endPeriod];
-    
     for (let i = 0; i < elements.length; i++) {
       if (elements[i] === "") {
         alert(messages[i]);
@@ -203,6 +222,7 @@ const Regist = () => {
     }
   };
 
+  // 투표 썸네일 이미지
   const mainImageChange = (file: File | null) => {
     if (file) {
       setImageName(file.name);
@@ -270,23 +290,23 @@ const Regist = () => {
             <option value="" disabled hidden>
               선택하세요
             </option>
-            <option value="none">기타(해당 없음)</option>
-            <option value="SBS">SBS</option>
-            <option value="KBS">KBS</option>
-            <option value="MBC">MBC</option>
-            <option value="JTBC">JTBC</option>
-            <option value="Mnet">Mnet</option>
-            <option value="tvN">tvN</option>
-            <option value="WATCHA">WATCHA</option>
-            <option value="Wavve">Wavve</option>
-            <option value="coupang play">coupang play</option>
-            <option value="Disney">Disney</option>
-            <option value="TVING">TVING</option>
-            <option value="NETFLIX">NETFLIX</option>
-            <option value="TV CHOSUN">TV CHOSUN</option>
-            <option value="ChannelA">ChannelA</option>
-            <option value="afreecaTV">afreecaTV</option>
-            <option value="twitch">twitch</option>
+            {/* <option value="none">기타(해당 없음)</option> */}
+            <option value="1">SBS</option>
+            <option value="2">KBS</option>
+            <option value="3">MBC</option>
+            <option value="4">JTBC</option>
+            <option value="5">Mnet</option>
+            <option value="6">tvN</option>
+            <option value="7">WATCHA</option>
+            <option value="8">Wavve</option>
+            <option value="9">coupang play</option>
+            <option value="10">Disney</option>
+            <option value="11">TVING</option>
+            <option value="12">NETFLIX</option>
+            <option value="13">TV CHOSUN</option>
+            <option value="14">ChannelA</option>
+            <option value="15">afreecaTV</option>
+            <option value="16">twitch</option>
           </select>
         </div>
       </div>
@@ -328,7 +348,7 @@ const Regist = () => {
         </div>
         <div className="box">
           <span><img src={redDot} alt="redDot" className="redDot" /> 중간결과 공개 여부 </span>
-          <input type="checkbox" checked={openResult} onChange={(e) => setOpenResult(!e.target.value)}/>
+          <input type="checkbox" onChange={(e) => setOpenResult(!openResult)}/>
         </div>
       {/* </div> */}
       <br />
