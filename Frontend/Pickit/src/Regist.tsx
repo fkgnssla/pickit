@@ -7,13 +7,22 @@ import deleteIcon from "./assets/delete.svg";
 import addIcon from "./assets/add.svg";
 import "./css/regist.css";
 
+interface Candidate {
+  name: string;
+  image: File | null;
+  imageName: string;
+  imageString: string;
+  imageLink: string;
+}
+
 const Regist = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>('');
   const [contact, setContact] = useState<string>('');
   const [broadcast, setBroadcast] = useState<string>('');
   const [title, setTitle] = useState<string>('');
-  const [mainImage, setMainImage] = useState<string>('');
+  const [mainImage, setMainImage] = useState<File | null>();
+  const [mainImageString, setMainImageString] = useState<string>('');
   const [imageName, setImageName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [now, setNow] = useState<string>(changeDateFormat(new Date())); // 날짜 형식 yyyy-mm-dd hh-mm
@@ -23,12 +32,13 @@ const Regist = () => {
   const [shouldPeriodValidate, setShouldPeriodValidate] = useState(false); // 투표 시간이 유효한지 확인
   const [shouldUpdateResult, setShouldUpdateResult] = useState(false);
   const [shouldNavigate, setShouldNavigate] = useState(false);
-  const [candidates, setCandidates] = useState(
-    Array.from({ length: 2 }, () => ({ name: "", imageName: "", image: "" }))
+  const [candidates, setCandidates] = useState<Candidate[]>(
+    // image: 원본 파일
+    // imageName: 웹에서 보여줄 파일 이름 
+    // imageString: 웹에서 보여줄 파일 미리보기
+    // imageLink: api에 전송할 이미지 링크
+    Array.from({ length: 2 }, () => ({ name: "", image: null, imageName: "", imageString: "", imageLink: "" }))
   );
-  const [imgLinks, setImgLinks] = useState({
-
-  });
   const [result, setResult] = useState({
     // name: "", contact: "",
     broadcast_id: "" ,
@@ -95,54 +105,48 @@ const Regist = () => {
   }
   /// 투표 기간 영역(끝)
 
-  // Regist 4단계: result 갱신 되면 axios 요청, done 페이지 이동
+  // Regist 4단계: result 갱신 되면 투표 등록, done 페이지 이동
   useEffect(() => {
     if (shouldNavigate) {
-      console.log(result)
-      // const formData = new FormData();
-      // formData.append('broadcast_id', broadcast);
-      // formData.append('title', title);
-      // formData.append('description', description);
-      // formData.append('start_date', startPeriod);
-      // formData.append('end_date', endPeriod);
-      // if (mainImage) {
-      //   formData.append('thumbnail', mainImage); // 메인 이미지 파일
-      // }
-      // candidates.forEach((candidate, index) => {
-      //   formData.append(`candidates[${index}].name`, candidate.name);
-      //   if (candidate.image) {
-      //     formData.append(`candidates[${index}].profile_img`, candidate.image); // 후보자 이미지 파일
-      //   }
-      // });
-
-      // axios({
-      //   method: 'post',
-      //   url: 'http://43.202.60.229:8080/api/temp-vote-session',
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //     'Authorization': '???????????',
-      //   },
-      //   data: formData
-      // });
-           
+      axios({
+        method: 'post',
+        url: 'https://j11a309.p.ssafy.io/api/temp-vote-session',
+        withCredentials: true,
+        data: result
+      })
+      .then((res) => {
+        console.log("투표등록성공", res);
+      })
+      .catch((e) => {
+        console.log("투표등록실패", e);
+      });
       navigate("/done");
+      setShouldNavigate(false);
     }
   }, [shouldNavigate]);
-
+  
   // Regist 3단계: 입력값 & 이미지 링크로 result 갱신
   useEffect(() => {
     if(shouldUpdateResult) {
       
-
+      setResult({
+        // name: name, contact: contact, 
+        broadcast_id: broadcast, title: title, description: description, start_date: startPeriod + ":00", end_date: endPeriod + ":00", thumbnail: mainImageString, openResult: openResult,
+        candidates: candidates.map((candidate, index) => ({
+          number: index + 1,
+          name: candidate.name,
+          profile_img: candidate.imageString
+        })),
+      });
+      
       setShouldUpdateResult(false);
       setShouldNavigate(true);
     }
   },[shouldUpdateResult])
-
-  // Regist 2단계: 투표 시간이 적절한지 확인, 적절하면 이미지 먼저 등록하고 imgLinks 갱신
+  
+  // Regist 2단계: 투표 시간이 적절한지 확인, img 등록 후 링크 받아오기
   useEffect(() =>{
     if(shouldPeriodValidate) {
-      // 투표 시작시간이 과거면 에러처리
       if((new Date().getTime() > new Date(startPeriod).getTime())) {
         alert("투표 시작 시간을 확인해주세요 (폼 작성 도중 시작 시간을 지났는지 확인하세요.)")
         setNow(changeDateFormat(new Date()));
@@ -151,24 +155,56 @@ const Regist = () => {
         setShouldPeriodValidate(false);
         return;
       } else {
-        setResult({
-          // name: name, contact: contact, 
-          broadcast_id: broadcast, title: title, description: description, start_date: startPeriod + ":00", end_date: endPeriod + ":00", thumbnail: mainImage, openResult: openResult,
-          candidates: candidates.map((candidate, index) => ({
-            number: index + 1,
-            name: candidate.name,
-            profile_img: candidate.image
-          })),
+        const formData = new FormData();
+        if (mainImage instanceof File) {
+          formData.append('thumbnail', mainImage);
+        }
+        candidates.forEach((candidate) => {
+          if (candidate.image instanceof File) {
+            formData.append('profile_imgs', candidate.image);
+          }
+        });
+        
+        axios({
+          method: 'post',
+          url: 'https://j11a309.p.ssafy.io/api/images',
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'AKIAUPMYNGECZHACNOXY',
+          },
+          data: formData
+        })
+        .then((res) => {
+          console.log("사진등록성공", res);
+        })
+        .catch((e) => {
+          console.log("사진등록실패", e);
+        });
+        
+
+        axios({
+          method: 'get',
+          url: 'https://j11a309.p.ssafy.io/api/temp-vote-session',
+          withCredentials: true, 
+        })
+        .then((res) => {
+          console.log("결과");
+          console.log(res);
+        })
+        .catch((e) => {
+          console.log("결과보기실패");
+          console.log(e);
         });
         setShouldPeriodValidate(false);
         setShouldUpdateResult(true);
       }
     }
   }, [shouldPeriodValidate])
-
+  
   // Regist 1단계: 빈 값이 있는지 확인
   const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
-  const elements = [name, contact, broadcast, title, mainImage, description, startPeriod, endPeriod];
+  const elements = [name, contact, broadcast, title, mainImageString, description, startPeriod, endPeriod];
   const isNull = () => {
     for (let i = 0; i < elements.length; i++) {
       if (elements[i] === "") {
@@ -186,7 +222,7 @@ const Regist = () => {
   };
 
   const addCandidate = () => {
-    setCandidates([...candidates, {name: "", imageName: "", image: ""}]);
+    setCandidates([...candidates, {name: "", image: null, imageName: "", imageString: "", imageLink: ""}]);
   };
 
   const deleteCandidate = (index: number) => {
@@ -215,7 +251,8 @@ const Regist = () => {
       const reader = new FileReader();
       reader.onload = () => {
         updatedCandidates[index].imageName = file.name; // 파일의 이름을 imageName 필드에 저장
-        updatedCandidates[index].image = reader.result as string; // 파일을 읽어와서 image 필드에 저장
+        updatedCandidates[index].imageString = reader.result as string; // 파일을 읽어와서 image 필드에 저장
+        updatedCandidates[index].image = file;
         setCandidates(updatedCandidates);
       };
       reader.readAsDataURL(file);
@@ -226,9 +263,10 @@ const Regist = () => {
   const mainImageChange = (file: File | null) => {
     if (file) {
       setImageName(file.name);
+      setMainImage(file);
       const reader = new FileReader();
       reader.onload = () => {
-        setMainImage(reader.result as string); // 파일을 읽어와 메인 이미지에 저장
+        setMainImageString(reader.result as string); // 파일을 읽어와 메인 이미지에 저장
       };
       reader.readAsDataURL(file);
     }
@@ -245,12 +283,12 @@ const Regist = () => {
   
     if (!file) {
       if (index === 99999) {
-        setMainImage("");
+        setMainImageString("");
         setImageName("");
       } else {
         const updatedCandidates = [...candidates];
         updatedCandidates[index].imageName = "";
-        updatedCandidates[index].image = "";
+        updatedCandidates[index].imageString = "";
         setCandidates(updatedCandidates);
       }
     } else {
@@ -333,7 +371,7 @@ const Regist = () => {
               <span>{imageName === "" ? "선택된 파일 없음" : imageName}</span>
             </div>
           </div>
-          <img className="uploadFile" src={mainImage ? mainImage : noFile} alt="img" /> {/* 이미지 미리보기 */}
+          <img className="uploadFile" src={mainImageString ? mainImageString : noFile} alt="img" /> {/* 이미지 미리보기 */}
         </div>
         <div className="box">
           <div><img src={redDot} alt="redDot" className="redDot"/> 설명 </div>
@@ -392,7 +430,7 @@ const Regist = () => {
               <div>
                 <img
                   className={"uploadFile"}
-                  src={candidate.image ? candidate.image : noFile}
+                  src={candidate.imageString ? candidate.imageString : noFile}
                   alt={"img"}
                 />
               </div>
