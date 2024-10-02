@@ -14,6 +14,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import com.ssafy.pickit.domain.vote.dto.VoteRequest;
+
 @Configuration
 @EnableKafka
 public class KafkaProducerConfig {
@@ -22,7 +24,7 @@ public class KafkaProducerConfig {
 	private String SERVER_CONFIG;
 
 	@Bean
-	public ProducerFactory<String, Object> producerFactory() {
+	public ProducerFactory<String, VoteRequest> producerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_CONFIG);
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -31,7 +33,7 @@ public class KafkaProducerConfig {
 	}
 
 	@Bean
-	public KafkaTemplate<String, Object> kafkaTemplate() {
+	public KafkaTemplate<String, VoteRequest> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 }
