@@ -76,10 +76,10 @@
 
     <logger name="org.springframework" level="INFO"/>
     <logger name="org.hibernate" level="INFO"/>
+    <logger name="org.apache.kafka" level="INFO"/>
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="FILE_DEBUG"/>
         <appender-ref ref="FILE_INFO"/>
         <appender-ref ref="FILE_WARN"/>
         <appender-ref ref="FILE_ERROR"/>
