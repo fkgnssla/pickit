@@ -3,7 +3,7 @@ package com.ssafy.pickit.domain.vote.dto;
 public record VoteRequest(
 	Long memberId,
 	String voteSessionId,
-	String candidateId,
+	Long candidateId,
 	String transactionHash
 ) {
 	public VoteRequest withMemberId(Long memberId) {

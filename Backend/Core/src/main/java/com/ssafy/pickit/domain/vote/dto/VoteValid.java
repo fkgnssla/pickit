@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 public record VoteValid(
 	Long memberId,
-	String candidateId,
+	Long candidateId,
 	String transactionHash,
 	LocalDateTime createDate
 ) {
