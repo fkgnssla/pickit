@@ -15,3 +15,16 @@ spring:
     import: optional:file:.env[.properties]
 kakao:
   user-info-url: ${KAKAO_USER_INFO_URL}
+mm-logger:
+  base-url: ${MM_LOGGER}
+logging:
+  level:
+    com.ssafy.pickit: DEBUG
+cloud:
+  aws:
+    credentials:
+      access-key: ${AWS_ACCESS_KEY}
+      secret-key: ${AWS_SECRET_KEY}
+    s3:
+      bucket: ${AWS_S3_BUCKET}
+      region: ${AWS_REGION}
