@@ -3,6 +3,8 @@ package com.ssafy.vote.application;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.annotation.RetryableTopic;
+import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.vote.dto.VoteRequest;
@@ -20,6 +22,7 @@ public class KafkaConsumerService {
 	private final MongoTemplate mongoTemplate;
 	private final VoteSessionService voteSessionService;
 
+	@RetryableTopic(attempts = "5", backoff = @Backoff(delay = 1000, multiplier = 2))
 	@KafkaListener(topics = "${spring.kafka.topic.vote-topic}", groupId = "${spring.kafka.consumer.group-id}")
 	public void listenVoteRequests(ConsumerRecord<String, VoteRequest> record) {
 		VoteRequest voteRequest = record.value();
