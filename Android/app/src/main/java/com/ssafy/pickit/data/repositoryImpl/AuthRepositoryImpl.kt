@@ -41,6 +41,7 @@ class AuthRepositoryImpl @Inject constructor(
             RegisterRequest(
                 registerItem.name,
                 registerItem.age,
+                registerItem.gender,
                 socialId,
                 address
             )

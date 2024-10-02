@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 public class Candidate {
 	private String id;
 
+	private Long number;
+
 	private String name;
 
 	private String profileImg;
@@ -25,6 +27,7 @@ public class Candidate {
 	public static Candidate of(TempCandidate request) {
 		return Candidate.builder()
 			.id(UUID.randomUUID().toString())
+			.number(request.getNumber())
 			.name(request.getName())
 			.profileImg(request.getProfileImg())
 			.voteCnt(0L)

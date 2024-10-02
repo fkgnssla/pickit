@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"
+    ?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/dialogImageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:scaleType="fitXY"
+        app:shapeAppearanceOverlay="@style/CircleShapeAppearance"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/dialogNameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:id="@+id/additional_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="※한 사람당 한 번만 투표할 수 있습니다."
+        android:textColor="@color/light_gray"
+        android:textSize="10sp" />
+
+    <TextView
+        android:id="@+id/additional_info2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center"
+        android:text="※투표는 블록체인 원장에 기록되어 위변조가 불가능합니다"
+        android:textColor="@color/light_gray"
+        android:textSize="10sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="16dp"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/buttonCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="취소"
+            android:backgroundTint="#FFC1C1"
+            android:textColor="@android:color/white"/>
+
+        <Button
+            android:id="@+id/buttonConfirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="확인"
+            android:backgroundTint="#A4C639"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+</LinearLayout>
