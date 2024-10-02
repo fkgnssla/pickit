@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pickit.domain.broadcast.application.service.BroadcastService;
+import com.ssafy.pickit.global.aop.LogExecution;
 import com.ssafy.pickit.global.response.ApiResponse;
 import com.ssafy.pickit.global.response.ResponseUtils;
 
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "BroadcastController", description = "방송사 정보 API")
 @RestController
 @RequiredArgsConstructor
+@LogExecution
 @RequestMapping("/broadcast")
 public class BroadcastController {
 	private final BroadcastService broadcastService;

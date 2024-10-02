@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pickit.domain.member.domain.PrincipalDetail;
 import com.ssafy.pickit.domain.voteSession.application.service.VoteSessionService;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionRequest;
+import com.ssafy.pickit.global.aop.LogExecution;
 import com.ssafy.pickit.global.response.ApiResponse;
 import com.ssafy.pickit.global.response.ResponseUtils;
 
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/vote-session")
 @RequiredArgsConstructor
+@LogExecution
 public class VoteSessionController {
 	private final VoteSessionService voteSessionService;
 
@@ -77,7 +79,7 @@ public class VoteSessionController {
 	@GetMapping("/validate/{id}")
 	public ApiResponse<?> findInfo(@PathVariable("id") String id,
 		@AuthenticationPrincipal PrincipalDetail principalDetail) {
-		String votedCandidateId = voteSessionService.checkVotedCandidate(principalDetail.getId(), id);
+		Long votedCandidateId = voteSessionService.checkVotedCandidate(principalDetail.getId(), id);
 
 		HashMap<String, String> map = new HashMap<>();
 		map.put("votedCandidateId", null);

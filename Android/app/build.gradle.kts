@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.kapt) // Kotlin Kapt for Annotation Processing
     alias(libs.plugins.hilt) // Dagger Hilt for Dependency Injection
+    id("kotlin-parcelize")
+
 }
 
 val localProperties = Properties()
@@ -67,7 +69,10 @@ android {
 }
 
 dependencies {
-
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

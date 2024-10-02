@@ -34,7 +34,8 @@ public class Member {
 
 	private int age;
 
-	private String gender;
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 
 	private String socialId;
 
@@ -45,7 +46,8 @@ public class Member {
 		return Member.builder()
 			.name(signUpRequest.name())
 			.age(signUpRequest.age())
-			.gender(signUpRequest.gender()).socialId(signUpRequest.socialId())
+			.gender(Gender.valueOf(signUpRequest.gender().toUpperCase()))
+			.socialId(signUpRequest.socialId())
 			.wallet(newWallet)
 			.role(Role.MEMBER).build();
 	}

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.pickit.domain.member.domain.PrincipalDetail;
 import com.ssafy.pickit.domain.vote.application.service.VoteProducer;
 import com.ssafy.pickit.domain.vote.dto.VoteRequest;
+import com.ssafy.pickit.global.aop.LogExecution;
 import com.ssafy.pickit.global.response.ApiResponse;
 import com.ssafy.pickit.global.response.ResponseUtils;
 
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/vote")
+@LogExecution
 public class VoteController {
 	// private final VoteService voteService;
 	private final VoteProducer voteProducer;
