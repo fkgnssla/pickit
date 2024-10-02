@@ -3,7 +3,6 @@ package com.ssafy.pickit.domain.tempVoteSession.application.service;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,7 +51,7 @@ public class TempVoteSessionService {
 			.orElse(false);
 	}
 
-	private @NotNull List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
+	private List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
 		List<TempVoteSession> tempVoteSessions) {
 		return tempVoteSessions.stream()
 			.map(tempVoteSession -> {

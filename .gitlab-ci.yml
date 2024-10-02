@@ -19,4 +19,15 @@ build_Core:
     - release
   tags:
     - backend
-
+    
+build_VoteProcessor:
+  stage: build
+  script:
+    - cd /home/ubuntu/PickIt/S11P21A309/Backend/VoteProcessor
+    - chmod +x ./gradlew
+    - ./gradlew clean build -x test
+    - sh ~/vote/vote-deploy.sh
+  only:
+    - release
+  tags:
+    - backend
