@@ -17,7 +17,7 @@ public class KafkaProducerService {
 	private final KafkaTemplate<String, VoteRequest> kafkaTemplate;
 
 	@Value("${spring.kafka.topic.vote-topic}")
-	private final String VOTE_TOPIC;
+	private String VOTE_TOPIC;
 
 	public void sendVoteRequest(Long id, VoteRequest voteRequest) {
 		if(voteRequest.memberId().equals(id)){
