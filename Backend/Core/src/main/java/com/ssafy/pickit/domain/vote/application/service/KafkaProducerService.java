@@ -1,5 +1,6 @@
 package com.ssafy.pickit.domain.vote.application.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,8 @@ public class KafkaProducerService {
 
 	private final KafkaTemplate<String, VoteRequest> kafkaTemplate;
 
-	private final String VOTE_TOPIC = "${spring.kafka.topic.vote-topic}";
+	@Value("${spring.kafka.topic.vote-topic}")
+	private final String VOTE_TOPIC;
 
 	public void sendVoteRequest(Long id, VoteRequest voteRequest) {
 		if(voteRequest.memberId().equals(id)){
