@@ -34,6 +34,7 @@ object VoteMapper {
     fun mapperToVoteSessionData(response: VoteSessionResponse): VoteSessionData {
         return VoteSessionData(
             id = response.id,
+            contractAddress = response.contractAddress,
             title = response.title,
             description = response.description,
             thumbnail = response.thumbnail,
@@ -48,7 +49,8 @@ object VoteMapper {
         return CandidateData(
             name = candidate.name,
             profileImg = candidate.profileImg,
-            voteCnt = candidate.voteCnt
+            voteCnt = candidate.voteCnt,
+            candidateId = candidate.number
         )
     }
 

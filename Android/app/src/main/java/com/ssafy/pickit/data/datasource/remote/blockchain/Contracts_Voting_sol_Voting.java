@@ -29,6 +29,7 @@ import org.web3j.protocol.core.methods.response.BaseEventResponse;
 import org.web3j.protocol.core.methods.response.Log;
 import org.web3j.protocol.core.methods.response.TransactionReceipt;
 import org.web3j.tuples.generated.Tuple2;
+import org.web3j.tuples.generated.Tuple3;
 import org.web3j.tx.Contract;
 import org.web3j.tx.TransactionManager;
 import org.web3j.tx.gas.ContractGasProvider;
@@ -44,11 +45,25 @@ import org.web3j.tx.gas.ContractGasProvider;
  */
 @SuppressWarnings("rawtypes")
 public class Contracts_Voting_sol_Voting extends Contract {
-    public static final String BINARY = "[{\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"_candidateNames\",\"type\":\"string[]\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"}],\"name\":\"Voted\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"candidates\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"voteCount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCandidates\",\"outputs\":[{\"components\":[{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"voteCount\",\"type\":\"uint256\"}],\"internalType\":\"struct Voting.Candidate[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalVotes\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"}],\"name\":\"hasAddressVoted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"hasVoted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"}],\"name\":\"vote\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]";
+    public static final String BINARY = "[{\"inputs\":[{\"internalType\":\"string[]\",\"name\":\"_candidateNames\",\"type\":\"string[]\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"string\",\"name\":\"candidateName\",\"type\":\"string\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"serviceId\",\"type\":\"uint256\"}],\"name\":\"Voted\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"addressToVoters\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"hasVoted\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"serviceId\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"candidates\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"voteCount\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"endTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"idToVoters\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"hasVoted\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"serviceId\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"owner\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"startTime\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalVotes\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"serviceId\",\"type\":\"uint256\"}],\"name\":\"vote\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getCandidates\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"string\",\"name\":\"name\",\"type\":\"string\"},{\"internalType\":\"uint256\",\"name\":\"voteCount\",\"type\":\"uint256\"}],\"internalType\":\"struct Voting.Candidate[]\",\"name\":\"\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getTotalVotes\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"}],\"name\":\"hasAddressVoted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"voter\",\"type\":\"address\"}],\"name\":\"getVoterDetailsByAddress\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"hasVoted\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"voter\",\"type\":\"uint256\"}],\"name\":\"hasIdVoted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"voter\",\"type\":\"uint256\"}],\"name\":\"getVoterDetailsById\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"hasVoted\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"candidateIndex\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isVotingOpen\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"newStartTime\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"newEndTime\",\"type\":\"uint256\"}],\"name\":\"updateVotingTimes\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]\r\n";
 
     private static String librariesLinkedBinary;
 
+    public static final String FUNC_ADDRESSTOVOTERS = "addressToVoters";
+
     public static final String FUNC_CANDIDATES = "candidates";
+
+    public static final String FUNC_ENDTIME = "endTime";
+
+    public static final String FUNC_IDTOVOTERS = "idToVoters";
+
+    public static final String FUNC_OWNER = "owner";
+
+    public static final String FUNC_STARTTIME = "startTime";
+
+    public static final String FUNC_TOTALVOTES = "totalVotes";
+
+    public static final String FUNC_VOTE = "vote";
 
     public static final String FUNC_GETCANDIDATES = "getCandidates";
 
@@ -56,14 +71,18 @@ public class Contracts_Voting_sol_Voting extends Contract {
 
     public static final String FUNC_HASADDRESSVOTED = "hasAddressVoted";
 
-    public static final String FUNC_HASVOTED = "hasVoted";
+    public static final String FUNC_GETVOTERDETAILSBYADDRESS = "getVoterDetailsByAddress";
 
-    public static final String FUNC_OWNER = "owner";
+    public static final String FUNC_HASIDVOTED = "hasIdVoted";
 
-    public static final String FUNC_VOTE = "vote";
+    public static final String FUNC_GETVOTERDETAILSBYID = "getVoterDetailsById";
+
+    public static final String FUNC_ISVOTINGOPEN = "isVotingOpen";
+
+    public static final String FUNC_UPDATEVOTINGTIMES = "updateVotingTimes";
 
     public static final Event VOTED_EVENT = new Event("Voted", 
-            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}));
+            Arrays.<TypeReference<?>>asList(new TypeReference<Address>(true) {}, new TypeReference<Uint256>(true) {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
     ;
 
     @Deprecated
@@ -96,6 +115,8 @@ public class Contracts_Voting_sol_Voting extends Contract {
             typedResponse.log = eventValues.getLog();
             typedResponse.voter = (String) eventValues.getIndexedValues().get(0).getValue();
             typedResponse.candidateIndex = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
+            typedResponse.candidateName = (String) eventValues.getNonIndexedValues().get(0).getValue();
+            typedResponse.serviceId = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
             responses.add(typedResponse);
         }
         return responses;
@@ -107,6 +128,8 @@ public class Contracts_Voting_sol_Voting extends Contract {
         typedResponse.log = log;
         typedResponse.voter = (String) eventValues.getIndexedValues().get(0).getValue();
         typedResponse.candidateIndex = (BigInteger) eventValues.getIndexedValues().get(1).getValue();
+        typedResponse.candidateName = (String) eventValues.getNonIndexedValues().get(0).getValue();
+        typedResponse.serviceId = (BigInteger) eventValues.getNonIndexedValues().get(1).getValue();
         return typedResponse;
     }
 
@@ -121,20 +144,96 @@ public class Contracts_Voting_sol_Voting extends Contract {
         return votedEventFlowable(filter);
     }
 
-    public RemoteFunctionCall<Tuple2<String, BigInteger>> candidates(BigInteger param0) {
-        final Function function = new Function(FUNC_CANDIDATES, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
-        return new RemoteFunctionCall<Tuple2<String, BigInteger>>(function,
-                new Callable<Tuple2<String, BigInteger>>() {
+    public RemoteFunctionCall<Tuple3<Boolean, BigInteger, BigInteger>> addressToVoters(
+            String param0) {
+        final Function function = new Function(FUNC_ADDRESSTOVOTERS, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, param0)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
+        return new RemoteFunctionCall<Tuple3<Boolean, BigInteger, BigInteger>>(function,
+                new Callable<Tuple3<Boolean, BigInteger, BigInteger>>() {
                     @Override
-                    public Tuple2<String, BigInteger> call() throws Exception {
+                    public Tuple3<Boolean, BigInteger, BigInteger> call() throws Exception {
                         List<Type> results = executeCallMultipleValueReturn(function);
-                        return new Tuple2<String, BigInteger>(
-                                (String) results.get(0).getValue(), 
-                                (BigInteger) results.get(1).getValue());
+                        return new Tuple3<Boolean, BigInteger, BigInteger>(
+                                (Boolean) results.get(0).getValue(), 
+                                (BigInteger) results.get(1).getValue(), 
+                                (BigInteger) results.get(2).getValue());
                     }
                 });
+    }
+
+    public RemoteFunctionCall<Tuple3<BigInteger, String, BigInteger>> candidates(
+            BigInteger param0) {
+        final Function function = new Function(FUNC_CANDIDATES, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}, new TypeReference<Utf8String>() {}, new TypeReference<Uint256>() {}));
+        return new RemoteFunctionCall<Tuple3<BigInteger, String, BigInteger>>(function,
+                new Callable<Tuple3<BigInteger, String, BigInteger>>() {
+                    @Override
+                    public Tuple3<BigInteger, String, BigInteger> call() throws Exception {
+                        List<Type> results = executeCallMultipleValueReturn(function);
+                        return new Tuple3<BigInteger, String, BigInteger>(
+                                (BigInteger) results.get(0).getValue(), 
+                                (String) results.get(1).getValue(), 
+                                (BigInteger) results.get(2).getValue());
+                    }
+                });
+    }
+
+    public RemoteFunctionCall<BigInteger> endTime() {
+        final Function function = new Function(FUNC_ENDTIME, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
+    }
+
+    public RemoteFunctionCall<Tuple3<Boolean, BigInteger, BigInteger>> idToVoters(
+            BigInteger param0) {
+        final Function function = new Function(FUNC_IDTOVOTERS, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(param0)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}, new TypeReference<Uint256>() {}, new TypeReference<Uint256>() {}));
+        return new RemoteFunctionCall<Tuple3<Boolean, BigInteger, BigInteger>>(function,
+                new Callable<Tuple3<Boolean, BigInteger, BigInteger>>() {
+                    @Override
+                    public Tuple3<Boolean, BigInteger, BigInteger> call() throws Exception {
+                        List<Type> results = executeCallMultipleValueReturn(function);
+                        return new Tuple3<Boolean, BigInteger, BigInteger>(
+                                (Boolean) results.get(0).getValue(), 
+                                (BigInteger) results.get(1).getValue(), 
+                                (BigInteger) results.get(2).getValue());
+                    }
+                });
+    }
+
+    public RemoteFunctionCall<String> owner() {
+        final Function function = new Function(FUNC_OWNER, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
+        return executeRemoteCallSingleValueReturn(function, String.class);
+    }
+
+    public RemoteFunctionCall<BigInteger> startTime() {
+        final Function function = new Function(FUNC_STARTTIME, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
+    }
+
+    public RemoteFunctionCall<BigInteger> totalVotes() {
+        final Function function = new Function(FUNC_TOTALVOTES, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Uint256>() {}));
+        return executeRemoteCallSingleValueReturn(function, BigInteger.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> vote(BigInteger candidateIndex,
+            BigInteger serviceId) {
+        final Function function = new Function(
+                FUNC_VOTE, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(candidateIndex), 
+                new org.web3j.abi.datatypes.generated.Uint256(serviceId)), 
+                Collections.<TypeReference<?>>emptyList());
+        return executeRemoteCallTransaction(function);
     }
 
     public RemoteFunctionCall<List> getCandidates() {
@@ -166,24 +265,58 @@ public class Contracts_Voting_sol_Voting extends Contract {
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
-    public RemoteFunctionCall<Boolean> hasVoted(String param0) {
-        final Function function = new Function(FUNC_HASVOTED, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, param0)), 
+    public RemoteFunctionCall<Tuple2<Boolean, BigInteger>> getVoterDetailsByAddress(String voter) {
+        final Function function = new Function(FUNC_GETVOTERDETAILSBYADDRESS, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.Address(160, voter)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}, new TypeReference<Uint256>() {}));
+        return new RemoteFunctionCall<Tuple2<Boolean, BigInteger>>(function,
+                new Callable<Tuple2<Boolean, BigInteger>>() {
+                    @Override
+                    public Tuple2<Boolean, BigInteger> call() throws Exception {
+                        List<Type> results = executeCallMultipleValueReturn(function);
+                        return new Tuple2<Boolean, BigInteger>(
+                                (Boolean) results.get(0).getValue(), 
+                                (BigInteger) results.get(1).getValue());
+                    }
+                });
+    }
+
+    public RemoteFunctionCall<Boolean> hasIdVoted(BigInteger voter) {
+        final Function function = new Function(FUNC_HASIDVOTED, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(voter)), 
                 Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
         return executeRemoteCallSingleValueReturn(function, Boolean.class);
     }
 
-    public RemoteFunctionCall<String> owner() {
-        final Function function = new Function(FUNC_OWNER, 
-                Arrays.<Type>asList(), 
-                Arrays.<TypeReference<?>>asList(new TypeReference<Address>() {}));
-        return executeRemoteCallSingleValueReturn(function, String.class);
+    public RemoteFunctionCall<Tuple2<Boolean, BigInteger>> getVoterDetailsById(BigInteger voter) {
+        final Function function = new Function(FUNC_GETVOTERDETAILSBYID, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(voter)), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}, new TypeReference<Uint256>() {}));
+        return new RemoteFunctionCall<Tuple2<Boolean, BigInteger>>(function,
+                new Callable<Tuple2<Boolean, BigInteger>>() {
+                    @Override
+                    public Tuple2<Boolean, BigInteger> call() throws Exception {
+                        List<Type> results = executeCallMultipleValueReturn(function);
+                        return new Tuple2<Boolean, BigInteger>(
+                                (Boolean) results.get(0).getValue(), 
+                                (BigInteger) results.get(1).getValue());
+                    }
+                });
     }
 
-    public RemoteFunctionCall<TransactionReceipt> vote(BigInteger candidateIndex) {
+    public RemoteFunctionCall<Boolean> isVotingOpen() {
+        final Function function = new Function(FUNC_ISVOTINGOPEN, 
+                Arrays.<Type>asList(), 
+                Arrays.<TypeReference<?>>asList(new TypeReference<Bool>() {}));
+        return executeRemoteCallSingleValueReturn(function, Boolean.class);
+    }
+
+    public RemoteFunctionCall<TransactionReceipt> updateVotingTimes(BigInteger newStartTime,
+            BigInteger newEndTime) {
         final Function function = new Function(
-                FUNC_VOTE, 
-                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(candidateIndex)), 
+                FUNC_UPDATEVOTINGTIMES, 
+                Arrays.<Type>asList(new org.web3j.abi.datatypes.generated.Uint256(newStartTime), 
+                new org.web3j.abi.datatypes.generated.Uint256(newEndTime)), 
                 Collections.<TypeReference<?>>emptyList());
         return executeRemoteCallTransaction(function);
     }
@@ -212,39 +345,47 @@ public class Contracts_Voting_sol_Voting extends Contract {
 
     public static RemoteCall<Contracts_Voting_sol_Voting> deploy(Web3j web3j,
             Credentials credentials, ContractGasProvider contractGasProvider,
-            List<String> _candidateNames) {
+            List<String> _candidateNames, BigInteger start, BigInteger end) {
         String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Utf8String>(
                         org.web3j.abi.datatypes.Utf8String.class,
-                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class))));
+                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class)), 
+                new org.web3j.abi.datatypes.generated.Uint256(start), 
+                new org.web3j.abi.datatypes.generated.Uint256(end)));
         return deployRemoteCall(Contracts_Voting_sol_Voting.class, web3j, credentials, contractGasProvider, getDeploymentBinary(), encodedConstructor);
     }
 
     public static RemoteCall<Contracts_Voting_sol_Voting> deploy(Web3j web3j,
             TransactionManager transactionManager, ContractGasProvider contractGasProvider,
-            List<String> _candidateNames) {
+            List<String> _candidateNames, BigInteger start, BigInteger end) {
         String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Utf8String>(
                         org.web3j.abi.datatypes.Utf8String.class,
-                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class))));
+                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class)), 
+                new org.web3j.abi.datatypes.generated.Uint256(start), 
+                new org.web3j.abi.datatypes.generated.Uint256(end)));
         return deployRemoteCall(Contracts_Voting_sol_Voting.class, web3j, transactionManager, contractGasProvider, getDeploymentBinary(), encodedConstructor);
     }
 
     @Deprecated
     public static RemoteCall<Contracts_Voting_sol_Voting> deploy(Web3j web3j,
             Credentials credentials, BigInteger gasPrice, BigInteger gasLimit,
-            List<String> _candidateNames) {
+            List<String> _candidateNames, BigInteger start, BigInteger end) {
         String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Utf8String>(
                         org.web3j.abi.datatypes.Utf8String.class,
-                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class))));
+                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class)), 
+                new org.web3j.abi.datatypes.generated.Uint256(start), 
+                new org.web3j.abi.datatypes.generated.Uint256(end)));
         return deployRemoteCall(Contracts_Voting_sol_Voting.class, web3j, credentials, gasPrice, gasLimit, getDeploymentBinary(), encodedConstructor);
     }
 
     @Deprecated
     public static RemoteCall<Contracts_Voting_sol_Voting> deploy(Web3j web3j,
             TransactionManager transactionManager, BigInteger gasPrice, BigInteger gasLimit,
-            List<String> _candidateNames) {
+            List<String> _candidateNames, BigInteger start, BigInteger end) {
         String encodedConstructor = FunctionEncoder.encodeConstructor(Arrays.<Type>asList(new org.web3j.abi.datatypes.DynamicArray<org.web3j.abi.datatypes.Utf8String>(
                         org.web3j.abi.datatypes.Utf8String.class,
-                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class))));
+                        org.web3j.abi.Utils.typeMap(_candidateNames, org.web3j.abi.datatypes.Utf8String.class)), 
+                new org.web3j.abi.datatypes.generated.Uint256(start), 
+                new org.web3j.abi.datatypes.generated.Uint256(end)));
         return deployRemoteCall(Contracts_Voting_sol_Voting.class, web3j, transactionManager, gasPrice, gasLimit, getDeploymentBinary(), encodedConstructor);
     }
 
@@ -261,19 +402,24 @@ public class Contracts_Voting_sol_Voting extends Contract {
     }
 
     public static class Candidate extends DynamicStruct {
+        public BigInteger id;
+
         public String name;
 
         public BigInteger voteCount;
 
-        public Candidate(String name, BigInteger voteCount) {
-            super(new org.web3j.abi.datatypes.Utf8String(name), 
+        public Candidate(BigInteger id, String name, BigInteger voteCount) {
+            super(new org.web3j.abi.datatypes.generated.Uint256(id), 
+                    new org.web3j.abi.datatypes.Utf8String(name), 
                     new org.web3j.abi.datatypes.generated.Uint256(voteCount));
+            this.id = id;
             this.name = name;
             this.voteCount = voteCount;
         }
 
-        public Candidate(Utf8String name, Uint256 voteCount) {
-            super(name, voteCount);
+        public Candidate(Uint256 id, Utf8String name, Uint256 voteCount) {
+            super(id, name, voteCount);
+            this.id = id.getValue();
             this.name = name.getValue();
             this.voteCount = voteCount.getValue();
         }
@@ -283,5 +429,9 @@ public class Contracts_Voting_sol_Voting extends Contract {
         public String voter;
 
         public BigInteger candidateIndex;
+
+        public String candidateName;
+
+        public BigInteger serviceId;
     }
 }
