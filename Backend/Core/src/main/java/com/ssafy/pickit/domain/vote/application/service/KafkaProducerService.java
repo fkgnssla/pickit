@@ -20,9 +20,7 @@ public class KafkaProducerService {
 	private String VOTE_TOPIC;
 
 	public void sendVoteRequest(Long id, VoteRequest voteRequest) {
-		if(voteRequest.memberId().equals(id)){
-			kafkaTemplate.send(VOTE_TOPIC, voteRequest.transactionHash(), voteRequest);
-			log.debug("투표 요청 전송 -> id : " + id + " | value: " + voteRequest);
-		}
+		kafkaTemplate.send(VOTE_TOPIC, voteRequest.transactionHash(), voteRequest.withMemberId(id));
+		log.debug("투표 요청 전송 -> id : " + id + " | value: " + voteRequest);
 	}
 }
