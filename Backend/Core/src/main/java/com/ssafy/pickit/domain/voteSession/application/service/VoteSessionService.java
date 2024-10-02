@@ -98,25 +98,25 @@ public class VoteSessionService {
 	public List<CandidateResponse> findResult(Long memberId, String voteSessionId) {
 		VoteSession voteSession = findById(voteSessionId);
 		List<Candidate> candidates = voteSession.getCandidates();
-		String candidateId = checkVotedCandidate(memberId, voteSessionId);
+		Long candidateId = checkVotedCandidate(memberId, voteSessionId);
 
 		return candidates.stream()
 			.map(candidate -> {
-				if (candidate.getId().equals(candidateId)) {
+				if (candidate.getNumber() == candidateId) {
 					return CandidateResponse.of(candidate, true);
 				} else
 					return CandidateResponse.of(candidate, false);
 			}).toList();
 	}
 
-	public String checkVotedCandidate(Long memberId, String voteSessionId) {
+	public Long checkVotedCandidate(Long memberId, String voteSessionId) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("memberId").is(memberId));
 		VoteValid voteValid = mongoTemplate.findOne(query, VoteValid.class, voteSessionId);
 		return (voteValid != null) ? voteValid.candidateId() : null;
 	}
 
-	public void updateVoteCnt(String voteSessionId, String candidateId) {
+	public void updateVoteCnt(String voteSessionId, Long candidateId) {
 		VoteSession voteSession = findById(voteSessionId);
 		voteSession.updateVoteCnt(candidateId);
 		voteSessionRepository.save(voteSession);

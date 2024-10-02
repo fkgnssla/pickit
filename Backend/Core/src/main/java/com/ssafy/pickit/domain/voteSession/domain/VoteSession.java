@@ -55,9 +55,9 @@ public class VoteSession {
 			.build();
 	}
 
-	public void updateVoteCnt(String candidateId) {
+	public void updateVoteCnt(Long candidateId) {
 		for (Candidate candidate : candidates) {
-			if (candidate.getId().equals(candidateId)) {
+			if (candidate.getNumber() == candidateId) {
 				candidate.updateVoteCnt();
 				break;
 			}

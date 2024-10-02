@@ -79,7 +79,7 @@ public class VoteSessionController {
 	@GetMapping("/validate/{id}")
 	public ApiResponse<?> findInfo(@PathVariable("id") String id,
 		@AuthenticationPrincipal PrincipalDetail principalDetail) {
-		String votedCandidateId = voteSessionService.checkVotedCandidate(principalDetail.getId(), id);
+		Long votedCandidateId = voteSessionService.checkVotedCandidate(principalDetail.getId(), id);
 
 		HashMap<String, String> map = new HashMap<>();
 		map.put("votedCandidateId", null);
