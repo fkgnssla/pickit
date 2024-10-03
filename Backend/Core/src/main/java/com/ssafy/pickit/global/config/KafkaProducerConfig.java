@@ -24,16 +24,16 @@ public class KafkaProducerConfig {
 	private String SERVER_CONFIG;
 
 	@Bean
-	public ProducerFactory<String, VoteRequest> producerFactory() {
+	public ProducerFactory<String, String> producerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, SERVER_CONFIG);
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
+		configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 		return new DefaultKafkaProducerFactory<>(configProps);
 	}
 
 	@Bean
-	public KafkaTemplate<String, VoteRequest> kafkaTemplate() {
+	public KafkaTemplate<String, String> kafkaTemplate() {
 		return new KafkaTemplate<>(producerFactory());
 	}
 }

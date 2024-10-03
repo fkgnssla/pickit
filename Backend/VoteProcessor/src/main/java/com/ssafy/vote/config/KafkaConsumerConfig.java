@@ -25,21 +25,21 @@ public class KafkaConsumerConfig {
 	private String groupId;
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, VoteRequest> kafkaListenerContainerFactory() {
+	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
 		configProps.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-		configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+		configProps.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class.getName());
 		configProps.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, ErrorHandlingDeserializer.class.getName());
-		configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
-		configProps.put(JsonDeserializer.TRUSTED_PACKAGES, "com.ssafy.vote.dto");
-		configProps.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "com.ssafy.vote.dto.VoteRequest");
+		configProps.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, StringDeserializer.class.getName());
+		configProps.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class.getName());
 
-		DefaultKafkaConsumerFactory<String, VoteRequest> consumerFactory = new DefaultKafkaConsumerFactory<>(configProps,
-			new StringDeserializer(),
-			new JsonDeserializer<>(VoteRequest.class));
+		DefaultKafkaConsumerFactory<String, String> consumerFactory = new DefaultKafkaConsumerFactory<>(
+			configProps,
+			new ErrorHandlingDeserializer<>(new StringDeserializer()),
+			new ErrorHandlingDeserializer<>(new StringDeserializer()));
 
-		ConcurrentKafkaListenerContainerFactory<String, VoteRequest> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory);
 		return factory;
 	}

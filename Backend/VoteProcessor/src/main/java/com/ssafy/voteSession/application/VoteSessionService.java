@@ -16,7 +16,7 @@ public class VoteSessionService {
 	private final VoteSessionRepository voteSessionRepository;
 
 	private VoteSession findById(String id) {
-		return voteSessionRepository.findById(id)
+		return voteSessionRepository.findByContractAddress(id)
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
 	}
 
