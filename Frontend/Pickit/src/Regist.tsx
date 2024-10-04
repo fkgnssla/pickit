@@ -162,7 +162,7 @@ const Regist = () => {
         }
         candidates.forEach((candidate) => {
           if (candidate.image instanceof File) {
-            formData.append('profileImgs', candidate.image);
+            formData.append('profile_imgs', candidate.image);
           }
         });
         
