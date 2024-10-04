@@ -11,8 +11,8 @@ public class WebConfig implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
 			.allowedOrigins("http://localhost:5173", "https://localhost:5173",
-				"http://j11a309.p.ssafy.io:5173", "https://j11a309.p.ssafy.io:5173")
-			.allowedMethods("GET", "POST", "PUT", "DELETE") // 허용할 HTTP 메소드 설정
+				"http://j11a309.p.ssafy.io", "https://j11a309.p.ssafy.io")
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메소드 설정
 			.allowedHeaders(CorsConfiguration.ALL)
 			.allowCredentials(true) // 인증 정보 허용 여부
 			.maxAge(3600L);
