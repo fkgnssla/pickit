@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="12d1f4ed-3ce9-4bf7-a03b-f4f9f1b69509" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Frontend/Pickit/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Pickit/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/Pickit/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Pickit/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/Pickit/src/Regist.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Pickit/src/Regist.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frontend/Pickit/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/Frontend/Pickit/vite.config.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 8
+}]]></component>
+  <component name="ProjectId" id="2mxdRtXosZi2TupujiyzEUZZVC4" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "S11P21A309-258-fe-투표-등록-페이지-버그-fix-1",
+    "kotlin-language-version-configured": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="12d1f4ed-3ce9-4bf7-a03b-f4f9f1b69509" name="Changes" comment="" />
+      <created>1728022155583</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1728022155583</updated>
+    </task>
+    <servers />
+  </component>
+</project>
