@@ -31,6 +31,9 @@ services:
     container_name: "mongo_boot"
     ports:
       - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DEV_MONGO_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DEV_MONGO_ROOT_PASSWORD}
     volumes:
       - mongo-data:/data/db
 
@@ -42,7 +45,7 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: "${DEV_RABBITMQ_USERNAME}"
       RABBITMQ_DEFAULT_PASS: "${DEV_RABBITMQ_PASSWORD}"
-      
+
 volumes:
   redis_data:
   mysql_data:
