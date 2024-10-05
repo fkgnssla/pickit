@@ -55,7 +55,7 @@ public class TempVoteSessionService {
 		List<TempVoteSession> tempVoteSessions) {
 		return tempVoteSessions.stream()
 			.map(tempVoteSession -> {
-				Broadcast findBroadcast = broadcastService.findById(tempVoteSession.getBroadcastId());
+				Broadcast findBroadcast = broadcastService.findByIndex(tempVoteSession.getBroadcastId());
 				return TempVoteSessionResponse.of(tempVoteSession, findBroadcast);
 			}).toList();
 	}

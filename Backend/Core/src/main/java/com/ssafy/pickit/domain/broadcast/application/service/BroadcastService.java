@@ -23,6 +23,10 @@ public class BroadcastService {
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 방송사입니다."));
 	}
 
+	public Broadcast findByIndex(Long index) {
+		return broadcastRepository.findByIndex(index);
+	}
+
 	public List<BroadcastResponse> findAll() {
 		List<Broadcast> broadcasts = broadcastRepository.findAll();
 		return mapToBroadcastResponse(broadcasts);

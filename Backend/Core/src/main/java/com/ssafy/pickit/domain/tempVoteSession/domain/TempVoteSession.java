@@ -22,7 +22,7 @@ public class TempVoteSession {
 	@Id
 	private String id;
 
-	private String broadcastId;
+	private Long broadcastId;
 
 	private String title;
 
