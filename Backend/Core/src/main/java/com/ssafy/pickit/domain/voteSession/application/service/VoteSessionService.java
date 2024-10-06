@@ -54,7 +54,7 @@ public class VoteSessionService {
 				tempVoteSessionService.delete(id);
 
 				VoteSession newVoteSession = voteSessionRepository.save(voteSession);
-				collectionService.createCollection(newVoteSession.getId());
+				collectionService.createCollection(newVoteSession.getContractAddress());
 				return null;
 			} else {
 				throw new RuntimeException("투표 네트워크 자동 배포에 실패했습니다.");
