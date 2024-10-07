@@ -31,7 +31,7 @@ public class VoteValidationService {
 
 	public List<String> getContractAddresses() {
 		ResponseEntity<List<String>> response = restTemplate.exchange(
-			"http://j11a309.p.ssafy.io/api/vote-session/contract-addresses", // 실제 REST API 경로
+			"http://j11a309.p.ssafy.io/api/vote-session/contract-address", // 실제 REST API 경로
 			HttpMethod.GET,
 			null,
 			new ParameterizedTypeReference<List<String>>() {}
