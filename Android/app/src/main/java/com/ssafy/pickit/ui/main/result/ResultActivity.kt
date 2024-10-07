@@ -53,7 +53,7 @@ class ResultActivity : AppCompatActivity() {
             if (selectedCandidateId != null && candidateResult.candidateId == selectedCandidateId) {
                 colors.add(Color.RED)
             } else {
-                colors.add(if (candidateResult.isVote) Color.GRAY else Color.parseColor("#ADD8E6"))
+                colors.add(if (candidateResult.isVote) Color.RED else Color.parseColor("#ADD8E6"))
             }
         }
 
