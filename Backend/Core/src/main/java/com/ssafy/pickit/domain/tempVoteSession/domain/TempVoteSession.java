@@ -36,13 +36,12 @@ public class TempVoteSession {
 
 	private LocalDateTime endDate;
 
-	public static TempVoteSession of(TempVoteSessionRequest voteSessionRequest,
-		String thumbnail, List<TempCandidate> candidates) {
+	public static TempVoteSession of(TempVoteSessionRequest voteSessionRequest, List<TempCandidate> candidates) {
 		return TempVoteSession.builder()
 			.broadcastId(voteSessionRequest.broadcastId())
 			.title(voteSessionRequest.title())
 			.description(voteSessionRequest.description())
-			.thumbnail(thumbnail)
+			.thumbnail(voteSessionRequest.thumbnail())
 			.candidates(candidates)
 			.startDate(voteSessionRequest.startDate())
 			.endDate(voteSessionRequest.endDate())
