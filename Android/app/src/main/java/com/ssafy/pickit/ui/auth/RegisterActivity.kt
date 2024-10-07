@@ -3,6 +3,7 @@ package com.ssafy.pickit.ui.auth
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -32,14 +33,7 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         initObserve()
-        initListener()
 
-    }
-
-    private fun initListener() {
-        binding.saveButton.setOnClickListener {
-            viewModel.createWallet()
-        }
     }
 
     private fun initObserve() {
