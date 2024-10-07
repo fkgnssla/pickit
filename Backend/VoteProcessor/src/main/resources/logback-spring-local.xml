@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="STDOUT"
-              class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
             <pattern>%d{MM-dd HH:mm:ss} [%p] %c{1}.%M - %m%n</pattern>
@@ -9,26 +8,9 @@
     </appender>
 
     <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/info.log</file>
+        <file>C:/logs/processor/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/info%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-            <maxHistory>90</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%d{MM-dd HH:mm:ss} [%p] %c{1}.%M - %m%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/debug.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/debug%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>C:/logs/processor/info%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -41,9 +23,9 @@
     </appender>
 
     <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/warn.log</file>
+        <file>C:/logs/processor/warn.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/warn%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>C:/logs/processor/warn%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -58,9 +40,9 @@
     </appender>
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/error.log</file>
+        <file>C:/logs/processor/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/error%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>C:/logs/processor/error%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -78,7 +60,7 @@
     <logger name="org.hibernate" level="INFO"/>
     <logger name="org.apache.kafka" level="INFO"/>
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE_INFO"/>
         <appender-ref ref="FILE_WARN"/>

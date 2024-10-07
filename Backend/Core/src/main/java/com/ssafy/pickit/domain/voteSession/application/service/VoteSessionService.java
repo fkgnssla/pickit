@@ -24,6 +24,7 @@ import com.ssafy.pickit.domain.voteSession.application.repository.VoteSessionRep
 import com.ssafy.pickit.domain.voteSession.domain.Candidate;
 import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
 import com.ssafy.pickit.domain.voteSession.dto.CandidateResponse;
+import com.ssafy.pickit.domain.voteSession.dto.PopularVoteSessionResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
@@ -54,7 +55,7 @@ public class VoteSessionService {
 				tempVoteSessionService.delete(id);
 
 				VoteSession newVoteSession = voteSessionRepository.save(voteSession);
-				collectionService.createCollection(newVoteSession.getId());
+				collectionService.createCollection(newVoteSession.getContractAddress());
 				return null;
 			} else {
 				throw new RuntimeException("투표 네트워크 자동 배포에 실패했습니다.");
@@ -77,7 +78,7 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, null);
 	}
 
-	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, Long broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
 			LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
@@ -86,9 +87,27 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
+	public List<String> findContractAddress() {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
+		return voteSessions.stream()
+			.map(vs -> vs.getContractAddress())
+			.toList();
+	}
+
 	private VoteSession findById(String id) {
 		return voteSessionRepository.findById(id)
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
+	}
+
+	public List<PopularVoteSessionResponse> findAllByPopular() {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
+		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
+
+		// 최대 3개의 투표 세션을 반환
+		return voteSessions.stream()
+			.limit(3)  // 최대 3개의 요소만 선택
+			.map(PopularVoteSessionResponse::from)  // VoteSession을 PopularVoteSessionResponse로 변환
+			.collect(Collectors.toList());  // 리스트로 반환
 	}
 
 	public VoteSessionResponse findOne(String voteSessionId) {
@@ -129,7 +148,7 @@ public class VoteSessionService {
 			.sum();
 	}
 
-	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(Long broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndEnd(broadcastId,
 			LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "endDate"));
 

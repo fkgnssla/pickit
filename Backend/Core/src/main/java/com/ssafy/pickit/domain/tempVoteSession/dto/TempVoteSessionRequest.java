@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record TempVoteSessionRequest(
-	String broadcastId,
+	Long broadcastId,
 	String title,
 	String description,
 	String thumbnail,

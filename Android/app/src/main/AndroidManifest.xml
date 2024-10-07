@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pickit"
         tools:targetApi="31">
-
+        <activity
+            android:name=".ui.auth.AgreementActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true">

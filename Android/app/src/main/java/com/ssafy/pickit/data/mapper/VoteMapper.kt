@@ -3,12 +3,14 @@ package com.ssafy.pickit.data.mapper
 
 import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
+import com.ssafy.pickit.data.datasource.remote.response.vote.PopularVoteListDataResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 import com.ssafy.pickit.domain.entity.CandidateData
 import com.ssafy.pickit.domain.entity.CandidateResultData
 import com.ssafy.pickit.domain.entity.VoteListData
+import com.ssafy.pickit.domain.entity.VotePopularData
 import com.ssafy.pickit.domain.entity.VoteResultData
 import com.ssafy.pickit.domain.entity.VoteSessionData
 
@@ -58,6 +60,15 @@ object VoteMapper {
         return VoteResultData(
             results = candidates.map { mapCandidateResult(it) }
         )
+    }
+
+    fun mapperToPopularVoteListData(response: List<PopularVoteListDataResponse>): List<VotePopularData> {
+        return response.map {
+            VotePopularData(
+                id = it.id,
+                thumbnail = it.thumbnail
+            )
+        }
     }
 
 

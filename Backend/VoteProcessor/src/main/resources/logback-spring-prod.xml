@@ -9,9 +9,9 @@
     </appender>
 
     <appender name="FILE_INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/info.log</file>
+        <file>/home/ubuntu/pickit-logs/processor/info.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/info%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/pickit-logs/save/processor-info%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -26,9 +26,9 @@
     </appender>
 
     <appender name="FILE_DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/debug.log</file>
+        <file>/home/ubuntu/pickit-logs/processor/debug.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/debug%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/pickit-logs/save/processor-debug%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -41,9 +41,9 @@
     </appender>
 
     <appender name="FILE_WARN" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/warn.log</file>
+        <file>/home/ubuntu/pickit-logs/processor/warn.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/warn%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/pickit-logs/save/processor-warn%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -58,9 +58,9 @@
     </appender>
 
     <appender name="FILE_ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/home/ubuntu/pickit-logs/error.log</file>
+        <file>/home/ubuntu/pickit-logs/processor/error.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>/home/ubuntu/pickit-logs/save/error%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <fileNamePattern>/home/ubuntu/pickit-logs/save/processor-error%d{yyyy-MM-dd}.log.zip</fileNamePattern>
             <maxHistory>90</maxHistory>
         </rollingPolicy>
         <encoder>
