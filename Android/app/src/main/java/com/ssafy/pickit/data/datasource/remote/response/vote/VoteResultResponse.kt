@@ -3,11 +3,12 @@ package com.ssafy.pickit.data.datasource.remote.response.vote
 import com.google.gson.annotations.SerializedName
 
 data class VoteResultResponse(
-    @SerializedName("results")
+
     val results: List<CandidateResult>
 )
 
 data class CandidateResult(
+    @SerializedName("id")
     val candidateId: String,
 
     @SerializedName("name")

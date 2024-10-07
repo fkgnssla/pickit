@@ -19,6 +19,7 @@ data class VoteSessionResponse(
 
 
 data class CandidateResponse(
+    var id :String,
     val number: Long,
     val name: String,
     @SerializedName("profile_img") val profileImg: String,

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.pickit.domain.entity.CandidateData
 import com.ssafy.pickit.domain.entity.VoteItem
 import com.ssafy.pickit.domain.entity.VoteSessionData
 import com.ssafy.pickit.domain.usecase.vote.VoteDetailUseCase
@@ -36,9 +37,15 @@ class VoteDetailViewModel @Inject constructor(
     private val _voteState = MutableLiveData<VoteState>(VoteState.DefaultState)
     val voteState: LiveData<VoteState> get() = _voteState
 
+
+
+    private var selectedCandidate: CandidateData? = null
+
     init {
        fetchVoteSessionData(sessionId)
     }
+
+
 
     private fun fetchVoteSessionData(id: String) {
         viewModelScope.launch {

@@ -1,7 +1,10 @@
 package com.ssafy.pickit.data.datasource.remote.api.vote
 
 import com.ssafy.pickit.data.datasource.remote.request.vote.VoteRequest
+import com.ssafy.pickit.data.datasource.remote.response.Auth.UserResponse
 import com.ssafy.pickit.data.datasource.remote.response.ResponseWrapper
+import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
+import com.ssafy.pickit.data.datasource.remote.response.vote.PopularVoteListDataResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
@@ -18,6 +21,9 @@ interface VoteApi {
     @GET("vote-session/end")
     suspend fun getEndVoteList(): ResponseWrapper<List<VoteListDataResponse>>
 
+    @GET("vote-session/popular")
+    suspend fun getPopularVoteList(): ResponseWrapper<List<PopularVoteListDataResponse>>
+
     @GET("vote-session/ongoing/{broadcastId}")
     suspend fun getOnGoingBroadcastVoteList(@Path("broadcastId") broadcastId: String): ResponseWrapper<List<VoteListDataResponse>>
 
@@ -32,8 +38,11 @@ interface VoteApi {
     @GET("vote-session/{voteId}")
     suspend fun getVoteDetail(@Path("voteId") voteId: String): ResponseWrapper<VoteSessionResponse>
 
+
     @GET("vote-session/results/{voteId}")
-    suspend fun getVoteResult(@Path("voteId") voteId: String): ResponseWrapper<VoteResultResponse>
+    suspend fun getVoteResult(@Path("voteId") voteId: String): ResponseWrapper<List<CandidateResult>>
+
+
 
 
 

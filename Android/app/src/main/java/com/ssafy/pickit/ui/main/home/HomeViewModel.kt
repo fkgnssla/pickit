@@ -3,14 +3,23 @@ package com.ssafy.pickit.ui.main.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.ssafy.pickit.R
 
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
+import com.ssafy.pickit.domain.entity.VotePopularData
+import com.ssafy.pickit.domain.usecase.vote.PopularVoteUseCase
 
 import com.ssafy.pickit.ui.main.channel.ChannelButton
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+
+@HiltViewModel
+class HomeViewModel@Inject constructor(private val popularVoteUseCase: PopularVoteUseCase
+) : ViewModel() {
 
     private val _buttonClicked = MutableLiveData<Int>()
     val buttonClicked: LiveData<Int> get() = _buttonClicked
@@ -22,6 +31,9 @@ class HomeViewModel : ViewModel() {
     val channelButtons: LiveData<List<ChannelButton>> get() = _channelButtons
 
 
+    private val _popularVoteList = MutableLiveData<List<VotePopularData>>()
+    val popularVoteList: LiveData<List<VotePopularData>> get() = _popularVoteList
+
     private val _voteSessionResponse = MutableLiveData<VoteSessionResponse?>()
     val voteSessionResponse: MutableLiveData<VoteSessionResponse?> get() = _voteSessionResponse
 
@@ -29,16 +41,11 @@ class HomeViewModel : ViewModel() {
     val voteResultResponse: LiveData<VoteResultResponse> get() = _voteResultResponse
 
     init {
-        _items.value = listOf(
-            R.drawable.ic_vote2,
-            R.drawable.ic_vote1,
-            R.drawable.ic_vote3,
-            R.drawable.ic_vote5
-        )
+        fetchPopularVoteList()
 
 
         _channelButtons.value = listOf(
-            ChannelButton("66fa3a8af61a5b3e161c2ec1", R.drawable.ic_channel_1),
+            ChannelButton("1", R.drawable.ic_channel_1),
             ChannelButton("2", R.drawable.ic_channel_2),
             ChannelButton("3", R.drawable.ic_channel_3),
             ChannelButton("4", R.drawable.ic_channel_4),
@@ -61,6 +68,22 @@ class HomeViewModel : ViewModel() {
 
     fun onButtonClick(buttonNumber: Int) {
         _buttonClicked.value = buttonNumber
+    }
+
+    fun fetchPopularVoteList() {
+        viewModelScope.launch {
+            try {
+
+                val popularVotes: List<VotePopularData> = popularVoteUseCase.invoke()
+
+
+                _popularVoteList.value = popularVotes
+
+            } catch (e: Exception) {
+                // 에러 처리
+
+            }
+        }
     }
 
 
