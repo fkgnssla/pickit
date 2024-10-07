@@ -41,7 +41,7 @@ class AuthRepositoryImpl @Inject constructor(
         val registerResponse = authApi.register(
             RegisterRequest(
                 registerItem.name,
-                registerItem.age,
+                registerItem.birthday,
                 registerItem.gender,
                 socialId,
                 address
