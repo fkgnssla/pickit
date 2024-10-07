@@ -13,59 +13,56 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/tabTitle"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:gravity="center"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.024" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/mypage"
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tabTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tabTitle"
-            app:layout_constraintBottom_toBottomOf="@+id/tabTitle"
-            app:layout_constraintStart_toEndOf="@+id/tabTitle"
-            app:layout_constraintHorizontal_bias="0.0"/>
+            </com.google.android.material.textview.MaterialTextView>
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginRight="15dp"
+                android:src="@drawable/mypage"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_main"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@+id/bnv_main"
-            app:layout_constraintTop_toBottomOf="@+id/tabTitle" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bnv_main"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@drawable/rectangle_top_gray03"
+            android:layout_height="65dp"
             app:itemBackground="@color/white"
             app:itemIconTint="@drawable/menu_selector_color"
+            app:itemPaddingTop="10dp"
             app:itemTextColor="@drawable/menu_selector_color"
             app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main"
-            app:layout_constraintVertical_bias="1.0"
-            app:menu="@menu/main_bottom_menu"
-            tools:layout_editor_absoluteX="27dp" />
+            app:menu="@menu/main_bottom_menu" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

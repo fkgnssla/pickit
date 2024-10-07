@@ -43,7 +43,6 @@ class HomeViewModel@Inject constructor(private val popularVoteUseCase: PopularVo
     init {
         fetchPopularVoteList()
 
-
         _channelButtons.value = listOf(
             ChannelButton("1", R.drawable.ic_channel_1),
             ChannelButton("2", R.drawable.ic_channel_2),
@@ -56,11 +55,7 @@ class HomeViewModel@Inject constructor(private val popularVoteUseCase: PopularVo
             ChannelButton("9", R.drawable.ic_channel_9),
             ChannelButton("10", R.drawable.ic_channel_10),
             ChannelButton("11", R.drawable.ic_channel_11),
-            ChannelButton("12", R.drawable.ic_channel_12),
-            ChannelButton("13", R.drawable.ic_channel_13),
-            ChannelButton("14", R.drawable.ic_channel_14),
-            ChannelButton("15", R.drawable.ic_channel_15),
-            ChannelButton("16", R.drawable.ic_channel_16)
+            ChannelButton("15", R.drawable.ic_channel_15)
         )
 
         // setExampleVoteResultData()
@@ -85,7 +80,6 @@ class HomeViewModel@Inject constructor(private val popularVoteUseCase: PopularVo
             }
         }
     }
-
 
 
 //    private fun setExampleVoteResultData() {
