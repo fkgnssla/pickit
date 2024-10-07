@@ -87,6 +87,13 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
+	public List<VoteSessionListResponse> findByTitle(Long memberId, String keyword) {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByTitle(keyword);
+		List<Vote> votes = voteService.findByMemberId(memberId);
+
+		return mapToVoteSessionListResponse(voteSessions, votes);
+	}
+
 	private VoteSession findById(String id) {
 		return voteSessionRepository.findById(id)
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
