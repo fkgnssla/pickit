@@ -32,16 +32,13 @@ class ServicePageAdapter(private val context: Context) : RecyclerView.Adapter<Se
         val videoResId = videos[actualPosition]
         val videoUri = Uri.parse("android.resource://${context.packageName}/$videoResId")
 
-
         holder.videoView.setVideoURI(videoUri)
-
 
         holder.videoView.setOnPreparedListener { mp ->
             mp.isLooping = true
 
             mp.start()
         }
-
 
         holder.videoView.setOnErrorListener { _, what, extra ->
             Log.e("ServicePageAdapter", "Error loading video: $videoUri, error code: $what, extra: $extra")
