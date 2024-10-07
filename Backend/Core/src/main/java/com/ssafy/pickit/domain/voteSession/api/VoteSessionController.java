@@ -68,6 +68,12 @@ public class VoteSessionController {
 		return ResponseUtils.success(voteSessionService.findContractAddress());
 	}
 
+	@Operation(summary = "인기있는 투표 리스트 조회", description = "인기있는 투표 세션 3개를 반환합니다.")
+	@GetMapping("/popular")
+	public ApiResponse<?> findAllByPopular() {
+		return ResponseUtils.success(voteSessionService.findAllByPopular());
+	}
+
 	@Operation(summary = "투표 세션 상세 정보 조회", description = "특정 방송사의 이미 종료된 투표 세션을 반환합니다.")
 	@GetMapping("/{id}")
 	public ApiResponse<?> findInfo(@PathVariable("id") String id) {
