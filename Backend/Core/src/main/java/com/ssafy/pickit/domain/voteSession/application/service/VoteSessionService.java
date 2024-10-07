@@ -127,7 +127,7 @@ public class VoteSessionService {
 	public List<CandidateResponse> findResult(Long memberId, String voteSessionId) {
 		VoteSession voteSession = findById(voteSessionId);
 		List<Candidate> candidates = voteSession.getCandidates();
-		Long candidateId = checkVotedCandidate(memberId, voteSessionId);
+		Long candidateId = checkVotedCandidate(memberId, voteSession.getContractAddress());
 
 		return candidates.stream()
 			.map(candidate -> {
@@ -138,10 +138,10 @@ public class VoteSessionService {
 			}).toList();
 	}
 
-	public Long checkVotedCandidate(Long memberId, String voteSessionId) {
+	public Long checkVotedCandidate(Long memberId, String contractAddress) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("memberId").is(memberId));
-		VoteValid voteValid = mongoTemplate.findOne(query, VoteValid.class, voteSessionId);
+		VoteValid voteValid = mongoTemplate.findOne(query, VoteValid.class, contractAddress);
 		return (voteValid != null) ? voteValid.candidateId() : null;
 	}
 
