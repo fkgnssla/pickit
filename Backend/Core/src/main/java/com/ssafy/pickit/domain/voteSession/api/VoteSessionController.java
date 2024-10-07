@@ -44,8 +44,8 @@ public class VoteSessionController {
 
 	@Operation(summary = "종료된 투표 세션 조회", description = "이미 종료된 투표 세션을 반환합니다.")
 	@GetMapping("/end")
-	public ApiResponse<?> endAll() {
-		return ResponseUtils.success(voteSessionService.findAllByEnd());
+	public ApiResponse<?> endAll(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(voteSessionService.findAllByEnd(principalDetail.getId()));
 	}
 
 	@Operation(summary = "특정 방송사에 진행중인 투표 세션 조회", description = "특정 방송사의 현재 진행중인 투표 세션을 반환합니다.")
@@ -58,8 +58,10 @@ public class VoteSessionController {
 
 	@Operation(summary = "특정 방송사에 종료된 투표 세션 조회", description = "특정 방송사의 이미 종료된 투표 세션을 반환합니다.")
 	@GetMapping("/end/{broadcastId}")
-	public ApiResponse<?> end(@PathVariable("broadcastId") Long broadcastId) {
-		return ResponseUtils.success(voteSessionService.findAllByBroadcastIdAndEnd(broadcastId));
+	public ApiResponse<?> end(@PathVariable("broadcastId") Long broadcastId,
+		@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(
+			voteSessionService.findAllByBroadcastIdAndEnd(principalDetail.getId(), broadcastId));
 	}
 
 	@Operation(summary = "진행중인 투표 세션 네트워크 주소 조회", description = "현재 진행중인 투표 세션의 네트워크 주소를 반환합니다.")
