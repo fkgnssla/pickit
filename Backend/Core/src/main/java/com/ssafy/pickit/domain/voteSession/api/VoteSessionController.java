@@ -62,6 +62,12 @@ public class VoteSessionController {
 		return ResponseUtils.success(voteSessionService.findAllByBroadcastIdAndEnd(broadcastId));
 	}
 
+	@Operation(summary = "진행중인 투표 세션 네트워크 주소 조회", description = "현재 진행중인 투표 세션의 네트워크 주소를 반환합니다.")
+	@GetMapping("/contract-address")
+	public ApiResponse<?> findContractAddress() {
+		return ResponseUtils.success(voteSessionService.findContractAddress());
+	}
+
 	@Operation(summary = "투표 세션 상세 정보 조회", description = "특정 방송사의 이미 종료된 투표 세션을 반환합니다.")
 	@GetMapping("/{id}")
 	public ApiResponse<?> findInfo(@PathVariable("id") String id) {
