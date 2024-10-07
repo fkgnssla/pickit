@@ -1,5 +1,6 @@
 package com.ssafy.validate.service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,10 +20,12 @@ public class BlockchainLogService {
 	}
 
 	public VoteRecord mapLogToVoteRecord(PickitLog pickitLog) {
+		BigInteger serviceId = (BigInteger) pickitLog.returnValues().get("serviceId");
+		BigInteger candidateId = (BigInteger) pickitLog.returnValues().get("candidateIndex");
 		return new VoteRecord(
 			pickitLog.transactionHash(),
-			Long.parseLong(pickitLog.returnValues().get("serviceId").toString(), 16), // voter 주소를 memberId로 변환
-			Long.parseLong(pickitLog.returnValues().get("candidateIndex").toString()) // candidateIndex
+			serviceId.longValue(), // voter 주소를 memberId로 변환
+			candidateId.longValue() // candidateIndex
 		);
 	}
 }

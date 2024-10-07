@@ -9,19 +9,32 @@ import org.web3j.tx.exceptions.ContractCallException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.ssafy.validate.dto.PickitLog;
 
+import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+
 @Service
+@Slf4j
 public class BlockchainClient {
 
-	private final Web3j web3j;
+	private Web3j web3j;
 
 	@Value("${web3j.client-address}")
 	private String networkUrl;
 
-	public BlockchainClient() {
-		this.web3j = Web3j.build(new HttpService(networkUrl));
+	@PostConstruct
+	public void init() {
+		OkHttpClient.Builder builder = new OkHttpClient.Builder()
+			.connectTimeout(60, TimeUnit.SECONDS)  // 연결 타임아웃
+			.readTimeout(60, TimeUnit.SECONDS)     // 읽기 타임아웃
+			.writeTimeout(60, TimeUnit.SECONDS);   // 쓰기 타임아웃
+
+		OkHttpClient okHttpClient = builder.build();
+		this.web3j = Web3j.build(new HttpService(networkUrl, okHttpClient));
 	}
 
 	public List<PickitLog> getLogs(String contractAddress) {
@@ -41,6 +54,7 @@ public class BlockchainClient {
 				.stream()
 				.map(PickitLog::toLog).toList();
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			throw new ContractCallException("블록체인 로그를 가져오는 중 오류가 발생했습니다.", e);
 		}
 	}
