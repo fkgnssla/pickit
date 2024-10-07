@@ -2,6 +2,7 @@ import './css/App.css';
 import { BrowserRouter as Router, Route, Routes, useNavigate } from 'react-router-dom';
 import Regist from './Regist.tsx';
 import Done from './Done.tsx';
+import Manage from './Manage.tsx';
 import img1 from './assets/1.gif';
 import img2 from './assets/2.gif';
 import img3 from './assets/3.gif';
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/regist" element={<Regist />} />
         <Route path="/done" element={<Done />} />
+        <Route path="/manage" element={<Manage />} />
       </Routes>
     </Router>
   );

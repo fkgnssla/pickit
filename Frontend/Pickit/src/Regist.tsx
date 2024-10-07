@@ -19,7 +19,7 @@ const Regist = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>('');
   const [contact, setContact] = useState<string>('');
-  const [broadcast, setBroadcast] = useState<string>('');
+  const [broadcast, setBroadcast] = useState<number>(0);
   const [title, setTitle] = useState<string>('');
   const [mainImage, setMainImage] = useState<File | null>();
   const [mainImageString, setMainImageString] = useState<string>('');
@@ -42,7 +42,7 @@ const Regist = () => {
   );
   const [result, setResult] = useState({
     // name: "", contact: "",
-    broadcast_id: "" ,
+    broadcast_id: 0,
     title: "", description: "", start_date: "", end_date: "", thumbnail: "", openResult: false ,
     candidates: Array({ number: 0, name: "", profile_img: "" }),
   });
@@ -108,7 +108,7 @@ const Regist = () => {
 
   // Regist 4단계: result 갱신 되면 투표 등록, done 페이지 이동
   useEffect(() => {
-    console.log(result)
+    // console.log(result)
     if (shouldNavigate) {
       axios({
         method: 'post',
@@ -117,7 +117,7 @@ const Regist = () => {
         data: result
       })
       .then((res) => {
-        console.log("투표등록성공", res);
+        // console.log("투표등록성공", res);
       })
       .catch((e) => {
         console.log("투표등록실패", e);
@@ -152,7 +152,6 @@ const Regist = () => {
         setNow(changeDateFormat(new Date()));
         setStartPeriod("");
         setEndPeriod("");
-        setShouldPeriodValidate(false);
         return;
       } else {
 
@@ -173,37 +172,54 @@ const Regist = () => {
           data: formData
         })
         .then((res) => {
-          console.log("사진등록성공", res);
-          setMainImageLink(res.data.data.thumbnail);
-          const updatedCandidates = [...candidates];
-          for (let i = 0; i < updatedCandidates.length; i++) {
-            updatedCandidates[i].imageLink = res.data.data.profile_imgs[i];
-          }        
-          setCandidates(updatedCandidates);
+          // console.log("사진등록성공", res);
+          return new Promise<void>((resolve) => {
+            setMainImageLink(res.data.data.thumbnail);
+            const updatedCandidates = [...candidates];
+            for (let i = 0; i < updatedCandidates.length; i++) {
+              updatedCandidates[i].imageLink = res.data.data.profile_imgs[i];
+            }
+            setCandidates(updatedCandidates);
+            resolve(); 
+          });
+        }).then(() => {
+          setShouldUpdateResult(true);
         })
         .catch((e) => {
           console.log("사진등록실패", e);
         });
-        setShouldPeriodValidate(false);
-        setShouldUpdateResult(true);
       }
+      setShouldPeriodValidate(false);
     }
-  }, [shouldPeriodValidate])
+  }, [shouldPeriodValidate]);
   
   // Regist 1단계: 빈 값이 있는지 확인
   const messages = ["투표 주최자를 작성하세요", "연락처를 작성하세요", "주최 방송국을 선택하세요", "투표 이름을 작성하세요", "투표 이미지를 등록하세요", "투표 설명을 작성하세요", "시작 기간을 설정하세요", "종료 기간을 설정하세요"];
   const elements = [name, contact, broadcast, title, mainImageString, description, startPeriod, endPeriod];
   const isNull = () => {
     for (let i = 0; i < elements.length; i++) {
-      if (elements[i] === "") {
-        alert(messages[i]);
-        return;
+      if(i != 2){
+        if (elements[i] === "") {
+          alert(messages[i]);
+          return;
+        }
+      } else {
+        if (elements[i] === 0) {
+          alert(messages[i]);
+          return;
+        }
       }
     }
     // 후보자들 이름이 빈 값인지 검사
     const hasEmptyCandidateName = candidates.some(candidate => candidate.name === "");
     if (hasEmptyCandidateName) {
       alert("후보자 이름을 작성하세요(빈 칸은 삭제하세요)");
+      return;
+    }
+
+    const hasEmptyCandidateImage = candidates.some(candidate => candidate.imageName === "");
+    if (hasEmptyCandidateImage) {
+      alert("후보자 이미지를 등록하세요(빈 칸은 삭제하세요)");
       return;
     }
     setShouldPeriodValidate(true);
@@ -268,7 +284,8 @@ const Regist = () => {
   ) => {
     const fileInput = e.target;
     const file = fileInput.files ? fileInput.files[0] : null;
-  
+    const maxSizeInBytes = 1024 * 1024 / 5;
+
     if (!file) {
       if (index === 99999) {
         setMainImageString("");
@@ -279,6 +296,7 @@ const Regist = () => {
         updatedCandidates[index].imageString = "";
         setCandidates(updatedCandidates);
       }
+      return;
     } else {
       // 파일 확장자 검증 로직
       const filePath = fileInput.value;
@@ -288,7 +306,12 @@ const Regist = () => {
         alert("이미지 파일만 업로드 가능합니다. (jpg, bmp, jpeg, png, webp, gif)");
         fileInput.value = ""; // 파일 입력 초기화
       } else {
+        if (file.size > maxSizeInBytes) {
+          alert("파일 크기가 200KB를 초과할 수 없습니다.");
+          return;
+        } else {
         onValidFile(file); // 파일이 유효한 경우 처리
+        }
       }
     }
   };
@@ -312,27 +335,27 @@ const Regist = () => {
         </div>
         <div className="box">
           <div><img src={redDot} alt="redDot" className="redDot"/> 방송사</div>
-          <select value={broadcast} onChange={(e) => setBroadcast(e.target.value)}>
-            <option value="" disabled hidden>
+          <select value={broadcast} onChange={(e) => setBroadcast(Number(e.target.value))}>
+            <option value={0} disabled hidden>
               선택하세요
             </option>
             {/* <option value="none">기타(해당 없음)</option> */}
-            <option value="1">SBS</option>
-            <option value="2">KBS</option>
-            <option value="3">MBC</option>
-            <option value="4">JTBC</option>
-            <option value="5">Mnet</option>
-            <option value="6">tvN</option>
-            <option value="7">WATCHA</option>
-            <option value="8">Wavve</option>
-            <option value="9">coupang play</option>
-            <option value="10">Disney</option>
-            <option value="11">TVING</option>
-            <option value="12">NETFLIX</option>
-            <option value="13">TV CHOSUN</option>
-            <option value="14">ChannelA</option>
-            <option value="15">afreecaTV</option>
-            <option value="16">twitch</option>
+            <option value={1}>SBS</option>
+            <option value={2}>KBS</option>
+            <option value={3}>MBC</option>
+            <option value={4}>JTBC</option>
+            <option value={5}>Mnet</option>
+            <option value={6}>tvN</option>
+            <option value={7}>WATCHA</option>
+            <option value={8}>Wavve</option>
+            <option value={9}>coupang play</option>
+            <option value={10}>Disney</option>
+            <option value={11}>TVING</option>
+            <option value={12}>NETFLIX</option>
+            <option value={13}>TV CHOSUN</option>
+            <option value={14}>ChannelA</option>
+            <option value={15}>afreecaTV</option>
+            {/* <option value={16}>twitch</option> */}
           </select>
         </div>
       </div>
