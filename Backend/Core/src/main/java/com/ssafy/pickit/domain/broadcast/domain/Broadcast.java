@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Getter
 public class Broadcast {
 	private String id;
+	private Long index;
 	private String name;
 	private String imgUrl;
 }

@@ -22,7 +22,7 @@ public class VoteSession {
 	@Id
 	private String id;
 
-	private String broadcastId;
+	private Long broadcastId;
 
 	private String contractAddress;
 
