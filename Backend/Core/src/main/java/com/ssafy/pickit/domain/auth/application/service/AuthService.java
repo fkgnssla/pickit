@@ -1,5 +1,7 @@
 package com.ssafy.pickit.domain.auth.application.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -89,7 +91,10 @@ public class AuthService {
 	public ApiResponse<?> signUp(SignUpRequest signUpRequest) {
 		Wallet newWallet = walletService.create(signUpRequest.address());
 
-		Member newMember = Member.of(signUpRequest, newWallet);
+		String birthday = signUpRequest.birthday();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+		Member newMember = Member.of(signUpRequest, newWallet, LocalDate.parse(birthday, formatter));
 		memberService.create(newMember);
 
 		return handleExistingMember(newMember);
