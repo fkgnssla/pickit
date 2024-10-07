@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ssafy.pickit.common.validateBirthDate
 import com.ssafy.pickit.domain.entity.RegisterItem
 import com.ssafy.pickit.domain.usecase.auth.RegisterUseCase
 import com.ssafy.pickit.domain.usecase.wallet.GenerateWalletUseCase
@@ -18,12 +19,8 @@ class RegisterViewModel @Inject constructor(
 ) : ViewModel() {
 
     val name: MutableLiveData<String> = MutableLiveData("")
-    val age: MutableLiveData<String> = MutableLiveData("")
-    private val _gender = MutableLiveData<String>()
-    val gender: LiveData<String> get() = _gender
-
-    private val _isTermsAccepted = MutableLiveData<Boolean>(false)
-    val isTermsAccepted: LiveData<Boolean> get() = _isTermsAccepted
+    val birthday: MutableLiveData<String> = MutableLiveData("")
+    val gender: MutableLiveData<String> = MutableLiveData("")
 
     private val _showToastEvent = MutableLiveData<String>()
     val showToastEvent: LiveData<String> = _showToastEvent
@@ -38,25 +35,15 @@ class RegisterViewModel @Inject constructor(
     val isFormValid: LiveData<Boolean> get() = _isFormValid
 
     init {
-
         name.observeForever { validateForm() }
-        age.observeForever { validateForm() }
-        _gender.observeForever { validateForm() }
-        isTermsAccepted.observeForever { validateForm() }
+        birthday.observeForever { validateForm() }
+        gender.observeForever { validateForm() }
     }
 
     private fun validateForm() {
         _isFormValid.value = isValidInput()
     }
 
-    fun selectGender(selectedGender: String) {
-        _gender.value = selectedGender
-    }
-
-
-    fun setTermsAccepted(isAccepted: Boolean) {
-        _isTermsAccepted.value = isAccepted
-    }
     fun createWallet() {
         viewModelScope.launch {
             _walletState.value = ApiState.LoadingState
@@ -73,8 +60,9 @@ class RegisterViewModel @Inject constructor(
         if (isValidInput()) {
             val registerItem = RegisterItem(
                 name = name.value ?: return,
-                age = age.value?.toIntOrNull() ?: return,
-                gender = gender.value ?: return
+                birthday = birthday.value ?: return,
+                gender = gender.value?.let { if (it.toInt() % 2 == 1) "male" else "female" }
+                    ?: return
             )
 
             viewModelScope.launch {
@@ -95,23 +83,15 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun cancel() {
-
-        name.value = ""
-        age.value = ""
-        _gender.value = ""
-        _isTermsAccepted.value = false
-
-
-        _showToastEvent.value = "작업이 취소되었습니다."
-    }
-
     private fun isValidInput(): Boolean {
         return !name.value.isNullOrEmpty() &&
-                !age.value.isNullOrEmpty() &&
+                !birthday.value.isNullOrEmpty() &&
                 !gender.value.isNullOrEmpty() &&
-                (isTermsAccepted.value == true)
+                validateBirthDate(birthday.value ?: return false) &&
+                isValidGender(gender.value ?: return false)
     }
+
+    private fun isValidGender(gender: String): Boolean = gender.toInt() in 1..4
 
     sealed class ApiState {
         object SuccessState : ApiState()
