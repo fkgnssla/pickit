@@ -24,6 +24,7 @@ lifecycle = "2.4.0"
 viewmodel = "2.4.0"
 legacySupportV4 = "1.0.0"
 fragmentKtx = "1.5.6"
+lottie = "6.5.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
 
 # Kakao SDK
 kakao-login = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
