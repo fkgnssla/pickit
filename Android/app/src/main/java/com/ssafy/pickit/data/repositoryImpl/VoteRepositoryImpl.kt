@@ -10,6 +10,7 @@ import com.ssafy.pickit.data.mapper.VoteMapper.mapperToVoteResultData
 import com.ssafy.pickit.data.mapper.VoteMapper.mapperToVoteSessionData
 import com.ssafy.pickit.domain.entity.VoteItem
 import com.ssafy.pickit.domain.entity.VoteListData
+import com.ssafy.pickit.domain.entity.VotePopularData
 import com.ssafy.pickit.domain.entity.VoteResultData
 import com.ssafy.pickit.domain.entity.VoteSessionData
 import com.ssafy.pickit.domain.repository.VoteRepository
@@ -75,6 +76,13 @@ class VoteRepositoryImpl @Inject constructor(
         val voteResultResponse = response.data ?: throw Exception("Failed to retrieve vote result")
 
         return mapperToVoteResultData(voteResultResponse)
+    }
+
+    override suspend fun getPopularVoteList(): List<VotePopularData> {
+        val response = voteApi.getPopularVoteList()
+        val data = response.data ?: throw Exception("Failed to retrieve popular vote list")
+
+        return VoteMapper.mapperToPopularVoteListData(data)
     }
 }
 

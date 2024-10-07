@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pickit.domain.member.domain.PrincipalDetail;
@@ -44,8 +45,8 @@ public class VoteSessionController {
 
 	@Operation(summary = "종료된 투표 세션 조회", description = "이미 종료된 투표 세션을 반환합니다.")
 	@GetMapping("/end")
-	public ApiResponse<?> endAll() {
-		return ResponseUtils.success(voteSessionService.findAllByEnd());
+	public ApiResponse<?> endAll(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(voteSessionService.findAllByEnd(principalDetail.getId()));
 	}
 
 	@Operation(summary = "특정 방송사에 진행중인 투표 세션 조회", description = "특정 방송사의 현재 진행중인 투표 세션을 반환합니다.")
@@ -58,8 +59,10 @@ public class VoteSessionController {
 
 	@Operation(summary = "특정 방송사에 종료된 투표 세션 조회", description = "특정 방송사의 이미 종료된 투표 세션을 반환합니다.")
 	@GetMapping("/end/{broadcastId}")
-	public ApiResponse<?> end(@PathVariable("broadcastId") Long broadcastId) {
-		return ResponseUtils.success(voteSessionService.findAllByBroadcastIdAndEnd(broadcastId));
+	public ApiResponse<?> end(@PathVariable("broadcastId") Long broadcastId,
+		@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(
+			voteSessionService.findAllByBroadcastIdAndEnd(principalDetail.getId(), broadcastId));
 	}
 
 	@Operation(summary = "진행중인 투표 세션 네트워크 주소 조회", description = "현재 진행중인 투표 세션의 네트워크 주소를 반환합니다.")
@@ -78,6 +81,13 @@ public class VoteSessionController {
 	@GetMapping("/{id}")
 	public ApiResponse<?> findInfo(@PathVariable("id") String id) {
 		return ResponseUtils.success(voteSessionService.findOne(id));
+	}
+
+	@Operation(summary = "투표 세션 검색 결과 조회", description = "검색 키워드가 포함된 현재 진행중인 투표 세션을 반환합니다.")
+	@GetMapping("/search")
+	public ApiResponse<?> findSearchList(@AuthenticationPrincipal PrincipalDetail principalDetail,
+		@RequestParam String keyword) {
+		return ResponseUtils.success(voteSessionService.findByTitle(principalDetail.getId(), keyword));
 	}
 
 	@Operation(summary = "투표 세션 결과 조회", description = "투표 세션의 결과를 반환합니다.")

@@ -21,8 +21,10 @@ import com.ssafy.pickit.common.BaseFragment
 import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
 import com.ssafy.pickit.databinding.FragmentHomeBinding
 import com.ssafy.pickit.ui.main.broadcast.BroadCastVoteActivity
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var pieChart: PieChart
@@ -55,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.recyclerOngoingVote.adapter = adapter
 
-        viewModel.items.observe(viewLifecycleOwner) { items ->
+        viewModel.popularVoteList.observe(viewLifecycleOwner) { items ->
             items?.let { adapter.submitList(it) }
         }
     }

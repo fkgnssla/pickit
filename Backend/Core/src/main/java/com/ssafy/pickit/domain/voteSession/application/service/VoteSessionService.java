@@ -72,16 +72,26 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
-	public List<VoteSessionListResponse> findAllByEnd() {
+	public List<VoteSessionListResponse> findAllByEnd(Long memberId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByEnd(LocalDateTime.now(),
 			Sort.by(Sort.Direction.DESC, "endDate"));
-		return mapToVoteSessionListResponse(voteSessions, null);
+
+		List<Vote> votes = voteService.findByMemberId(memberId);
+
+		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
 	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, Long broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
 			LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
+		List<Vote> votes = voteService.findByMemberId(memberId);
+
+		return mapToVoteSessionListResponse(voteSessions, votes);
+	}
+
+	public List<VoteSessionListResponse> findByTitle(Long memberId, String keyword) {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByTitle(keyword);
 		List<Vote> votes = voteService.findByMemberId(memberId);
 
 		return mapToVoteSessionListResponse(voteSessions, votes);
@@ -117,7 +127,7 @@ public class VoteSessionService {
 	public List<CandidateResponse> findResult(Long memberId, String voteSessionId) {
 		VoteSession voteSession = findById(voteSessionId);
 		List<Candidate> candidates = voteSession.getCandidates();
-		Long candidateId = checkVotedCandidate(memberId, voteSessionId);
+		Long candidateId = checkVotedCandidate(memberId, voteSession.getContractAddress());
 
 		return candidates.stream()
 			.map(candidate -> {
@@ -128,10 +138,10 @@ public class VoteSessionService {
 			}).toList();
 	}
 
-	public Long checkVotedCandidate(Long memberId, String voteSessionId) {
+	public Long checkVotedCandidate(Long memberId, String contractAddress) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("memberId").is(memberId));
-		VoteValid voteValid = mongoTemplate.findOne(query, VoteValid.class, voteSessionId);
+		VoteValid voteValid = mongoTemplate.findOne(query, VoteValid.class, contractAddress);
 		return (voteValid != null) ? voteValid.candidateId() : null;
 	}
 
@@ -148,11 +158,12 @@ public class VoteSessionService {
 			.sum();
 	}
 
-	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(Long broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(Long memberId, Long broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndEnd(broadcastId,
 			LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "endDate"));
+		List<Vote> votes = voteService.findByMemberId(memberId);
 
-		return mapToVoteSessionListResponse(voteSessions, null);
+		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
 	private static List<VoteSessionResponse> mapToVoteSessionResponse(List<VoteSession> voteSessions) {
@@ -173,7 +184,7 @@ public class VoteSessionService {
 			.collect(Collectors.toSet());
 
 		return voteSessions.stream()
-			.map(vs -> VoteSessionListResponse.from(vs, votedSessionIds.contains(vs.getId())))
+			.map(vs -> VoteSessionListResponse.from(vs, votedSessionIds.contains(vs.getContractAddress())))
 			.toList();
 	}
 

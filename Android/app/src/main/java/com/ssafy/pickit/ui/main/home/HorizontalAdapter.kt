@@ -6,13 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ssafy.pickit.R
+import com.ssafy.pickit.data.datasource.remote.response.vote.PopularVoteListDataResponse
+import com.ssafy.pickit.domain.entity.VotePopularData
 
 class HorizontalAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<HorizontalAdapter.ViewHolder>() {
 
+<<<<<<< HEAD
     private val items = mutableListOf<Int>()
+=======
+    private val items = mutableListOf<VotePopularData>()
+>>>>>>> develop
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_horizontal, parent, false)
@@ -20,14 +27,23 @@ class HorizontalAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.imageView.setImageResource(items[position])
+        val voteData = items[position]
+
+
+        Glide.with(context)
+            .load(voteData.thumbnail)
+            .into(holder.imageView)
     }
 
     override fun getItemCount(): Int {
         return items.size
     }
 
+<<<<<<< HEAD
     fun submitList(newItems: List<Int>) {
+=======
+    fun submitList(newItems: List<VotePopularData>) {
+>>>>>>> develop
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()

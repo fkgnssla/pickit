@@ -16,6 +16,7 @@ import com.ssafy.pickit.R
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataResponse
 import com.ssafy.pickit.databinding.ItemVoteBinding
 import com.ssafy.pickit.domain.entity.VoteListData
+import com.ssafy.pickit.ui.main.result.ResultActivity
 import com.ssafy.pickit.ui.main.voteDetail.VoteDetailActivity
 
 
@@ -42,11 +43,19 @@ class BroadCastInProgressAdapter(private val activity: AppCompatActivity) : List
             binding.executePendingBindings()
             binding.root.setOnClickListener {
                 val context = binding.root.context
-                val intent = Intent(context, VoteDetailActivity::class.java).apply {
+                if (item.isVote) {
 
-                    putExtra("voteSessionId", item.id)
+                    val intent = Intent(context, ResultActivity::class.java).apply {
+                        putExtra("voteSessionId", item.id)
+                    }
+                    context.startActivity(intent)
+                } else {
+
+                    val intent = Intent(context, VoteDetailActivity::class.java).apply {
+                        putExtra("voteSessionId", item.id)
+                    }
+                    context.startActivity(intent)
                 }
-                context.startActivity(intent)
             }
         }
 
