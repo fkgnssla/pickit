@@ -46,23 +46,16 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="16dp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_kakao_login"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="카카오로 시작하기"
-            android:backgroundTint="#FEE500"
-            android:drawableLeft="@drawable/kakao"
-            android:drawablePadding="0dp"
-            android:textColor="@android:color/black"
+            android:src="@drawable/ic_kakao_login"
+            android:background="@android:color/transparent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="32dp"/>
-
-
+            android:layout_marginBottom="64dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

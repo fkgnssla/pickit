@@ -1,12 +1,16 @@
 package com.ssafy.pickit.ui.auth
 
 import android.content.Intent
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.ImageButton
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.util.Utility
@@ -38,14 +42,7 @@ class AuthActivity : AppCompatActivity() {
         setupViewPager()
         initButtonClickListener()
         initViewModelObserve()
-
-
     }
-
-//    private fun navigateToSignupActivity() {
-//        val intent = Intent(this, SignupActivity::class.java)
-//        startActivity(intent)
-//    }
 
     private fun initViewModelObserve() {
         viewModel.loginState.observe(this) { state ->
@@ -54,13 +51,10 @@ class AuthActivity : AppCompatActivity() {
                     finish()
                     MainActivity.start(this)
                 }
-
                 is AuthViewModel.LoginState.NewUserState -> {
                     finish()
-                    RegisterActivity.start(this)
-
+                    AgreementActivity.start(this)
                 }
-
                 is AuthViewModel.LoginState.LoadingState -> {
                 }
             }
@@ -68,19 +62,9 @@ class AuthActivity : AppCompatActivity() {
     }
 
     private fun setupViewPager() {
-        viewPager = findViewById(R.id.viewPager)
+        viewPager = binding.viewPager
         adapter = ServicePageAdapter(this)
         viewPager.adapter = adapter
-
-        viewPager.setOffscreenPageLimit(1)
-
-
-        viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-
-            }
-        })
 
         findViewById<ImageButton>(R.id.left_arrow).setOnClickListener {
             val currentItem = viewPager.currentItem
@@ -95,13 +79,9 @@ class AuthActivity : AppCompatActivity() {
                 viewPager.setCurrentItem(currentItem + 1, true)
             }
         }
-        var keyHash = Utility.getKeyHash(this)
-        Log.d("kakaoHash", keyHash)
 
     }
 
-
-    //TODO : util 함수로 분리할 것(activity context 넘기는 방식으로)
     private fun getKaKaoToken(callback: (OAuthToken?, Throwable?) -> Unit) {
         val isKakaoLoginAvailable = UserApiClient.instance.isKakaoTalkLoginAvailable(this)
         if (isKakaoLoginAvailable) {
@@ -117,18 +97,9 @@ class AuthActivity : AppCompatActivity() {
         }
     }
 
-
-
     private fun initButtonClickListener() {
         binding.btnKakaoLogin.setOnClickListener {
             getKaKaoToken(viewModel.kakaoLoginCallback)
-//            MainActivity.start(this)
-
-
-
         }
     }
-
-
-
 }

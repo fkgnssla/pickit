@@ -22,18 +22,9 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel = ViewModelProvider(this)[RegisterViewModel::class.java]
-
-        val nestedScrollView = binding.nestedScrollView
-        val linearAreaWrapper = binding.termsContainer
-        linearAreaWrapper.post {
-            linearAreaWrapper.minimumHeight = nestedScrollView.height
-        }
-
 
         binding.apply {
             lifecycleOwner = this@RegisterActivity
@@ -41,34 +32,15 @@ class RegisterActivity : AppCompatActivity() {
         }
 
         initObserve()
-        binding.walletButton.setOnClickListener {
-            viewModel.createWallet()
-        }
+        initListener()
 
-        binding.cancelButton.setOnClickListener {
-            viewModel.cancel()
-
-            finish()
-        }
-
-        binding.genderGroup.setOnCheckedChangeListener { group, checkedId ->
-            val selectedGender = when (checkedId) {
-                R.id.radioMale -> "male"
-                R.id.radioFemale -> "female"
-                else -> null
-            }
-            if (selectedGender != null) {
-                viewModel.selectGender(selectedGender)
-            }
-        }
-
-        binding.saveButton.setOnClickListener {
-            viewModel.register()
-            MainActivity.start(this)
-        }
     }
 
-
+    private fun initListener() {
+        binding.saveButton.setOnClickListener {
+            viewModel.createWallet()
+        }
+    }
 
     private fun initObserve() {
 
@@ -76,6 +48,7 @@ class RegisterActivity : AppCompatActivity() {
             when (state) {
                 is RegisterViewModel.ApiState.SuccessState -> {
                     Toast.makeText(this, "지갑 생성 완료", Toast.LENGTH_SHORT).show()
+                    viewModel.register()
                 }
                 is RegisterViewModel.ApiState.FailState -> {
                     Toast.makeText(this, "지갑 생성 실패", Toast.LENGTH_SHORT).show()
@@ -104,11 +77,9 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-
         viewModel.isFormValid.observe(this) { isValid ->
             binding.saveButton.isEnabled = isValid
         }
-
 
         viewModel.showToastEvent.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
