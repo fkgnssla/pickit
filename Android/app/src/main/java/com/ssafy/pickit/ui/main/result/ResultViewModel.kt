@@ -29,11 +29,10 @@ class ResultViewModel @Inject constructor(
     private val _selectedCandidateId = MutableLiveData<String>()
     val selectedCandidateId: LiveData<String> get() = _selectedCandidateId
 
-    private val _voteSessionResponse = MutableLiveData<VoteSessionData?>()
-    val voteSessionResponse: MutableLiveData<VoteSessionData?> get() = _voteSessionResponse
 
-    private val _voteResultResponse = MutableLiveData<VoteResultData>()
-    val voteResultResponse: MutableLiveData<VoteResultData> get() = _voteResultResponse
+
+    private val _voteResultData = MutableLiveData<VoteResultData>()
+    val voteResultData: MutableLiveData<VoteResultData> get() = _voteResultData
 
     fun setSelectedCandidateId(candidateId: String) {
         _selectedCandidateId.value = candidateId
@@ -78,7 +77,8 @@ class ResultViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = voteResultUseCase.invoke(voteId)
-                _voteResultResponse.value = response
+                Log.d("VoteResultViewModel", "Response: $response")
+                _voteResultData.value = response
             } catch (e: Exception) {
                 Log.e("VoteResultViewModel", "Exception: $e")
 

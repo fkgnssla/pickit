@@ -50,23 +50,24 @@ object VoteMapper {
             name = candidate.name,
             profileImg = candidate.profileImg,
             voteCnt = candidate.voteCnt,
-            candidateId = candidate.number
+            candidateId = candidate.number,
+            id=candidate.id
+        )
+    }
+    fun mapperToVoteResultData(candidates: List<CandidateResult>): VoteResultData {
+        return VoteResultData(
+            results = candidates.map { mapCandidateResult(it) }
         )
     }
 
-    fun mapperToVoteResultData(response: VoteResultResponse): VoteResultData {
-        return VoteResultData(
-            results = response.results.map { mapCandidateResult(it) }
-        )
-    }
 
     private fun mapCandidateResult(result: CandidateResult): CandidateResultData {
         return CandidateResultData(
             candidateId = result.candidateId,
             candidateName = result.candidateName,
             voteCount = result.voteCount,
-            profileImage=result.profileImage,
-            isVote=result.isVote
+            profileImage = result.profileImage,
+            isVote = result.isVote
         )
     }
 }

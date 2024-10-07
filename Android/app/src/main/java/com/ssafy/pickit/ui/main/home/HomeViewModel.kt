@@ -38,7 +38,7 @@ class HomeViewModel : ViewModel() {
 
 
         _channelButtons.value = listOf(
-            ChannelButton("66fa3a8af61a5b3e161c2ec1", R.drawable.ic_channel_1),
+            ChannelButton("1", R.drawable.ic_channel_1),
             ChannelButton("2", R.drawable.ic_channel_2),
             ChannelButton("3", R.drawable.ic_channel_3),
             ChannelButton("4", R.drawable.ic_channel_4),

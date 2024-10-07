@@ -39,7 +39,7 @@
             app:layout_constraintStart_toEndOf="@+id/tabTitle"
             app:layout_constraintHorizontal_bias="0.0"/>
 
-        <!-- 진행 중 버튼을 tabTitle 아래로 이동 -->
+
         <Button
             android:id="@+id/buttonInProgress"
             android:layout_width="wrap_content"
@@ -66,7 +66,7 @@
             app:layout_constraintTop_toTopOf="@id/buttonInProgress"
             app:layout_constraintBottom_toBottomOf="@id/buttonInProgress" />
 
-        <!-- 완료 버튼을 진행 중 버튼 옆에 배치 -->
+
         <Button
             android:id="@+id/buttonCompleted"
             android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
             app:layout_constraintTop_toTopOf="@id/buttonInProgress"
             app:layout_constraintBottom_toBottomOf="@id/buttonInProgress"/>
 
-        <!-- RecyclerView를 버튼 아래로 이동 -->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"

@@ -74,6 +74,10 @@
             android:name=".ui.main.result.ResultActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".ui.main.mypage.UserProfileActivity"
+            android:exported="false">
+        </activity>
 
     </application>
 

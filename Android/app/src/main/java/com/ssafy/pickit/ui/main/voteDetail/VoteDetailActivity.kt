@@ -36,7 +36,8 @@ class VoteDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.lifecycleOwner = this
 
-        val voteSessionId= intent.getStringExtra("voteSessionId")
+        val voteSessionId = intent.getStringExtra("voteSessionId")
+
 
         initObserve()
 
@@ -90,6 +91,8 @@ class VoteDetailActivity : AppCompatActivity() {
         val voteSessionId = viewModel.sessionId
         val intent = Intent(this, ResultActivity::class.java).apply {
             putExtra("voteSessionId", voteSessionId)
+            putExtra("selectedCandidateId", selectedCandidate?.id)
+
         }
         startActivity(intent)
         finish()
