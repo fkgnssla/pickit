@@ -41,18 +41,7 @@ class HomeViewModel@Inject constructor(private val popularVoteUseCase: PopularVo
     val voteResultResponse: LiveData<VoteResultResponse> get() = _voteResultResponse
 
     init {
-<<<<<<< HEAD
-        _items.value = listOf(
-            R.drawable.ic_vote2,
-            R.drawable.ic_vote1,
-            R.drawable.ic_vote3,
-            R.drawable.ic_vote5,
-            R.drawable.ic_vote6
-        )
-=======
         fetchPopularVoteList()
->>>>>>> develop
-
 
         _channelButtons.value = listOf(
             ChannelButton("1", R.drawable.ic_channel_1),
