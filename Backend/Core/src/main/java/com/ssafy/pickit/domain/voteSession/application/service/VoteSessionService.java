@@ -54,7 +54,7 @@ public class VoteSessionService {
 				tempVoteSessionService.delete(id);
 
 				VoteSession newVoteSession = voteSessionRepository.save(voteSession);
-				collectionService.createCollection(newVoteSession.getId());
+				collectionService.createCollection(newVoteSession.getContractAddress());
 				return null;
 			} else {
 				throw new RuntimeException("투표 네트워크 자동 배포에 실패했습니다.");
@@ -77,7 +77,7 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, null);
 	}
 
-	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, Long broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndOngoing(broadcastId,
 			LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
@@ -129,7 +129,7 @@ public class VoteSessionService {
 			.sum();
 	}
 
-	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(String broadcastId) {
+	public List<VoteSessionListResponse> findAllByBroadcastIdAndEnd(Long broadcastId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByBroadcastIdAndEnd(broadcastId,
 			LocalDateTime.now(), Sort.by(Sort.Direction.DESC, "endDate"));
 
