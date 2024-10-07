@@ -87,6 +87,13 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
+	public List<VoteSessionListResponse> findByTitle(Long memberId, String keyword) {
+		List<VoteSession> voteSessions = voteSessionRepository.findAllByTitle(keyword);
+		List<Vote> votes = voteService.findByMemberId(memberId);
+
+		return mapToVoteSessionListResponse(voteSessions, votes);
+	}
+
 	public List<String> findContractAddress() {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
 		return voteSessions.stream()
