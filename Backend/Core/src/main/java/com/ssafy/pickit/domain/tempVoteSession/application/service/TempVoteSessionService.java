@@ -27,7 +27,7 @@ public class TempVoteSessionService {
 	public TempVoteSession create(TempVoteSessionRequest voteSessionRequest) {
 		List<TempCandidate> candidates = mapToCandidates(voteSessionRequest);
 
-		TempVoteSession voteSession = TempVoteSession.of(voteSessionRequest, "https://aws.s3", candidates);
+		TempVoteSession voteSession = TempVoteSession.of(voteSessionRequest, candidates);
 
 		return tempVoteSessionRepository.save(voteSession);
 	}
