@@ -33,7 +33,8 @@ class HomeViewModel : ViewModel() {
             R.drawable.ic_vote2,
             R.drawable.ic_vote1,
             R.drawable.ic_vote3,
-            R.drawable.ic_vote5
+            R.drawable.ic_vote5,
+            R.drawable.ic_vote6
         )
 
 
@@ -49,9 +50,6 @@ class HomeViewModel : ViewModel() {
             ChannelButton("9", R.drawable.ic_channel_9),
             ChannelButton("10", R.drawable.ic_channel_10),
             ChannelButton("11", R.drawable.ic_channel_11),
-            ChannelButton("12", R.drawable.ic_channel_12),
-            ChannelButton("13", R.drawable.ic_channel_13),
-            ChannelButton("14", R.drawable.ic_channel_14),
             ChannelButton("15", R.drawable.ic_channel_15)
         )
 

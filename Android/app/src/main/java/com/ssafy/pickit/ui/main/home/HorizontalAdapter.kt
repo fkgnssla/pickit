@@ -12,7 +12,6 @@ class HorizontalAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<HorizontalAdapter.ViewHolder>() {
 
-
     private val items = mutableListOf<Int>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,7 +26,6 @@ class HorizontalAdapter(
     override fun getItemCount(): Int {
         return items.size
     }
-
 
     fun submitList(newItems: List<Int>) {
         items.clear()
