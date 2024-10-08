@@ -37,6 +37,18 @@ public class VoteSessionController {
 		return ResponseUtils.success();
 	}
 
+	@Operation(summary = "자신이 투표한 투표 세션 리스트 조회(진행중)", description = "현재 진행중인 자신이 투표한 투표 세션 리스트를 반환합니다.")
+	@GetMapping("/my/ongoing")
+	public ApiResponse<?> findByOngoingAndMy(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(voteSessionService.findByOngoingAndMy(principalDetail.getId()));
+	}
+
+	@Operation(summary = "자신이 투표한 투표 세션 리스트 조회(종료된)", description = "이미 종료된 자신이 투표한 투표 세션 리스트를 반환합니다.")
+	@GetMapping("/my/end")
+	public ApiResponse<?> findByEndAndMy(@AuthenticationPrincipal PrincipalDetail principalDetail) {
+		return ResponseUtils.success(voteSessionService.findByEndAndMy(principalDetail.getId()));
+	}
+
 	@Operation(summary = "진행중인 투표 세션 조회", description = "현재 진행중인 투표 세션을 반환합니다.")
 	@GetMapping("/ongoing")
 	public ApiResponse<?> ongoingAll(@AuthenticationPrincipal PrincipalDetail principalDetail) {
