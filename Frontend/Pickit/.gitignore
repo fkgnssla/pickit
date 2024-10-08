@@ -1,4 +1,6 @@
 todoList.txt
+.env
+
 # Logs
 logs
 *.log

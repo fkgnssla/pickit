@@ -108,7 +108,6 @@ const Regist = () => {
 
   // Regist 4단계: result 갱신 되면 투표 등록, done 페이지 이동
   useEffect(() => {
-    // console.log(result)
     if (shouldNavigate) {
       axios({
         method: 'post',
@@ -120,7 +119,7 @@ const Regist = () => {
         // console.log("투표등록성공", res);
       })
       .catch((e) => {
-        console.log("투표등록실패", e);
+        // console.log("투표등록실패", e);
       });
       navigate("/done");
       setShouldNavigate(false);
@@ -186,7 +185,7 @@ const Regist = () => {
           setShouldUpdateResult(true);
         })
         .catch((e) => {
-          console.log("사진등록실패", e);
+          // console.log("사진등록실패", e);
         });
       }
       setShouldPeriodValidate(false);
