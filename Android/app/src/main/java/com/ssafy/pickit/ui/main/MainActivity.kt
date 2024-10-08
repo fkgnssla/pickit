@@ -15,6 +15,7 @@ import com.ssafy.pickit.ui.main.home.HomeFragment
 import com.ssafy.pickit.ui.main.mypage.MyPageActivity
 import com.ssafy.pickit.ui.main.mypage.MyPageFragment
 import com.ssafy.pickit.ui.main.vote.VoteFragment
+import com.ssafy.pickit.ui.main.mypage.UserProfileActivity
 
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +37,7 @@ class MainActivity : AppCompatActivity() {
 
 
         imageView.setOnClickListener {
-            val intent = Intent(this, MyPageActivity::class.java)
+            val intent = Intent(this, UserProfileActivity::class.java)
             startActivity(intent)
         }
 

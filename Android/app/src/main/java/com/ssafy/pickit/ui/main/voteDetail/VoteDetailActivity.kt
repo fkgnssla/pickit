@@ -28,6 +28,7 @@ class VoteDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVoteDetailBinding
     private val viewModel: VoteDetailViewModel by viewModels()
     private var selectedCandidate: CandidateData? = null
+    private lateinit var loadingDialog: LoadingDialog
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +37,8 @@ class VoteDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.lifecycleOwner = this
 
-        val voteSessionId= intent.getStringExtra("voteSessionId")
+        val voteSessionId = intent.getStringExtra("voteSessionId")
+
 
         initObserve()
 
@@ -46,6 +48,8 @@ class VoteDetailActivity : AppCompatActivity() {
     }
 
     private fun initObserve() {
+        loadingDialog = LoadingDialog(this)
+
         viewModel.voteSessionResponse.observe(this) { response ->
             response?.let {
                 binding.textViewTitle.text = it.title
@@ -63,12 +67,15 @@ class VoteDetailActivity : AppCompatActivity() {
             when (state) {
                 VoteState.SuccessState -> {
                     Toast.makeText(this, "투표에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                    loadingDialog.dismiss()
                     navigateToResultActivity()
                 }
                 VoteState.FailureState -> {
+                    loadingDialog.dismiss()
                     Toast.makeText(this, "투표에 실패했습니다.", Toast.LENGTH_SHORT).show()
                 }
                 VoteState.LoadingState -> {
+                    loadingDialog.show()
                     Toast.makeText(this, "투표 트랜잭션 시도중입니다.", Toast.LENGTH_SHORT).show()
                 }
                 VoteState.DefaultState -> {
@@ -90,6 +97,8 @@ class VoteDetailActivity : AppCompatActivity() {
         val voteSessionId = viewModel.sessionId
         val intent = Intent(this, ResultActivity::class.java).apply {
             putExtra("voteSessionId", voteSessionId)
+            putExtra("selectedCandidateId", selectedCandidate?.id)
+
         }
         startActivity(intent)
         finish()

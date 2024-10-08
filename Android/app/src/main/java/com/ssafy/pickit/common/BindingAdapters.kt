@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 @BindingAdapter("imgUrl")
 fun loadImage(view: ImageView, url: String?) {
     if (url.isNullOrEmpty()) {
-        view.setImageDrawable(null) // 기본 이미지 설정 없음
+        view.setImageDrawable(null)
     } else {
         Glide.with(view.context)
             .load(url)

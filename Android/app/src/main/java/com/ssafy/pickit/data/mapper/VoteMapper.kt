@@ -3,12 +3,14 @@ package com.ssafy.pickit.data.mapper
 
 import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.CandidateResult
+import com.ssafy.pickit.data.datasource.remote.response.vote.PopularVoteListDataResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteResultResponse
 import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 import com.ssafy.pickit.domain.entity.CandidateData
 import com.ssafy.pickit.domain.entity.CandidateResultData
 import com.ssafy.pickit.domain.entity.VoteListData
+import com.ssafy.pickit.domain.entity.VotePopularData
 import com.ssafy.pickit.domain.entity.VoteResultData
 import com.ssafy.pickit.domain.entity.VoteSessionData
 
@@ -50,23 +52,33 @@ object VoteMapper {
             name = candidate.name,
             profileImg = candidate.profileImg,
             voteCnt = candidate.voteCnt,
-            candidateId = candidate.number
+            candidateId = candidate.number,
+            id=candidate.id
+        )
+    }
+    fun mapperToVoteResultData(candidates: List<CandidateResult>): VoteResultData {
+        return VoteResultData(
+            results = candidates.map { mapCandidateResult(it) }
         )
     }
 
-    fun mapperToVoteResultData(response: VoteResultResponse): VoteResultData {
-        return VoteResultData(
-            results = response.results.map { mapCandidateResult(it) }
-        )
+    fun mapperToPopularVoteListData(response: List<PopularVoteListDataResponse>): List<VotePopularData> {
+        return response.map {
+            VotePopularData(
+                id = it.id,
+                thumbnail = it.thumbnail
+            )
+        }
     }
+
 
     private fun mapCandidateResult(result: CandidateResult): CandidateResultData {
         return CandidateResultData(
             candidateId = result.candidateId,
             candidateName = result.candidateName,
             voteCount = result.voteCount,
-            profileImage=result.profileImage,
-            isVote=result.isVote
+            profileImage = result.profileImage,
+            isVote = result.isVote
         )
     }
 }
