@@ -20,6 +20,7 @@ import com.ssafy.pickit.domain.entity.VoteSessionData
 import com.ssafy.pickit.ui.main.result.ResultActivity
 import com.ssafy.pickit.ui.main.voteDetail.VoteDetailViewModel.VoteState
 import dagger.hilt.android.AndroidEntryPoint
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
@@ -35,25 +36,30 @@ class VoteDetailActivity : AppCompatActivity() {
         binding = ActivityVoteDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.lifecycleOwner = this
+        val textViewTitle = binding.textViewTitle
+        textViewTitle.isSelected = true
 
         val voteSessionId = intent.getStringExtra("voteSessionId")
 
 
         initObserve()
 
-        binding.buttonSubmit.setOnClickListener {
-            onSubmitClicked()
-        }
+//        binding.buttonSubmit.setOnClickListener {
+//            onSubmitClicked()
+//        }
     }
 
     private fun initObserve() {
         viewModel.voteSessionResponse.observe(this) { response ->
             response?.let {
                 binding.textViewTitle.text = it.title
-                binding.textViewStartDate.text =
-                    it.startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-                binding.textViewEndDate.text =
-                    it.endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                binding.textViewDescription.text=it.description
+                val formatter = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일 HH:mm")
+                val startDate = LocalDateTime.parse(it.startDate).format(formatter)
+                val endDate = LocalDateTime.parse(it.endDate).format(formatter)
+
+                binding.textViewStartDate.text = startDate
+                binding.textViewEndDate.text = endDate
                 Glide.with(this)
                     .load(it.thumbnail)
                     .into(binding.imageView)
@@ -137,21 +143,25 @@ class VoteDetailActivity : AppCompatActivity() {
 
             itemBinding.textViewName.text = candidate.name
 
-            itemBinding.checkBox.setOnCheckedChangeListener { _, isChecked ->
-                if (isChecked) {
-                    if (selectedCandidate != null) {
+//            itemBinding.checkBox.setOnCheckedChangeListener { _, isChecked ->
+//                if (isChecked) {
+//                    if (selectedCandidate != null) {
+//
+//                        val previouslySelectedCheckbox =
+//                            gridLayout.findViewWithTag<CheckBox>(selectedCandidate?.name)
+//                        previouslySelectedCheckbox?.isChecked = false
+//                    }
+//                    selectedCandidate = candidate
+//                    itemBinding.checkBox.tag = candidate.name
+//                } else {
+//                    if (selectedCandidate == candidate) {
+//                        selectedCandidate = null
+//                    }
+//                }
+//            }
 
-                        val previouslySelectedCheckbox =
-                            gridLayout.findViewWithTag<CheckBox>(selectedCandidate?.name)
-                        previouslySelectedCheckbox?.isChecked = false
-                    }
-                    selectedCandidate = candidate
-                    itemBinding.checkBox.tag = candidate.name
-                } else {
-                    if (selectedCandidate == candidate) {
-                        selectedCandidate = null
-                    }
-                }
+            itemBinding.root.setOnClickListener {
+                showCandidateDialog(candidate)
             }
 
             gridLayout.addView(itemBinding.root)
