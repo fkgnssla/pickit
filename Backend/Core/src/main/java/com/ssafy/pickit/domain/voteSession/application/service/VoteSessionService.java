@@ -72,6 +72,15 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
+	public List<VoteSessionListResponse> findByOngoingAndMy(Long memberId) {
+		List<VoteSessionListResponse> voteSessionListResponses = findAllByOngoing(memberId);
+		List<VoteSessionListResponse> myVoteSessionListResponses = voteSessionListResponses.stream()
+			.filter(voteSessionListResponse -> voteSessionListResponse.isVote())
+			.toList();
+
+		return myVoteSessionListResponses;
+	}
+
 	public List<VoteSessionListResponse> findAllByEnd(Long memberId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByEnd(LocalDateTime.now(),
 			Sort.by(Sort.Direction.DESC, "endDate"));
@@ -79,6 +88,15 @@ public class VoteSessionService {
 		List<Vote> votes = voteService.findByMemberId(memberId);
 
 		return mapToVoteSessionListResponse(voteSessions, votes);
+	}
+
+	public List<VoteSessionListResponse> findByEndAndMy(Long memberId) {
+		List<VoteSessionListResponse> voteSessionListResponses = findAllByEnd(memberId);
+		List<VoteSessionListResponse> myVoteSessionListResponses = voteSessionListResponses.stream()
+			.filter(voteSessionListResponse -> voteSessionListResponse.isVote())
+			.toList();
+
+		return myVoteSessionListResponses;
 	}
 
 	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, Long broadcastId) {
