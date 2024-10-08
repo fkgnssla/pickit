@@ -1,6 +1,7 @@
 package com.ssafy.pickit.domain.voteSession.application.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,7 +30,9 @@ import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -147,13 +150,18 @@ public class VoteSessionService {
 		List<Candidate> candidates = voteSession.getCandidates();
 		Long candidateId = checkVotedCandidate(memberId, voteSession.getContractAddress());
 
-		return candidates.stream()
+		List<CandidateResponse> candidateResponses = candidates.stream()
 			.map(candidate -> {
 				if (candidate.getNumber() == candidateId) {
 					return CandidateResponse.of(candidate, true);
 				} else
 					return CandidateResponse.of(candidate, false);
 			}).toList();
+
+		List<CandidateResponse> mutableList = new ArrayList<>(candidateResponses);
+		mutableList.sort(Comparator.comparingLong(CandidateResponse::voteCnt).reversed());
+
+		return mutableList;
 	}
 
 	public Long checkVotedCandidate(Long memberId, String contractAddress) {
