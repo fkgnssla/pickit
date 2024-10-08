@@ -23,4 +23,6 @@ public interface VoteSessionRepository extends MongoRepository<VoteSession, Stri
 	@Query("{ 'broadcastId': ?0, 'endDate': { $lte:  ?1} }")
 	List<VoteSession> findAllByBroadcastIdAndEnd(Long broadcastId, LocalDateTime currentTime, Sort sort);
 
+	@Query("{ 'title': { $regex: ?0, $options: 'i' } }")
+	List<VoteSession> findAllByTitle(String keyword);
 }

@@ -34,7 +34,7 @@ public class JwtVerifyFilter extends OncePerRequestFilter {
 
 	private static final String[] whitelist = {"/api/swagger-ui/**", "/api/v3/**", "/api/auth/login",
 		"/api/auth/sign-up", "/api/temp-vote-session/**", "/api/temp-vote-session", "/api/vote-session",
-		"/api/images"};
+		"/api/images", "/api/vote-session/contract-address"};
 
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {

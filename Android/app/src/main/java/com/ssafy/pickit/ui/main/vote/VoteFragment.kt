@@ -48,6 +48,10 @@ class VoteFragment : BaseFragment<FragmentVoteBinding>(R.layout.fragment_vote) {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchInProgressData()
+    }
     private fun updateButtonStates(isInProgressSelected: Boolean) {
         Log.d("VoteFragment", "Updating button states: isInProgressSelected = $isInProgressSelected")
 

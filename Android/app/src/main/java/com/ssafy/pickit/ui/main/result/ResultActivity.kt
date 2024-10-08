@@ -146,6 +146,3 @@ class ResultActivity : AppCompatActivity() {
     }
 
 }
-
-
-
