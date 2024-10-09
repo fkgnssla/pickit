@@ -55,7 +55,12 @@ class VoteRepositoryImpl @Inject constructor(
         val response = voteApi.getEndMyVoteList()
         val data = response.data!!
         return VoteMapper.mapperToVoteListData(data)
+    }
 
+    override suspend fun getSearchVoteList(keyword: String): List<VoteListData> {
+        val response = voteApi.getSearchVoteList(keyword)
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
     }
 
     override suspend fun postVote(voteItem: VoteItem): Boolean {
@@ -71,14 +76,12 @@ class VoteRepositoryImpl @Inject constructor(
             val response = voteApi.postVote(voteRequest)
             return response.status.equals("SUCCESS")
         }
-        Log.d("testtttt", transactionResponse.message.toString())
         return false
     }
 
     override suspend fun getVoteDetail(voteId: String): VoteSessionData {
         val response = voteApi.getVoteDetail(voteId)
         val voteSessionResponse = response.data ?: throw Exception("Failed to retrieve vote detail")
-
 
         return mapperToVoteSessionData(voteSessionResponse)
     }

@@ -19,7 +19,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/contentAreaWrapper"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingTop="50dp">
 
             <TextView
                 android:id="@+id/ongoing_vote"

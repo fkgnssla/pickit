@@ -11,6 +11,7 @@ import com.ssafy.pickit.domain.usecase.vote.EndVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.OngoingBroadcastVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.OngoingMyVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.OngoingVoteListUseCase
+import com.ssafy.pickit.domain.usecase.vote.SearchVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteDetailUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteResultUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteUseCase
@@ -97,6 +98,12 @@ object UseCaseModule {
     @Singleton
     fun provideEndMyVoteListUseCase(voteRepository: VoteRepository): EndMyVoteListUseCase {
         return EndMyVoteListUseCase(voteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchVoteListUseCase(voteRepository: VoteRepository): SearchVoteListUseCase {
+        return SearchVoteListUseCase(voteRepository)
     }
 
 }
