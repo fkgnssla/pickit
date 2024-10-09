@@ -13,6 +13,7 @@ import com.ssafy.pickit.data.datasource.remote.response.vote.VoteSessionResponse
 import com.ssafy.pickit.domain.entity.VoteResultData
 import com.ssafy.pickit.domain.entity.VoteSessionData
 import com.ssafy.pickit.domain.usecase.vote.EndVoteListUseCase
+import com.ssafy.pickit.domain.usecase.vote.VoteDetailUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteResultUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,10 +22,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ResultViewModel @Inject constructor(
+    private val voteDetailUseCase: VoteDetailUseCase,
     private val voteResultUseCase: VoteResultUseCase
 ) : ViewModel() {
 
-
+    private val _voteSessionData = MutableLiveData<VoteSessionData>()
+    val voteSessionResponse: MutableLiveData<VoteSessionData> get() = _voteSessionData
 
     private val _selectedCandidateId = MutableLiveData<String>()
     val selectedCandidateId: LiveData<String> get() = _selectedCandidateId
@@ -70,6 +73,17 @@ class ResultViewModel @Inject constructor(
 //            }
 //        }
 //    }
+
+    fun fetchVoteSessionData(id: String) {
+        viewModelScope.launch {
+            try {
+                val response = voteDetailUseCase(id)
+                _voteSessionData.value = response
+            } catch (e: Exception) {
+                Log.e("VoteDetailViewModel", "Exception: $e")
+            }
+        }
+    }
 
 
 

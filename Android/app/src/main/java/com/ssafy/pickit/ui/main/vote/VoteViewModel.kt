@@ -78,6 +78,7 @@ class VoteViewModel @Inject constructor(
 
                 _voteData.value = data
 
+
             } catch (e: Exception) {
 
                 Log.e("VoteViewModel", "Exception: $e")

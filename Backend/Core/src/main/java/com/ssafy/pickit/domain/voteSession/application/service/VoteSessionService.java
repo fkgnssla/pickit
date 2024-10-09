@@ -1,6 +1,7 @@
 package com.ssafy.pickit.domain.voteSession.application.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -29,7 +30,9 @@ import com.ssafy.pickit.domain.voteSession.dto.VoteSessionListResponse;
 import com.ssafy.pickit.domain.voteSession.dto.VoteSessionResponse;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -72,6 +75,15 @@ public class VoteSessionService {
 		return mapToVoteSessionListResponse(voteSessions, votes);
 	}
 
+	public List<VoteSessionListResponse> findByOngoingAndMy(Long memberId) {
+		List<VoteSessionListResponse> voteSessionListResponses = findAllByOngoing(memberId);
+		List<VoteSessionListResponse> myVoteSessionListResponses = voteSessionListResponses.stream()
+			.filter(voteSessionListResponse -> voteSessionListResponse.isVote())
+			.toList();
+
+		return myVoteSessionListResponses;
+	}
+
 	public List<VoteSessionListResponse> findAllByEnd(Long memberId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByEnd(LocalDateTime.now(),
 			Sort.by(Sort.Direction.DESC, "endDate"));
@@ -79,6 +91,15 @@ public class VoteSessionService {
 		List<Vote> votes = voteService.findByMemberId(memberId);
 
 		return mapToVoteSessionListResponse(voteSessions, votes);
+	}
+
+	public List<VoteSessionListResponse> findByEndAndMy(Long memberId) {
+		List<VoteSessionListResponse> voteSessionListResponses = findAllByEnd(memberId);
+		List<VoteSessionListResponse> myVoteSessionListResponses = voteSessionListResponses.stream()
+			.filter(voteSessionListResponse -> voteSessionListResponse.isVote())
+			.toList();
+
+		return myVoteSessionListResponses;
 	}
 
 	public List<VoteSessionListResponse> findAllByBroadcastIdAndOngoing(Long memberId, Long broadcastId) {
@@ -129,13 +150,18 @@ public class VoteSessionService {
 		List<Candidate> candidates = voteSession.getCandidates();
 		Long candidateId = checkVotedCandidate(memberId, voteSession.getContractAddress());
 
-		return candidates.stream()
+		List<CandidateResponse> candidateResponses = candidates.stream()
 			.map(candidate -> {
 				if (candidate.getNumber() == candidateId) {
 					return CandidateResponse.of(candidate, true);
 				} else
 					return CandidateResponse.of(candidate, false);
 			}).toList();
+
+		List<CandidateResponse> mutableList = new ArrayList<>(candidateResponses);
+		mutableList.sort(Comparator.comparingLong(CandidateResponse::voteCnt).reversed());
+
+		return mutableList;
 	}
 
 	public Long checkVotedCandidate(Long memberId, String contractAddress) {
