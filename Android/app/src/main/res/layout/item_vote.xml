@@ -65,19 +65,23 @@
 
             <TextView
                 android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:textSize="20sp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textStyle="bold"
                 android:text="@{item.title}" />
 
             <TextView
                 android:id="@+id/textViewVoteStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{item.isVote ? `투표 완료` : `투표 미진행`}"
-                android:textSize="16sp"
-                android:textColor="@{item.isVote ? @android:color/holo_green_dark : @android:color/holo_blue_dark}"
-                android:layout_marginStart="16dp" />
+                android:text="@{item.isVote ? `투표 완료` : ` `}"
+            android:textSize="16sp"
+            android:textColor="@{item.isVote ? @android:color/holo_green_dark : @android:color/holo_blue_dark}"
+            android:layout_marginStart="16dp" />
         </LinearLayout>
 
             <LinearLayout
@@ -90,7 +94,7 @@
                     android:id="@+id/textViewStartDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{item.startDate}" />
+                    app:formattedDateTime="@{item.startDate}" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -102,7 +106,7 @@
                     android:id="@+id/textViewEndDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{item.endDate}" />
+                    app:formattedDateTime="@{item.endDate}" />
             </LinearLayout>
     </LinearLayout>
 </layout>

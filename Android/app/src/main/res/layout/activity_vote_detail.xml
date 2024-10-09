@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,14 +16,30 @@
                 android:id="@+id/imageView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:scaleType="centerCrop" />
+                android:scaleType="centerCrop"
+                android:layout_marginTop="8dp"/>
 
             <TextView
                 android:id="@+id/textViewTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:ellipsize="marquee"
+                android:maxLines="1"
+                android:layout_marginTop="8dp"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:singleLine="true" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:layout_marginTop="6dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -34,7 +51,8 @@
                     android:id="@+id/textViewStartDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp" />
+
+                    android:textSize="13sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -46,8 +64,11 @@
                     android:id="@+id/textViewEndDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp" />
+
+                    android:textSize="13sp" />
             </LinearLayout>
+
+
 
             <GridLayout
                 android:id="@+id/gridLayoutImages"
@@ -61,16 +82,16 @@
                 android:clipToPadding="false"/>
             />
 
-            <Button
-                android:id="@+id/buttonSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:padding="16dp"
+<!--            <Button-->
+<!--                android:id="@+id/buttonSubmit"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                android:padding="16dp"-->
 
-                android:background="@drawable/submit_button_background"
-                android:text="투표하기"
-                android:layout_gravity="center" />
+<!--                android:background="@drawable/submit_button_background"-->
+<!--                android:text="투표하기"-->
+<!--                android:layout_gravity="center" />-->
 
         </LinearLayout>
     </ScrollView>
