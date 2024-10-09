@@ -10,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface VoteApi {
 
@@ -44,4 +45,8 @@ interface VoteApi {
 
     @GET("vote-session/my/end")
     suspend fun getEndMyVoteList(): ResponseWrapper<List<VoteListDataResponse>>
+
+    @GET("vote-session/search")
+    suspend fun getSearchVoteList(@Query("keyword") keyword : String) : ResponseWrapper<List<VoteListDataResponse>>
+
 }

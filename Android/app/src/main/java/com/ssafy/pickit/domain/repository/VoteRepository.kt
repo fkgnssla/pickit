@@ -25,6 +25,9 @@ interface VoteRepository {
     // 종료 상태인 내가 투표한 목록을 가져오는 함수
     suspend fun getEndMyVoteList(): List<VoteListData>
 
+    // 검색 키워드에 맞는 투표 목록을 가져오는 함수
+    suspend fun getSearchVoteList(keyword : String) : List<VoteListData>
+
     // 특정 투표에 대해 투표하는 함수
     suspend fun postVote(voteItem: VoteItem): Boolean
 
