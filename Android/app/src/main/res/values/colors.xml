@@ -3,6 +3,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_gray">#CFCCCC</color>
+    <color name="pickit_pink">#E9aFA3</color>
+    <color name="pickit_gray">#EBEBEB</color>
 
     <color name="colorSelected">#EEC7C5</color>
     <color name="colorUnselected">#CCCCCC</color>
