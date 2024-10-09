@@ -45,6 +45,19 @@ class VoteRepositoryImpl @Inject constructor(
         return VoteMapper.mapperToVoteListData(data)
     }
 
+    override suspend fun getOnGoingMyVoteList(): List<VoteListData> {
+        val response = voteApi.getOnGoingMyVoteList()
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
+    }
+
+    override suspend fun getEndMyVoteList(): List<VoteListData> {
+        val response = voteApi.getEndMyVoteList()
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
+
+    }
+
     override suspend fun postVote(voteItem: VoteItem): Boolean {
         val transactionResponse =
             walletFunction.vote(voteItem.contractAddress, voteItem.candidateId)
@@ -69,7 +82,6 @@ class VoteRepositoryImpl @Inject constructor(
 
         return mapperToVoteSessionData(voteSessionResponse)
     }
-
 
     override suspend fun getVoteResult(voteId: String): VoteResultData {
         val response = voteApi.getVoteResult(voteId)
