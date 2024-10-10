@@ -1,5 +1,6 @@
 package com.ssafy.pickit.domain.tempVoteSession.api;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.pickit.domain.tempVoteSession.application.service.TempVoteSessionService;
 import com.ssafy.pickit.domain.tempVoteSession.dto.TempVoteSessionRequest;
+import com.ssafy.pickit.global.aop.LogExecution;
 import com.ssafy.pickit.global.response.ApiResponse;
 import com.ssafy.pickit.global.response.ResponseUtils;
 
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/temp-vote-session")
 @RequiredArgsConstructor
+@LogExecution
 public class TempVoteSessionController {
 	private final TempVoteSessionService tempVoteSessionService;
 
@@ -43,7 +46,7 @@ public class TempVoteSessionController {
 		if (result)
 			return ResponseUtils.success();
 		else
-			return ResponseUtils.error("404", "해당 id를 가진 TempVoteSession이 존재하지 않습니다.");
+			return ResponseUtils.error(HttpStatus.NOT_FOUND, "해당 id를 가진 TempVoteSession이 존재하지 않습니다.");
 	}
 
 }

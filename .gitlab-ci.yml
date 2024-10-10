@@ -1,37 +1,75 @@
-image: gangintheremark/install-image:latest
+image: 8.10.1-jdk21
 
 stages:
   - build
-  - deploy
 
-cache:
-  paths:
-    - .gradle/wrapper/
-    - .gradle/caches/
+before_script:
+  - cd /home/ubuntu/PickIt/S11P21A309
+  - git pull origin release  
 
-build_BE:
+build_Core:
   stage: build
   script:
-    - cd Backend/Core
+    - cd /home/ubuntu/PickIt/S11P21A309/Backend/Core
     - chmod +x ./gradlew
     - ./gradlew clean build -x test
-  artifacts:
-    paths:
-      - Backend/Core/build/libs
-  tags:
-    - backend
+    - sh ~/core/core-deploy.sh
+    - |
+      if [ $? -eq 0 ]; then
+        curl -X POST -H 'Content-Type: application/json' -d "{
+          \"text\": \"🐳 Core 배포가 성공적으로 완료되었습니다 \n$(date '+%Y-%m-%d %H:%M:%S')\"
+        }" https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      else
+        curl -X POST -H 'Content-Type: application/json' -d "{
+          \"text\": \"🤔 Core 배포가 실패했습니다 \n$(date '+%Y-%m-%d %H:%M:%S')\"
+        }" https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      fi
   only:
     - release
+  tags:
+    - backend
 
-deploy_BE:
-  stage: deploy
+build_VoteProcessor:
+  stage: build
   script:
-    - cd Backend/Core
-    - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "cd /home/ubuntu/PickIt/S11P21A309 && git pull origin release"
-    - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "sudo systemctl stop my-spring-app"
-    - sshpass -p "$SSH_PASSWORD" scp build/libs/pickit-0.0.1-SNAPSHOT.jar $SSH_USER@$SSH_HOST:/home/ubuntu/spring-docker/app.jar
-    - sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST "SPRING_ACTIVE_PROFILE=prod sudo systemctl start my-spring-app"
-  tags:
-    - backend
+    - cd /home/ubuntu/PickIt/S11P21A309/Backend/VoteProcessor
+    - chmod +x ./gradlew
+    - ./gradlew clean build -x test
+    - sh ~/vote/vote-deploy.sh
+    - |
+      if [ $? -eq 0 ]; then  
+        curl -X POST -H 'Content-Type: application/json' -d "{
+          \"text\": \"🐳 VoteProcessor 배포가 성공적으로 완료되었습니다 \n$(date '+%Y-%m-%d %H:%M:%S')\"
+        }" https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      else
+        curl -X POST -H 'Content-Type: application/json' -d "{
+          \"text\": \"🤔 VoteProcessor 배포가 실패했습니다 \n$(date '+%Y-%m-%d %H:%M:%S')\"
+        }" https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      fi
   only:
     - release
+  tags:
+    - backend
+
+build_Contract:
+  stage: build
+  script:
+    - cd /home/ubuntu/PickIt/S11P21A309/Contract/VotingContract
+    - truffle compile
+    - cd migrations/
+    - sudo kill -9 $(sudo lsof -t -i :8000)
+    - nohup python3.12 -m uvicorn deploy_vote:app --host 0.0.0.0 --port 8000 > /home/ubuntu/logs/contract.log 2>&1 &
+    - |
+      if [ $? -eq 0 ]; then  
+        curl -X POST -H 'Content-Type: application/json' -d "{
+          \"text\": \"🐳 Contract 배포가 성공적으로 완료되었습니다 \n$(date '+%Y-%m-%d %H:%M:%S')\"
+        }" https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      else
+        curl -X POST -H 'Content-Type: application/json' -d "{
+          \"text\": \"🤔 Contract 배포가 실패했습니다 \n$(date '+%Y-%m-%d %H:%M:%S')\"
+        }" https://meeting.ssafy.com/hooks/6ah39oz6d7yzxnyyk4bw9p111y
+      fi
+  only:
+    - release
+  tags:
+    - backend

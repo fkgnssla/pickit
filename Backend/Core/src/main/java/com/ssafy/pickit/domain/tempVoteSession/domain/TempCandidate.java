@@ -12,6 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class TempCandidate {
+	private Long number;
+
 	private String name;
 
 	private String profileImg;
@@ -20,6 +22,7 @@ public class TempCandidate {
 
 	public static TempCandidate of(TempCandidateRequest request) {
 		return TempCandidate.builder()
+			.number(request.number())
 			.name(request.name())
 			.profileImg(request.profileImg())
 			.voteCnt(0L)

@@ -1,11 +1,11 @@
 package com.ssafy.pickit.data.datasource.remote.blockchain
 
-import android.util.Base64
 import com.ssafy.pickit.data.datasource.local.keystore.LocalKeyStoreManager
 import com.ssafy.pickit.data.datasource.local.preference.LocalPreferenceDataSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.web3j.crypto.Credentials
 import org.web3j.crypto.ECKeyPair
 import org.web3j.crypto.Keys
@@ -64,15 +64,49 @@ class WalletFunctionImpl @Inject constructor(
     }
 
     // 투표마다 다른 주소로 트랜잭션을 처리하기 위한 메서드
-    fun processTransactionWithVoteContract(
+    override suspend fun vote(
         voteContractAddress: String,
-        transactionData: Any
-    ): Boolean {
-        val transactionManager = ReadonlyTransactionManager(web3j, voteContractAddress)
+        candidateId: Long
+    ): VoteTransactionResponse {
+        val privateKey =
+            localKeyStoreManager.decryptData(localPreferenceDataSource.getPrivateKey()!!)
+        val memberId = localPreferenceDataSource.getMemberId() ?: return VoteTransactionResponse(
+            status = TransactionState.Failure,
+            message = "Not exist memberId"
+        )
 
-        //TODO : 트랜잭션 처리 로직 구현
-        return true
+        return withContext(Dispatchers.IO) {
+            try {
+                val voting = Contracts_Voting_sol_Voting.load(
+                    voteContractAddress,
+                    web3j,
+                    Credentials.create(privateKey),
+                    contractGasProvider
+                )
+
+                val transactionReceipt =
+                    voting.vote(candidateId.toBigInteger(), memberId.toBigInteger()).send()
+
+                if (transactionReceipt.isStatusOK) {
+                    VoteTransactionResponse(
+                        status = TransactionState.Success,
+                        transactionHash = transactionReceipt.transactionHash
+                    )
+                } else {
+                    VoteTransactionResponse(
+                        status = TransactionState.Failure,
+                        message = transactionReceipt.status
+                    )
+                }
+            } catch (e: Exception) {
+                VoteTransactionResponse(
+                    status = TransactionState.Failure,
+                    message = "Error while voting: ${e.message}"
+                )
+            }
+        }
     }
+
 
     override fun insertUserWallet(privateKey: String) {
         val credentials: Credentials = Credentials.create(privateKey)
@@ -95,12 +129,9 @@ class WalletFunctionImpl @Inject constructor(
     }
 
     private fun setWalletInformation(privateKey: String, address: String) {
-        val encryptedPrivateKey: ByteArray =
-            localKeyStoreManager.encryptData(privateKey.toByteArray())
-        val encryptedAddress: ByteArray = localKeyStoreManager.encryptData(address.toByteArray())
-
-        val encodedPrivateKey = Base64.encodeToString(encryptedPrivateKey, Base64.DEFAULT)
-        val encodedAddress = Base64.encodeToString(encryptedAddress, Base64.DEFAULT)
+        val encodedPrivateKey =
+            localKeyStoreManager.encryptData(privateKey)
+        val encodedAddress = localKeyStoreManager.encryptData(address)
 
         localPreferenceDataSource.setPrivateKey(encodedPrivateKey)
         localPreferenceDataSource.setWalletAddress(encodedAddress)

@@ -1,5 +1,7 @@
 package com.ssafy.pickit.domain.member.domain;
 
+import java.time.LocalDate;
+
 import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
 import com.ssafy.pickit.domain.wallet.domain.Wallet;
 
@@ -32,20 +34,22 @@ public class Member {
 
 	private String name;
 
-	private int age;
+	private LocalDate birthday;
 
-	private String gender;
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 
 	private String socialId;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
-	public static Member of(SignUpRequest signUpRequest, Wallet newWallet) {
+	public static Member of(SignUpRequest signUpRequest, Wallet newWallet, LocalDate birthday) {
 		return Member.builder()
 			.name(signUpRequest.name())
-			.age(signUpRequest.age())
-			.gender(signUpRequest.gender()).socialId(signUpRequest.socialId())
+			.birthday(birthday)
+			.gender(Gender.valueOf(signUpRequest.gender().toUpperCase()))
+			.socialId(signUpRequest.socialId())
 			.wallet(newWallet)
 			.role(Role.MEMBER).build();
 	}

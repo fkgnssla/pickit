@@ -17,10 +17,12 @@ public interface VoteSessionRepository extends MongoRepository<VoteSession, Stri
 	List<VoteSession> findAllByEnd(LocalDateTime currentTime, Sort sort);
 
 	@Query("{ 'broadcastId': ?0, 'startDate': { $lte: ?1 }, 'endDate': { $gte: ?1 } }")
-	List<VoteSession> findAllByBroadcastIdAndOngoing(String broadcastId,
+	List<VoteSession> findAllByBroadcastIdAndOngoing(Long broadcastId,
 		LocalDateTime currentTime);
 
 	@Query("{ 'broadcastId': ?0, 'endDate': { $lte:  ?1} }")
-	List<VoteSession> findAllByBroadcastIdAndEnd(String broadcastId, LocalDateTime currentTime, Sort sort);
+	List<VoteSession> findAllByBroadcastIdAndEnd(Long broadcastId, LocalDateTime currentTime, Sort sort);
 
+	@Query("{ 'title': { $regex: ?0, $options: 'i' } }")
+	List<VoteSession> findAllByTitle(String keyword);
 }

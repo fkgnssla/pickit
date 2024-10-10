@@ -18,6 +18,14 @@ class LocalPreferenceDataSourceImpl @Inject constructor(
         localPreference.setValue(WALLET_ADDRESS, walletAddress)
     }
 
+    override fun setSocialId(socialId: String) {
+        localPreference.setValue(SOCIAL_ID, socialId)
+    }
+
+    override fun setMemberId(memberId: String) {
+        localPreference.setValue(MEMBER_ID, memberId)
+    }
+
     override fun getAccessToken(): String? =
         localPreference.getValue(ACCESS_TOKEN)?.takeIf { it.isNotEmpty() }
 
@@ -27,10 +35,17 @@ class LocalPreferenceDataSourceImpl @Inject constructor(
     override fun getWalletAddress(): String? =
         localPreference.getValue(WALLET_ADDRESS)?.takeIf { it.isNotEmpty() }
 
+    override fun getSocialId(): String? =
+        localPreference.getValue(SOCIAL_ID)?.takeIf { it.isNotEmpty() }
+
+    override fun getMemberId(): String? =
+        localPreference.getValue(MEMBER_ID)?.takeIf { it.isNotEmpty() }
 
     companion object {
         const val ACCESS_TOKEN = "ACCESS_TOKEN"
         const val PRIVATE_KEY = "PRIVATE_KEY"
         const val WALLET_ADDRESS = "WALLET_ADDRESS"
+        const val SOCIAL_ID = "SOCIAL_ID"
+        const val MEMBER_ID = "MEMBER_ID"
     }
 }

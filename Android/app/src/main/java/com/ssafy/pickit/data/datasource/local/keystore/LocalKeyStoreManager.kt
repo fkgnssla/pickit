@@ -1,6 +1,6 @@
 package com.ssafy.pickit.data.datasource.local.keystore
 
 interface LocalKeyStoreManager {
-    fun encryptData(data: ByteArray): ByteArray
-    fun decryptData(data: ByteArray): ByteArray
+    fun encryptData(data: String): String
+    fun decryptData(data: String): String
 }

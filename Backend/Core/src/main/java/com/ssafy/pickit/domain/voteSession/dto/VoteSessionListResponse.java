@@ -7,17 +7,19 @@ import com.ssafy.pickit.domain.voteSession.domain.VoteSession;
 public record VoteSessionListResponse(
 	String id,
 	String title,
-	String imgUrl,
+	String thumbnail,
 	LocalDateTime startDate,
-	LocalDateTime endDate
+	LocalDateTime endDate,
+	Boolean isVote
 ) {
-	public static VoteSessionListResponse from(VoteSession voteSession) {
+	public static VoteSessionListResponse from(VoteSession voteSession, Boolean isVote) {
 		return new VoteSessionListResponse(
 			voteSession.getId(),
 			voteSession.getTitle(),
-			voteSession.getImgUrl(),
+			voteSession.getThumbnail(),
 			voteSession.getStartDate(),
-			voteSession.getEndDate()
+			voteSession.getEndDate(),
+			isVote
 		);
 	}
 }

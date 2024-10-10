@@ -22,7 +22,7 @@ public class VoteSession {
 	@Id
 	private String id;
 
-	private String broadcastId;
+	private Long broadcastId;
 
 	private String contractAddress;
 
@@ -30,7 +30,7 @@ public class VoteSession {
 
 	private String description;
 
-	private String imgUrl;
+	private String thumbnail;
 
 	private Candidate winner;
 
@@ -47,7 +47,7 @@ public class VoteSession {
 			.contractAddress(contractAddress)
 			.title(tempVoteSession.getTitle())
 			.description(tempVoteSession.getDescription())
-			.imgUrl(tempVoteSession.getImgUrl())
+			.thumbnail(tempVoteSession.getThumbnail())
 			.winner(null)
 			.candidates(candidates)
 			.startDate(tempVoteSession.getStartDate())
@@ -55,9 +55,9 @@ public class VoteSession {
 			.build();
 	}
 
-	public void updateVoteCnt(String candidateId) {
+	public void updateVoteCnt(Long candidateId) {
 		for (Candidate candidate : candidates) {
-			if (candidate.getId().equals(candidateId)) {
+			if (candidate.getNumber() == candidateId) {
 				candidate.updateVoteCnt();
 				break;
 			}

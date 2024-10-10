@@ -1,11 +1,9 @@
 package com.ssafy.pickit.ui.main.mypage
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ssafy.pickit.R
 import com.ssafy.pickit.common.BaseFragment
 import com.ssafy.pickit.databinding.FragmentMyPageBinding
@@ -14,6 +12,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_page) {
     private val viewModel: MyPageViewModel by viewModels()
+    private lateinit var adapter: MyPageViewPagerAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -21,5 +20,26 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             this.viewModel = viewModel
             lifecycleOwner = this@MyPageFragment
         }
+
+        initObserve()
+        initViewPager()
+    }
+
+    private fun initObserve() {
+        viewModel.userData.observe(this) { userData ->
+            binding.tvMyName.text = userData.name
+        }
+    }
+
+    private fun initViewPager() {
+        adapter = MyPageViewPagerAdapter(this)
+        binding.vpMyVote.adapter = adapter
+
+        val list = listOf("진행중", "완료")
+
+        TabLayoutMediator(binding.tlMyVote, binding.vpMyVote) { tab, position ->
+            tab.text = list.get(position)
+        }.attach()
     }
 }
+
