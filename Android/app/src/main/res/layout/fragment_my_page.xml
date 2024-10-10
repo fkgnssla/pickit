@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black">
+        android:background="@color/pickit_pink">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top"
@@ -32,16 +32,34 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cv_logo"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="25dp"
+                android:layout_marginStart="20dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_logo">
+                </ImageView>
+            </androidx.cardview.widget.CardView>
+
+
             <TextView
+                android:id="@+id/tv_my_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginBottom="25dp"
-                android:text="남경민"
                 android:textColor="@color/white"
                 android:textSize="25dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@id/cv_logo"
+                app:layout_constraintTop_toTopOf="@id/cv_logo"
+                app:layout_constraintStart_toEndOf="@id/cv_logo"  />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -56,11 +74,11 @@
                 android:id="@+id/tl_my_vote"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="?attr/colorPrimary"
+                android:background="@drawable/bg_top_round20_gray"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tabIndicatorColor="#ff0000"
-                app:tabSelectedTextColor="#ff0000"
-                app:tabTextColor="@android:color/black" />
+                app:tabIndicatorColor="@color/pickit_pink"
+                app:tabSelectedTextColor="@color/pickit_pink"
+                app:tabTextColor="@color/black" />
 
             <!-- ViewPager2 to display fragments or RecyclerView pages -->
             <androidx.viewpager2.widget.ViewPager2

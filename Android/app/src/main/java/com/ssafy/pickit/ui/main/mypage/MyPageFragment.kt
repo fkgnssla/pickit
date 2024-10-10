@@ -21,7 +21,14 @@ class MyPageFragment : BaseFragment<FragmentMyPageBinding>(R.layout.fragment_my_
             lifecycleOwner = this@MyPageFragment
         }
 
+        initObserve()
         initViewPager()
+    }
+
+    private fun initObserve() {
+        viewModel.userData.observe(this) { userData ->
+            binding.tvMyName.text = userData.name
+        }
     }
 
     private fun initViewPager() {
