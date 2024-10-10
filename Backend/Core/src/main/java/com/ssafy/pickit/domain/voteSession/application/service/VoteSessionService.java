@@ -130,14 +130,20 @@ public class VoteSessionService {
 			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 투표 정보입니다."));
 	}
 
-	public List<PopularVoteSessionResponse> findAllByPopular() {
+	public List<PopularVoteSessionResponse> findAllByPopular(Long memberId) {
 		List<VoteSession> voteSessions = voteSessionRepository.findAllByOngoing(LocalDateTime.now());
 		voteSessions.sort(Comparator.comparingLong(this::calculateTotalVoteCnt).reversed());
+
+		List<Vote> votes = voteService.findByMemberId(memberId);
+		Set<String> votedSessionIds = votes.stream()
+			.map(Vote::getVoteSessionId)
+			.collect(Collectors.toSet());
 
 		// 최대 3개의 투표 세션을 반환
 		return voteSessions.stream()
 			.limit(3)  // 최대 3개의 요소만 선택
-			.map(PopularVoteSessionResponse::from)  // VoteSession을 PopularVoteSessionResponse로 변환
+			.map(vs -> PopularVoteSessionResponse.from(vs,
+				votedSessionIds.contains(vs.getContractAddress())))  // VoteSession을 PopularVoteSessionResponse로 변환
 			.collect(Collectors.toList());  // 리스트로 반환
 	}
 
