@@ -101,9 +101,9 @@ class ResultActivity : AppCompatActivity() {
         entries.add(BarEntry(0f, candidateResult.voteCount.toInt().toFloat()))
 
         if (candidateResult.candidateId == selectedCandidateId) {
-            colors.add(Color.RED)
+            colors.add(R.color.pickit_pink)
         } else {
-            colors.add(if (candidateResult.isVote) Color.RED else Color.parseColor("#ADD8E6"))
+            colors.add(if (candidateResult.isVote) R.color.pickit_pink else Color.parseColor("#ADD8E6"))
         }
 
         val dataSet = BarDataSet(entries, "").apply {
