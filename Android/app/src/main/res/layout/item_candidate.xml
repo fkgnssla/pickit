@@ -4,8 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/rounded_border_background">
+    android:background="@drawable/border">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +14,8 @@
         >
 
         <FrameLayout
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_marginEnd="8dp">
 
             <ImageView
@@ -35,8 +34,8 @@
                 android:visibility="gone">
 
             <View
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:background="@drawable/circle_background"
                 android:layout_centerInParent="true"/>
 
@@ -50,17 +49,27 @@
         </RelativeLayout>
         </FrameLayout>
 
-        <TextView
-            android:id="@+id/candidateName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_gravity="center_vertical" />
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/candidateName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:layout_marginTop="16dp"
+                android:layout_marginStart="14dp"
+                android:layout_gravity="center_vertical" />
+
+            <com.github.mikephil.charting.charts.HorizontalBarChart
+                android:id="@+id/horizontalBarChart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/horizontalBarChart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp" />
 </LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.components.AxisBase
@@ -75,8 +76,6 @@ class ResultActivity : AppCompatActivity() {
             val candidateChart: HorizontalBarChart = candidateView.findViewById(R.id.horizontalBarChart)
             setupHorizontalBarChart(candidateChart, candidateResult, voteResultData, candidateResult.voteCount,selectedCandidateId)
 
-
-
             val candidateRankTextView = candidateView.findViewById<TextView>(R.id.candidateRank)
             val rankContainer = candidateView.findViewById<RelativeLayout>(R.id.rankContainer)
 
@@ -116,9 +115,14 @@ class ResultActivity : AppCompatActivity() {
         entries.add(BarEntry(0f, candidateResult.voteCount.toInt().toFloat()))
 
         if (candidateResult.candidateId == selectedCandidateId) {
-            colors.add(R.color.pickit_pink)
+            colors.add(R.color.pickit_hotpink)
         } else {
-            colors.add(if (candidateResult.isVote) R.color.pickit_pink else Color.parseColor("#ADD8E6"))
+            val color = if (candidateResult.isVote) {
+                ContextCompat.getColor(baseContext, R.color.pickit_hotpink)
+            } else {
+                ContextCompat.getColor(baseContext, R.color.pickit_pink)
+            }
+            colors.add(color)
         }
 
         val dataSet = BarDataSet(entries, "").apply {
