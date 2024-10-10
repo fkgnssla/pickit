@@ -66,7 +66,8 @@ object VoteMapper {
         return response.map {
             VotePopularData(
                 id = it.id,
-                thumbnail = it.thumbnail
+                thumbnail = it.thumbnail,
+                isVote = it.isVote
             )
         }
     }

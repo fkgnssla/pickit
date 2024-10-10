@@ -16,7 +16,7 @@ class MyInProgressFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MyPageViewModel
-    private lateinit var adapter: InProgressAdapter
+    private lateinit var adapter: MyPageRecyclerviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +35,7 @@ class MyInProgressFragment : Fragment() {
 
     private fun initAdapter() {
         binding.rvOngoingList.layoutManager= LinearLayoutManager(context)
-        adapter = InProgressAdapter(this)
+        adapter = MyPageRecyclerviewAdapter()
         binding.rvOngoingList.adapter = adapter
 
         viewModel.ongoingMyVoteList.observe(viewLifecycleOwner) { voteList ->
