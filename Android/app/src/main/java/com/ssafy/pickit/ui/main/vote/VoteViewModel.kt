@@ -73,7 +73,7 @@ class VoteViewModel @Inject constructor(
         }
     }
 
-    private fun fetchCompletedData() {
+   fun fetchCompletedData() {
         viewModelScope.launch {
             try {
                 val data: List<VoteListData> = endVoteListUseCase.invoke()
