@@ -12,7 +12,7 @@ public record TempVoteSessionResponse(
 	String broadcastName,
 	String title,
 	String description,
-	String imgUrl,
+	String thumbnail,
 	List<TempCandidate> candidates,
 	LocalDateTime startDate,
 	LocalDateTime endDate
@@ -23,7 +23,7 @@ public record TempVoteSessionResponse(
 			broadcast.getName(),
 			tempVoteSession.getTitle(),
 			tempVoteSession.getDescription(),
-			tempVoteSession.getImgUrl(),
+			tempVoteSession.getThumbnail(),
 			tempVoteSession.getCandidates(),
 			tempVoteSession.getStartDate(),
 			tempVoteSession.getEndDate()

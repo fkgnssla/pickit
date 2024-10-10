@@ -1,8 +1,8 @@
 package com.ssafy.pickit.domain.tempVoteSession.application.service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +27,7 @@ public class TempVoteSessionService {
 	public TempVoteSession create(TempVoteSessionRequest voteSessionRequest) {
 		List<TempCandidate> candidates = mapToCandidates(voteSessionRequest);
 
-		TempVoteSession voteSession = TempVoteSession.of(voteSessionRequest, "https://aws.s3", candidates);
+		TempVoteSession voteSession = TempVoteSession.of(voteSessionRequest, candidates);
 
 		return tempVoteSessionRepository.save(voteSession);
 	}
@@ -39,7 +39,7 @@ public class TempVoteSessionService {
 
 	public TempVoteSession findById(String id) {
 		return tempVoteSessionRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("Invalid tempVoteSession id: " + id));
+			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 임시 투표 정보입니다."));
 	}
 
 	public boolean delete(String id) {
@@ -51,11 +51,11 @@ public class TempVoteSessionService {
 			.orElse(false);
 	}
 
-	private @NotNull List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
+	private List<TempVoteSessionResponse> mapToTempVoteSessionResponse(
 		List<TempVoteSession> tempVoteSessions) {
 		return tempVoteSessions.stream()
 			.map(tempVoteSession -> {
-				Broadcast findBroadcast = broadcastService.findById(tempVoteSession.getBroadcastId());
+				Broadcast findBroadcast = broadcastService.findByIndex(tempVoteSession.getBroadcastId());
 				return TempVoteSessionResponse.of(tempVoteSession, findBroadcast);
 			}).toList();
 	}

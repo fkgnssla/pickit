@@ -19,7 +19,12 @@ public class BroadcastService {
 	private final BroadcastRepository broadcastRepository;
 
 	public Broadcast findById(String id) {
-		return broadcastRepository.findById(id).orElseThrow(() -> new NoSuchElementException("broadcast Not Found"));
+		return broadcastRepository.findById(id)
+			.orElseThrow(() -> new NoSuchElementException("존재하지 않는 방송사입니다."));
+	}
+
+	public Broadcast findByIndex(Long index) {
+		return broadcastRepository.findByIndex(index);
 	}
 
 	public List<BroadcastResponse> findAll() {

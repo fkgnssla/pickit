@@ -11,6 +11,16 @@ spring:
       idle-timeout: 60000
       max-lifetime: 1800000
       connection-timeout: 30000
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        show_sql: true
   data:
     # MongoDB 연결 정보
     mongodb:
@@ -20,18 +30,13 @@ spring:
       host: ${PROD_REDIS_HOST}
       port: ${PROD_REDIS_PORT}
       password: ${PROD_REDIS_PASSWORD}
-  # RabbitMQ 연결 정보
-  rabbitmq:
-    host: ${PROD_RABBITMQ_HOST}
-    port: ${PROD_RABBITMQ_PORT}
-    username: ${PROD_RABBITMQ_USERNAME}
-    password: ${PROD_RABBITMQ_PASSWORD}
-
-# RabbitMQ queue, exchange, routing-key 정보
-rabbitmq:
-  queue.name: ${PROD_RABBITMQ_QUEUE_NAME}
-  exchange.name: ${PROD_RABBITMQ_EXCHANGE_NAME}
-  routing.key: ${PROD_RABBITMQ_ROUTING_KEY}
+  kafka:
+    bootstrap-servers: ${PROD_KAFKA_BOOTSTRAP_SERVERS}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    topic:
+      vote-topic: ${PROD_KAFKA_TOPIC_NAME}
 
 # 블록체인 네트워크 자동 배포 URL
 vote-session:

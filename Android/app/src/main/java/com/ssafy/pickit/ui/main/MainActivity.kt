@@ -2,7 +2,10 @@ package com.ssafy.pickit.ui.main
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.ssafy.pickit.R
@@ -27,20 +30,38 @@ class MainActivity : AppCompatActivity() {
         }
 
         setFragment()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.insetsController?.let { controller ->
+                controller.hide(WindowInsets.Type.systemBars())
+                controller.systemBarsBehavior =
+                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
+
     }
 
     private fun setFragment() {
-        // 초기 Fragment 설정
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.fcv_main, HomeFragment())
             .commit()
 
+        binding.bnvMain.selectedItemId = R.id.home
+
         binding.bnvMain.setOnItemSelectedListener {
             val transaction = supportFragmentManager.beginTransaction()
             when (it.itemId) {
-                R.id.home -> transaction.replace(R.id.fcv_main, HomeFragment())
-                R.id.vote -> transaction.replace(R.id.fcv_main, VoteFragment())
-                R.id.my_page -> transaction.replace(R.id.fcv_main, MyPageFragment())
+                R.id.home -> {
+                    transaction.replace(R.id.fcv_main, HomeFragment())
+                }
+
+                R.id.vote -> {
+                    transaction.replace(R.id.fcv_main, VoteFragment())
+                }
+
+                R.id.my_vote -> {
+                    transaction.replace(R.id.fcv_main, MyPageFragment())
+                }
             }
             transaction.commit()
             return@setOnItemSelectedListener true

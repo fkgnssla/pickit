@@ -6,6 +6,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.kapt) // Kotlin Kapt for Annotation Processing
     alias(libs.plugins.hilt) // Dagger Hilt for Dependency Injection
+    id("kotlin-parcelize")
+
 }
 
 val localProperties = Properties()
@@ -13,6 +15,8 @@ localProperties.load(FileInputStream(rootProject.file("local.properties")))
 
 val kakaoAppKey = localProperties["KAKAO_APP_KEY"] as? String
     ?: error("KAKAO_APP_KEY not found in local.properties")
+val baseUrl = localProperties["BASE_URL"] as? String
+    ?: error("BASE_URL not found in local.properties")
 
 android {
     namespace = "com.ssafy.pickit"
@@ -30,11 +34,13 @@ android {
 
     buildTypes {
         debug {
+            buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
             buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
             manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
         }
         release {
             isMinifyEnabled = false
+            buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
             buildConfigField("String", "KAKAO_APP_KEY", "\"$kakaoAppKey\"")
             manifestPlaceholders["KAKAO_APP_KEY"] = kakaoAppKey
             proguardFiles(
@@ -63,7 +69,10 @@ android {
 }
 
 dependencies {
-
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("com.google.android.material:material:1.9.0")
+    implementation ("com.github.bumptech.glide:glide:4.15.1")
+    kapt("com.github.bumptech.glide:compiler:4.15.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -112,5 +121,8 @@ dependencies {
     implementation(libs.lifecycle.viewmodel)
     implementation(libs.lifecycle.livedata)
     implementation(libs.lifecycle.runtime)
+
+    //lottie
+    implementation(libs.lottie)
 }
 

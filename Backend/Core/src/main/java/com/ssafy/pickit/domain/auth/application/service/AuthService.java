@@ -1,5 +1,7 @@
 package com.ssafy.pickit.domain.auth.application.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,8 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import com.ssafy.pickit.domain.auth.dto.LoginResponse;
 import com.ssafy.pickit.domain.auth.dto.SignUpRequest;
-import com.ssafy.pickit.domain.auth.dto.TokenResponse;
+import com.ssafy.pickit.domain.auth.exception.KakaoAPIException;
 import com.ssafy.pickit.domain.member.application.service.MemberService;
 import com.ssafy.pickit.domain.member.domain.Member;
 import com.ssafy.pickit.domain.wallet.application.service.WalletService;
@@ -51,12 +54,19 @@ public class AuthService {
 		HttpEntity<String> entity = new HttpEntity<>("", headers);
 
 		ResponseEntity<Map> response = restTemplate.exchange(KAKAO_USER_INFO_URL, HttpMethod.GET, entity, Map.class);
+		if (!response.getStatusCode().is2xxSuccessful()) {
+			throw new KakaoAPIException("카카오 자원 서버 API 요청 실패");
+		}
+
+		if (response.getBody() == null || response.getBody().isEmpty()) {
+			throw new KakaoAPIException("카카오 자원 서버 API 요청 실패");
+		}
 		return response.getBody();
 	}
 
 	// 신규 회원 처리 로직
 	private ApiResponse<?> handleNewMember(String socialId) {
-		return ResponseUtils.success(TokenResponse.of(false, socialId, null, null));
+		return ResponseUtils.success(LoginResponse.of(null, false, socialId, null, null));
 	}
 
 	// 기존 회원 처리 로직 (JWT 발급)
@@ -66,7 +76,7 @@ public class AuthService {
 		String accessToken = JwtUtils.generateToken(claims, JwtConstants.ACCESS_EXP_TIME);
 		String refreshToken = JwtUtils.generateToken(claims, JwtConstants.REFRESH_EXP_TIME);
 
-		return ResponseUtils.success(TokenResponse.of(true, null, accessToken, refreshToken));
+		return ResponseUtils.success(LoginResponse.of(findMember.getId(), true, null, accessToken, refreshToken));
 	}
 
 	// JWT Claims 생성
@@ -81,7 +91,10 @@ public class AuthService {
 	public ApiResponse<?> signUp(SignUpRequest signUpRequest) {
 		Wallet newWallet = walletService.create(signUpRequest.address());
 
-		Member newMember = Member.of(signUpRequest, newWallet);
+		String birthday = signUpRequest.birthday();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+		Member newMember = Member.of(signUpRequest, newWallet, LocalDate.parse(birthday, formatter));
 		memberService.create(newMember);
 
 		return handleExistingMember(newMember);

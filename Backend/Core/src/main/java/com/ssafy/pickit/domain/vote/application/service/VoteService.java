@@ -1,5 +1,7 @@
 package com.ssafy.pickit.domain.vote.application.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,5 +21,8 @@ public class VoteService {
 		voteRepository.save(vote);
 	}
 
+	public List<Vote> findByMemberId(Long memberId) {
+		return voteRepository.findByMemberId(memberId);
+	}
 }
 

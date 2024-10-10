@@ -1,0 +1,16 @@
+server:
+  port: 8081
+spring:
+  profiles:
+    active: ${SPRING_ACTIVE_PROFILE:dev}
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  mvc:
+    servlet:
+      path: /api
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+  config:
+    import: optional:file:.env[.properties]
