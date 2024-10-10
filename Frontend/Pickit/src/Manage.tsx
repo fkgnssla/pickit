@@ -6,9 +6,27 @@ import axios from "axios";
 import deleteIcon from "./assets/delete.svg";
 import addIcon from "./assets/add.svg";
 
+interface Candidate {
+  number: number;
+  profile_img: string;
+  name: string;
+  vote_cnt: number;
+}
+
+interface TempVote {
+  id: number;
+  title: string;
+  thumbnail: string;
+  broadcast_name: string;
+  description: string;
+  start_date: string;
+  end_date: string;
+  candidates: Candidate[];
+}
+
 function Manage() {
   const navigate = useNavigate();
-  const [tempVotes, setTempVotes] = useState([]);
+  const [tempVotes, setTempVotes] = useState<TempVote[]>([]);
   const [password, setPassword] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const correctPassword = import.meta.env.VITE_APP_PASSWORD;
@@ -34,7 +52,7 @@ function Manage() {
     })
       .then((res) => {
         // console.log(res.data.data);
-        setTempVotes(res.data.data);
+        setTempVotes(res.data.data as TempVote[]);
       })
       .catch((e) => {
         // console.log("결과보기실패");
@@ -121,22 +139,25 @@ function Manage() {
           <div className="registForm">
             <div className="border">
               <div className="box">
+                {tempVotes.length===0 ? <div>임시 투표가 없습니다.</div>
+                :
+                <div>
                 {tempVotes.map((tempVote, index) => (
                   <div
-                    key={tempVote.id}
-                    style={{
-                      backgroundColor: "rgb(220, 255, 225)",
-                      padding: "10px",
-                      margin: "10px",
-                      borderRadius: "5px",
-                    }}
+                  key={tempVote.id}
+                  style={{
+                    backgroundColor: "rgb(220, 255, 225)",
+                    padding: "10px",
+                    margin: "10px",
+                    borderRadius: "5px",
+                  }}
                   >
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
                       }}
-                    >
+                      >
                       <h3>
                         {index + 1}. {tempVote.title}
                       </h3>
@@ -146,30 +167,29 @@ function Manage() {
                           className="deleteButton"
                           alt="add"
                           onClick={() => createVote(tempVote.id)}
-                        />
+                          />
                         <img
                           src={deleteIcon}
                           className="deleteButton"
                           alt="delete"
                           onClick={() => deleteVote(tempVote.id)}
-                        />
+                          />
                       </div>
                     </div>
                     <img
                       src={tempVote.thumbnail}
                       alt={tempVote.title}
                       width="100"
-                    />
-                    <span> | 방송사: {tempVote.broadcast_name}</span>
-                    <span> | 설명: {tempVote.description}</span>
-                    <br />
+                      />
+                    <p>방송사: {tempVote.broadcast_name}</p>
+                    <p>설명: {tempVote.description}</p>
                     <span>
                       기간:{" "}
                       {new Date(tempVote.start_date).toLocaleDateString() +
                         " " +
                         new Date(tempVote.start_date).toLocaleTimeString()}{" "}
                       ~{" "}
-                      {new Date(tempVote.end_date).toLocaleDateString() +
+                      {new Date(tempVote.end_date).toLocaleDateString() + " " +
                         new Date(tempVote.end_date).toLocaleTimeString()}
                     </span>
                     <hr />
@@ -181,7 +201,7 @@ function Manage() {
                             src={candidate.profile_img}
                             alt={candidate.name}
                             width="50"
-                          />
+                            />
                           <span>
                             {" "}
                             | 후보 {candidateIndex + 1}: {candidate.name}
@@ -192,29 +212,47 @@ function Manage() {
                     </ol>
                   </div>
                 ))}
-                <button onClick={toHome}>메인 화면으로</button>
-                <hr />
-                <button onClick={nowVote}>진행중인 투표</button>
-                <button onClick={endVote}>종료된 투표</button>
+                </div>}
+                {/* <hr />
+                <div className="okButton" onClick={nowVote}>진행중인 투표</div>
+                &nbsp;
+                <div className="okButton" onClick={endVote}>종료된 투표</div> */}
               </div>
+            </div>
+            <div>&nbsp;</div>
+            <div
+              className="okButton"
+              onClick={toHome}
+              style={{ width: "100%" }}
+            >
+              메인 화면으로
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit}>
-            <label style={{width:"100%"}}>
-              비밀번호: &nbsp;
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="비밀번호 입력"
-              />
-              &nbsp;
-              <button type="submit">확인</button>
-              &nbsp;
-              <button onClick={toHome}>메인 화면으로</button>
-            </label>
-          </form>
+          <div className="registForm">
+            <div className="border">
+              <label style={{width:"calc(100% - 20px)"}} className="box" onSubmit={handleSubmit}>
+                  비밀번호: &nbsp;
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="비밀번호 입력"
+                    style={{ width: "100%" }}
+                  />
+                  &nbsp;
+                  <div className="okButton" style={{ width: "100%" }} onClick={(e) => { e.preventDefault(); handleSubmit(e); }}>확인</div>
+                  &nbsp;
+                  <div
+                    className="okButton"
+                    style={{ width: "100%" }}
+                    onClick={toHome}
+                  >
+                    메인 화면으로
+                  </div>
+              </label>
+            </div>
+          </div>
         )}
       </div>
     </>

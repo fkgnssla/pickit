@@ -369,7 +369,7 @@ const Regist = () => {
           <div className="candidateInput">
             <div><img src={redDot} alt="redDot" className="redDot"/> 메인 이미지</div>
             <div className="fileInput">
-              <label htmlFor="upload_file">업로드</label>
+              <label className="label" htmlFor="upload_file">업로드</label>
               <input
                 id="upload_file"
                 type="file"
@@ -424,7 +424,7 @@ const Regist = () => {
                   onChange={(e) => candidateNameChange(index, e.target.value)}
                 />
                 <div className="fileInput">
-                <label htmlFor={`upload_file_${index}`}>업로드</label>
+                <label className="label" htmlFor={`upload_file_${index}`}>업로드</label>
                   <input
                     id={`upload_file_${index}`} // 각 파일 input에 고유한 id 부여
                     type="file"
