@@ -16,7 +16,7 @@ class MyCompletedFragment : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MyPageViewModel
-    private lateinit var adapter: CompletedAdapter
+    private lateinit var adapter: MyPageRecyclerviewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,7 +33,7 @@ class MyCompletedFragment : Fragment() {
 
     private fun initAdapter() {
         binding.rvEndList.layoutManager = LinearLayoutManager(context)
-        adapter = CompletedAdapter()
+        adapter = MyPageRecyclerviewAdapter()
         binding.rvEndList.adapter = adapter
 
         viewModel.endMyVoteList.observe(viewLifecycleOwner) { voteList ->

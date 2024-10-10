@@ -6,7 +6,7 @@ import com.ssafy.pickit.domain.entity.LoginData
 import com.ssafy.pickit.domain.entity.UserData
 
 object AuthMapper {
-    fun mapperToLogInData(loginResponse: LoginResponse) : LoginData {
+    fun mapperToLogInData(loginResponse: LoginResponse): LoginData {
         return LoginData(
             loginResponse.isExist
         )
@@ -15,7 +15,7 @@ object AuthMapper {
     fun mapperToUserData(userResponse: UserResponse): UserData {
         return UserData(
             name = userResponse.name,
-            age = userResponse.age,
+            birthday = userResponse.birthday,
             gender = userResponse.gender
         )
     }
