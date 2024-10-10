@@ -9,6 +9,7 @@ import com.ssafy.pickit.data.datasource.remote.response.vote.VoteListDataRespons
 import com.ssafy.pickit.domain.entity.VoteListData
 import com.ssafy.pickit.domain.usecase.vote.EndVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.OngoingVoteListUseCase
+import com.ssafy.pickit.domain.usecase.vote.SearchVoteListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class VoteViewModel @Inject constructor(
     private val ongoingVoteListUseCase: OngoingVoteListUseCase,
-    private val endVoteListUseCase: EndVoteListUseCase
+    private val endVoteListUseCase: EndVoteListUseCase,
+    private val searchVoteListUseCase: SearchVoteListUseCase
 ) : ViewModel() {
 
     private val _isInProgressSelected = MutableLiveData<Boolean>(true)
@@ -50,34 +52,32 @@ class VoteViewModel @Inject constructor(
     fun fetchInProgressData() {
         viewModelScope.launch {
             try {
-
                 val data: List<VoteListData> = ongoingVoteListUseCase.invoke()
-
-
                 _voteData.value = data
-
             } catch (e: Exception) {
-
                 Log.e("VoteViewModel", "Exception: $e")
                 _voteData.value = emptyList()
             }
         }
     }
 
-
-
-
-
-    private fun fetchCompletedData() {
-
+    fun fetchInSearchData(keyword : String) {
         viewModelScope.launch {
             try {
+                val data  = searchVoteListUseCase(keyword)
+                _voteData.value =data
+            }catch (e: Exception) {
+                Log.e("VoteViewModel", "Exception: $e")
+                _voteData.value = emptyList()
+            }
+        }
+    }
 
-                val data: List<VoteListData> =endVoteListUseCase.invoke()
-
-
+   fun fetchCompletedData() {
+        viewModelScope.launch {
+            try {
+                val data: List<VoteListData> = endVoteListUseCase.invoke()
                 _voteData.value = data
-
             } catch (e: Exception) {
 
                 Log.e("VoteViewModel", "Exception: $e")
@@ -85,59 +85,4 @@ class VoteViewModel @Inject constructor(
             }
         }
     }
-
-
-//    private fun setExampleInProgressData() {
-//        val exampleData = listOf(
-//            VoteResponse(
-//                id = "1",
-//                thumbnail = "https://via.placeholder.com/300",
-//                title = "진행 중 항목 1",
-//                startDate = LocalDateTime.of(2024, 9, 1, 0, 0),
-//                endDate = LocalDateTime.of(2024, 9, 10, 0, 0)
-//            ),
-//            VoteResponse(
-//                id = "2",
-//                thumbnail = "https://via.placeholder.com/300",
-//                title = "진행 중 항목 2",
-//                startDate = LocalDateTime.of(2024, 9, 2, 0, 0),
-//                endDate = LocalDateTime.of(2024, 9, 12, 0, 0)
-//            ),
-//            VoteResponse(
-//                id = "3",
-//                thumbnail = "https://via.placeholder.com/300",
-//                title = "진행 중 항목 3",
-//                startDate = LocalDateTime.of(2024, 9, 3, 0, 0),
-//                endDate = LocalDateTime.of(2024, 9, 13, 0, 0)
-//            )
-//        )
-//        _voteData.value = exampleData
-//    }
-
-//    private fun setExampleCompletedData() {
-//        val exampleData = listOf(
-//            VoteListDataResponse(
-//                id = "1",
-//                thumbnail = "https://via.placeholder.com/300",
-//                title = "종료된 항목 1",
-//                startDate = LocalDateTime.of(2024, 8, 1, 0, 0),
-//                endDate = LocalDateTime.of(2024, 8, 10, 0, 0)
-//            ),
-//            VoteResponse(
-//                id = "2",
-//                thumbnail = "https://via.placeholder.com/300",
-//                title = "종료된 항목 2",
-//                startDate = LocalDateTime.of(2024, 8, 2, 0, 0),
-//                endDate = LocalDateTime.of(2024, 8, 12, 0, 0)
-//            ),
-//            VoteResponse(
-//                id = "3",
-//                thumbnail = "https://via.placeholder.com/300",
-//                title = "종료된 항목 3",
-//                startDate = LocalDateTime.of(2024, 8, 3, 0, 0),
-//                endDate = LocalDateTime.of(2024, 8, 13, 0, 0)
-//            )
-//        )
-//        _voteData.value = exampleData
-//    }
 }

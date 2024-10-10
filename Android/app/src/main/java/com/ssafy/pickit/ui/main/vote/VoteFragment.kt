@@ -1,8 +1,12 @@
 package com.ssafy.pickit.ui.main.vote
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -45,12 +49,42 @@ class VoteFragment : BaseFragment<FragmentVoteBinding>(R.layout.fragment_vote) {
             updateButtonStates(isInProgressSelected)
         }
 
+        binding.svVote.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    viewModel.fetchInSearchData(it)
+                    hideKeyboard()
+                }
+                return true
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return false
+            }
+        })
+
+        binding.root.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_DOWN) {
+                hideKeyboard()
+            }
+            false
+        }
+
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        val view = requireActivity().currentFocus ?: View(requireContext())
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchInProgressData()
+        if (viewModel.isInProgressSelected.value == true) {
+            viewModel.fetchInProgressData()
+        } else {
+            viewModel.fetchCompletedData()
+        }
     }
     private fun updateButtonStates(isInProgressSelected: Boolean) {
         Log.d("VoteFragment", "Updating button states: isInProgressSelected = $isInProgressSelected")

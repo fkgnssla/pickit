@@ -6,9 +6,12 @@ import com.ssafy.pickit.domain.repository.WalletRepository
 import com.ssafy.pickit.domain.usecase.auth.LoginUseCase
 import com.ssafy.pickit.domain.usecase.auth.RegisterUseCase
 import com.ssafy.pickit.domain.usecase.vote.EndBroadcastVoteListUseCase
+import com.ssafy.pickit.domain.usecase.vote.EndMyVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.EndVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.OngoingBroadcastVoteListUseCase
+import com.ssafy.pickit.domain.usecase.vote.OngoingMyVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.OngoingVoteListUseCase
+import com.ssafy.pickit.domain.usecase.vote.SearchVoteListUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteDetailUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteResultUseCase
 import com.ssafy.pickit.domain.usecase.vote.VoteUseCase
@@ -83,6 +86,24 @@ object UseCaseModule {
     @Singleton
     fun provideVoteResultUseCase(voteRepository: VoteRepository): VoteResultUseCase {
         return VoteResultUseCase(voteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOngoingMyVoteListUseCase(voteRepository: VoteRepository): OngoingMyVoteListUseCase {
+        return OngoingMyVoteListUseCase(voteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideEndMyVoteListUseCase(voteRepository: VoteRepository): EndMyVoteListUseCase {
+        return EndMyVoteListUseCase(voteRepository)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSearchVoteListUseCase(voteRepository: VoteRepository): SearchVoteListUseCase {
+        return SearchVoteListUseCase(voteRepository)
     }
 
 }

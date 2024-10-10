@@ -5,7 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black">
+        android:background="@color/pickit_pink">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_top"
@@ -59,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="개인정보 수집 약관에 동의합니다."
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/checkBox1"
                 app:layout_constraintStart_toEndOf="@id/checkBox1"
@@ -107,6 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="지갑 생성을 위해 위 약관에 동의합니다."
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="@id/checkBox2"
                 app:layout_constraintStart_toEndOf="@id/checkBox2"
@@ -144,10 +146,13 @@
 
             <Button
                 android:id="@+id/saveButton"
-                android:layout_width="wrap_content"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"
+                android:background="@drawable/bg_round20_pink"
                 android:text="다음"
+                android:textColor="@color/white"
+                android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

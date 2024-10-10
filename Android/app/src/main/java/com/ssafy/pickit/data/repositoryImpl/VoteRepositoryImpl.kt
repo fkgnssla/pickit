@@ -45,6 +45,24 @@ class VoteRepositoryImpl @Inject constructor(
         return VoteMapper.mapperToVoteListData(data)
     }
 
+    override suspend fun getOnGoingMyVoteList(): List<VoteListData> {
+        val response = voteApi.getOnGoingMyVoteList()
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
+    }
+
+    override suspend fun getEndMyVoteList(): List<VoteListData> {
+        val response = voteApi.getEndMyVoteList()
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
+    }
+
+    override suspend fun getSearchVoteList(keyword: String): List<VoteListData> {
+        val response = voteApi.getSearchVoteList(keyword)
+        val data = response.data!!
+        return VoteMapper.mapperToVoteListData(data)
+    }
+
     override suspend fun postVote(voteItem: VoteItem): Boolean {
         val transactionResponse =
             walletFunction.vote(voteItem.contractAddress, voteItem.candidateId)
@@ -58,7 +76,6 @@ class VoteRepositoryImpl @Inject constructor(
             val response = voteApi.postVote(voteRequest)
             return response.status.equals("SUCCESS")
         }
-        Log.d("testtttt", transactionResponse.message.toString())
         return false
     }
 
@@ -66,10 +83,8 @@ class VoteRepositoryImpl @Inject constructor(
         val response = voteApi.getVoteDetail(voteId)
         val voteSessionResponse = response.data ?: throw Exception("Failed to retrieve vote detail")
 
-
         return mapperToVoteSessionData(voteSessionResponse)
     }
-
 
     override suspend fun getVoteResult(voteId: String): VoteResultData {
         val response = voteApi.getVoteResult(voteId)

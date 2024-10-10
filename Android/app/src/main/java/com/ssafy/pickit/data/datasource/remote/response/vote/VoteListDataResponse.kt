@@ -1,6 +1,8 @@
 package com.ssafy.pickit.data.datasource.remote.response.vote
 
 import com.google.gson.annotations.SerializedName
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 data class VoteListDataResponse(
 
@@ -16,4 +18,6 @@ data class VoteListDataResponse(
     val endDate: String,
     @SerializedName("is_vote")
     val isVote: Boolean
-)
+){
+
+}

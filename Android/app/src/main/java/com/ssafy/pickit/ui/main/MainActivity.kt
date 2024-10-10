@@ -6,17 +6,13 @@ import android.os.Build
 import android.os.Bundle
 import android.view.WindowInsets
 import android.view.WindowInsetsController
-import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.ssafy.pickit.R
 import com.ssafy.pickit.databinding.ActivityMainBinding
 import com.ssafy.pickit.ui.main.home.HomeFragment
-import com.ssafy.pickit.ui.main.mypage.MyPageActivity
 import com.ssafy.pickit.ui.main.mypage.MyPageFragment
 import com.ssafy.pickit.ui.main.vote.VoteFragment
-import com.ssafy.pickit.ui.main.mypage.UserProfileActivity
-
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,15 +29,6 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this@MainActivity
         }
 
-        val imageView = findViewById<ImageView>(R.id.imageView)
-
-
-        imageView.setOnClickListener {
-            val intent = Intent(this, UserProfileActivity::class.java)
-            startActivity(intent)
-        }
-
-
         setFragment()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.let { controller ->
@@ -53,12 +40,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
-    private fun updateTabTitle(title: String) {
-        binding.tabTitle.text = title
-    }
-
     private fun setFragment() {
 
         supportFragmentManager.beginTransaction()
@@ -66,30 +47,26 @@ class MainActivity : AppCompatActivity() {
             .commit()
 
         binding.bnvMain.selectedItemId = R.id.home
-        updateTabTitle("Home")
 
         binding.bnvMain.setOnItemSelectedListener {
             val transaction = supportFragmentManager.beginTransaction()
             when (it.itemId) {
                 R.id.home -> {
                     transaction.replace(R.id.fcv_main, HomeFragment())
-                    updateTabTitle("Home")
                 }
+
                 R.id.vote -> {
                     transaction.replace(R.id.fcv_main, VoteFragment())
-                    updateTabTitle("Vote")
                 }
+
                 R.id.my_vote -> {
                     transaction.replace(R.id.fcv_main, MyPageFragment())
-                    updateTabTitle("My Page")
                 }
             }
             transaction.commit()
             return@setOnItemSelectedListener true
         }
     }
-
-
 
 
     companion object {
