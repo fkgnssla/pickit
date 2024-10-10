@@ -6,5 +6,7 @@ data class PopularVoteListDataResponse(
     @SerializedName("vote_session_id")
     val id: String,
     @SerializedName("thumbnail")
-    val thumbnail: String
+    val thumbnail: String,
+    @SerializedName("is_vote")
+    val isVote: Boolean
 )
