@@ -115,11 +115,9 @@ const Regist = () => {
         withCredentials: true,
         data: result
       })
-      .then((res) => {
-        // console.log("투표등록성공", res);
+      .then(() => {
       })
-      .catch((e) => {
-        // console.log("투표등록실패", e);
+      .catch(() => {
       });
       navigate("/done");
       setShouldNavigate(false);
@@ -184,8 +182,7 @@ const Regist = () => {
         }).then(() => {
           setShouldUpdateResult(true);
         })
-        .catch((e) => {
-          // console.log("사진등록실패", e);
+        .catch(() => {
         });
       }
       setShouldPeriodValidate(false);
@@ -396,16 +393,14 @@ const Regist = () => {
         </div>
         <div className="box">
           <span><img src={redDot} alt="redDot" className="redDot" /> 중간결과 공개 여부 </span>
-          <input type="checkbox" onChange={(e) => setOpenResult(!openResult)}/>
+          <input type="checkbox" onChange={() => setOpenResult(!openResult)}/>
         </div>
-      {/* </div> */}
       <br />
       <div className="box">
         <h4>후보자</h4>
         <span><img src={redDot} alt="redDot" className="redDot"/> 최소 2명 이상 등록</span>
         <hr />
       </div>
-      {/* <div className="border"> */}
         {candidates.map((candidate, index) => (
           <div className="box" key={index}>
             <div className="candidateHeader">

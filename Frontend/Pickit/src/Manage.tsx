@@ -54,9 +54,7 @@ function Manage() {
         // console.log(res.data.data);
         setTempVotes(res.data.data as TempVote[]);
       })
-      .catch((e) => {
-        // console.log("결과보기실패");
-        // console.log(e);
+      .catch(() => {
       });
   }, []);
 
@@ -71,9 +69,7 @@ function Manage() {
           alert("삭제완료");
           location.href = location.href;
         })
-        .catch((e) => {
-          // console.log("삭제실패");
-          // console.log(e);
+        .catch(() => {
         });
     }
   };
@@ -90,46 +86,9 @@ function Manage() {
           alert("등록완료");
           location.href = location.href;
         })
-        .catch((e) => {
-          // console.log("등록실패");
-          // console.log(e);
+        .catch(() => {
         });
     }
-  };
-
-  const nowVote = () => {
-    axios({
-      method: "get",
-      url: "https://j11a309.p.ssafy.io/api/vote-session/ongoing",
-      withCredentials: true,
-      headers: {
-        Authorization: "",
-      },
-    })
-      .then((res) => {
-        alert("등록완료");
-        // console.log(res.data.data);
-      })
-      .catch((e) => {
-        // console.log(e);
-      });
-  };
-  const endVote = () => {
-    axios({
-      method: "get",
-      url: "https://j11a309.p.ssafy.io/api/vote-session/end",
-      withCredentials: true,
-      headers: {
-        Authorization: "",
-      },
-    })
-      .then((res) => {
-        alert("등록완료");
-        // console.log(res.data.data);
-      })
-      .catch((e) => {
-        // console.log(e);
-      });
   };
 
   return (
