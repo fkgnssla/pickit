@@ -3,8 +3,10 @@ package com.ssafy.pickit.ui.main.result
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -65,13 +67,26 @@ class ResultActivity : AppCompatActivity() {
 
         candidateLayout.removeAllViews()
 
-        voteResultData.results.forEach { candidateResult ->
+        voteResultData.results.forEachIndexed { index, candidateResult ->
 
             val inflater = LayoutInflater.from(this)
             val candidateView = inflater.inflate(R.layout.item_candidate, candidateLayout, false)
 
             val candidateChart: HorizontalBarChart = candidateView.findViewById(R.id.horizontalBarChart)
             setupHorizontalBarChart(candidateChart, candidateResult, voteResultData, candidateResult.voteCount,selectedCandidateId)
+
+
+
+            val candidateRankTextView = candidateView.findViewById<TextView>(R.id.candidateRank)
+            val rankContainer = candidateView.findViewById<RelativeLayout>(R.id.rankContainer)
+
+            if (index < 3) {
+                candidateRankTextView.text = (index + 1).toString()
+                rankContainer.visibility = View.VISIBLE
+            } else {
+                candidateRankTextView.text = ""
+                rankContainer.visibility = View.GONE
+            }
 
 
             val candidateNameTextView = candidateView.findViewById<TextView>(R.id.candidateName)
