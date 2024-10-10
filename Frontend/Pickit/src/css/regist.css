@@ -1,0 +1,175 @@
+.registForm{
+    width: 600px;
+}
+
+.registHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    p{
+        margin-bottom: 8px;
+    }
+}
+
+.border{
+    background-color: white;
+    border: solid 1px;
+    border-color: rgb(196, 196, 196);
+    border-radius: 5px;
+    padding: 0px 0px 10px 0px;
+}
+
+.box{
+    margin: 10px;
+    hr{
+        margin-bottom: 0px;
+    }
+}
+
+input[type="text"], input[type="tel"]{
+    border: solid 1px;
+    border-color: rgb(196, 196, 196);
+    border-radius: 5px;
+    width: 100%;
+}
+
+
+select{
+    border: solid 1px;
+    border-color: rgb(196, 196, 196);
+    border-radius: 5px;
+    width: 100%;
+}
+
+.fileInput {
+    display: flex;
+    align-items: center;
+}
+
+.fileInput span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 400px;
+    display: inline-block;
+}
+
+input[type="file"]{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip:rect(0,0,0,0);
+    border: 0;
+}
+
+.label {
+    display: inline-block;
+    padding: .1em .75em;
+    color: white;
+    font-size: inherit;
+    line-height: normal;
+    vertical-align: middle;
+    background-color: rgb(233, 188, 194);
+    cursor: pointer;
+    /* border: 1px solid rgb(187, 150, 155); */
+    border-radius: 5px;
+    width: 75px;
+    margin-right: 5px;
+  }
+
+.label:hover{
+    background-color: rgb(187, 150, 155);
+}
+
+textarea{
+    border: solid 1px;
+    border-color: rgb(196, 196, 196);
+    border-radius: 5px;
+    width: 100%;
+    height: 100px;
+    resize: none;
+}
+
+.candidateHeader{
+    display: flex;
+    justify-content: space-between;
+}
+
+.deleteButton{
+    cursor: pointer;
+    padding: 0px 0px 5px 0px;
+    border-radius: 5px;
+}
+
+.deleteButton:hover{
+    background-color: rgb(236, 236, 236);
+}
+
+
+.candidateContent{
+    display: flex;
+}
+
+.candidateInput{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    input{
+        width: calc(50% + 25px);
+    }
+}
+
+.candidateImage{
+    position: relative;
+}
+
+.uploadFile{
+    height: 68.5px;
+    width: 60px;
+    border-radius: 5px;
+    top: 10px;
+    right: 0px;
+    object-fit: cover;
+}
+
+.addButton{
+    margin: 0px 10px 0px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: flex-center;
+}
+
+.addButton:hover{
+    background-color: rgb(236, 236, 236);
+}
+
+.okButtonBox{
+    display: flex;
+    justify-content: center;
+}
+
+.okButton{
+    width: 400px;
+    height: 30px;
+    background-color: rgb(233, 188, 194);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 400;
+}
+
+.okButton:hover{
+    background-color: rgb(187, 150, 155);
+}
+
